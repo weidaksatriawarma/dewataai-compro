@@ -29,10 +29,21 @@ const content = {
       lead: "Bukan portofolio investasi. Semua usaha di bawah ini kami bangun sendiri, kami jalankan sendiri, dan kami pegang sampai sekarang.",
       openLabel: "Lihat detail",
       visitLabel: "Kunjungi situs",
-      upcoming: {
-        heading: "Usaha ketiga",
-        body: "Kami lagi nyari masalah mahal berikutnya di bisnis Indonesia. Kalau ada kerjaan yang tiap bulan nguras waktu dan uang kamu, kami mau dengar.",
-        cta: "Ceritain masalah kamu",
+      /* The hero renders as a register of holdings: entry 03 is deliberately
+         vacant, which is both the honest state and the call to action. */
+      register: {
+        label: "Register usaha",
+        issuedBy: "Dicatat atas nama",
+        columns: { no: "No", name: "Usaha", field: "Bidang", status: "Status", domain: "Domain" },
+        statusActive: "Aktif",
+        statusOpen: "Terbuka",
+        vacant: {
+          no: "03",
+          name: "Belum diisi",
+          field: "Terbuka",
+          desc: "Slot berikutnya masih kosong. Ceritain kerjaan yang tiap bulan nguras waktu dan uang kamu.",
+          action: "Ajukan",
+        },
       },
     },
 
@@ -387,10 +398,19 @@ const content = {
       lead: "Not an investment portfolio. We built each of these ourselves, we run them ourselves, and we still hold them.",
       openLabel: "See details",
       visitLabel: "Visit site",
-      upcoming: {
-        heading: "Third venture",
-        body: "We are hunting for the next expensive problem in Indonesian business. If some job drains your time and money every month, we want to hear about it.",
-        cta: "Tell us the problem",
+      register: {
+        label: "Register of holdings",
+        issuedBy: "Held by",
+        columns: { no: "No", name: "Venture", field: "Field", status: "Status", domain: "Domain" },
+        statusActive: "Active",
+        statusOpen: "Open",
+        vacant: {
+          no: "03",
+          name: "Not filled yet",
+          field: "Open",
+          desc: "The next slot is still empty. Tell us about the job that drains your time and money every month.",
+          action: "Propose",
+        },
       },
     },
 
