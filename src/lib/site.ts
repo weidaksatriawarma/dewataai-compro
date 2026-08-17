@@ -72,39 +72,38 @@ const content = {
       cta: { label: "Ngobrol dulu", href: ROUTES.contact.id },
     },
 
+    /**
+     * The homepage opens as a statement and an essay, the way a holding
+     * company argues for itself, rather than as a conversion funnel. The offer
+     * and the guarantee live on /kontak, where someone ready to talk goes.
+     */
     hero: {
       eyebrow: "PT Dewata Artificial Intelligence",
-      titleTop: "Bangun.",
-      titleAccent: "Tumbuhkan.",
-      sub: "Grup teknologi asal Bali. Kami bikin dan jalanin produk AI buat bisnis Indonesia.",
-      taglines: [
-        "Produk sendiri, bukan agensi",
-        "Dua usaha jalan hari ini",
-        "Dibikin dan dijalanin dari Bali",
+      statement: "Kami bangun.\nKami pegang.",
+      essay: [
+        "Kebanyakan software di Indonesia dibikin buat orang lain, lalu ditinggal begitu invoice-nya cair. Kami milih jalan yang beda: kami punya produknya, kami yang jalanin harian, dan kami yang nanggung kalau ada yang rusak jam dua pagi.",
+        "Itu bikin cara kami milih kerjaan jadi lain. Kami gak nyari proyek yang paling gede, tapi masalah yang paling mahal dan paling sering balik lagi. Komisi OTA yang motong pendapatan villa tiap bulan. Pembukuan warung yang gak pernah rapi, jadi untungnya cuma tebakan.",
+        "Dua-duanya bukan masalah teknologi. Itu masalah uang yang bocor pelan-pelan, dan kebetulan software bisa nutup bocornya.",
+        "Kami usaha keluarga, dan itu ngubah rentang waktunya. Kami gak lagi bangun sesuatu buat dijual dalam tiga tahun. Produk yang kami mulai hari ini masih kami pegang waktu anak-anak kami udah gede.",
       ],
-      ctaPrimary: { label: "Lihat ekosistem", href: "#ekosistem" },
-      ctaSecondary: { label: "Ngobrol 15 menit", href: "#penawaran" },
-      demo: {
-        eco: "Struktur grup",
-        active: "Aktif",
-        parentMeta: "Perusahaan induk",
-        techDesc: "Website & booking villa",
-        dagangDesc: "Asisten bisnis UMKM",
-        webTag: "Web",
-        aiTag: "AI",
+      register: {
+        label: "Kepemilikan",
+        statusActive: "Aktif",
+        statusOpen: "Terbuka",
+        vacantName: "Belum diisi",
+        vacantNote: "Slot ketiga masih kosong",
+        all: "Lihat semua usaha",
+      },
+      writing: {
+        label: "Tulisan",
+        all: "Semua tulisan",
+        empty: "Tulisan pertama lagi digarap.",
+      },
+      closing: {
+        line: "Ada kerjaan yang tiap bulan nguras waktu dan uang bisnismu?",
+        cta: "Ceritain ke kami",
       },
     },
-
-    marquee: [
-      "Produk AI",
-      "Web & Rekayasa",
-      "Otomatisasi Bisnis",
-      "Riset Terapan",
-      "Villa & Hospitality",
-      "UMKM Indonesia",
-      "Bali",
-      "Indonesia",
-    ],
 
     about: {
       eyebrow: "01 · Tentang",
@@ -119,34 +118,6 @@ const content = {
         { value: "2", label: "Usaha aktif" },
         { value: "1", label: "Sedang dibangun" },
         { value: "2026", label: "Berbadan hukum" },
-      ],
-    },
-
-    pillars: {
-      eyebrow: "02 · Kapabilitas",
-      heading: "Empat bidang\nkerja kami.",
-      sub: "Semuanya udah jadi produk, bukan riset di slide.",
-      items: [
-        {
-          key: "brain",
-          title: "Produk AI",
-          desc: "Aplikasi AI yang langsung kepake tiap hari.",
-        },
-        {
-          key: "code",
-          title: "Web & Rekayasa",
-          desc: "Website dan booking engine yang nutup pesanan.",
-        },
-        {
-          key: "automation",
-          title: "Otomatisasi",
-          desc: "Kerjaan manual dipindah ke sistem yang jalan sendiri.",
-        },
-        {
-          key: "research",
-          title: "Riset Terapan",
-          desc: "Model baru kami tes dulu sebelum masuk produk.",
-        },
       ],
     },
 
@@ -228,37 +199,6 @@ const content = {
       },
     },
 
-    stats: {
-      eyebrow: "Bukti",
-      heading: "Angka yang\nbisa dibuktikan.",
-      items: [
-        {
-          value: "2",
-          unit: "",
-          label: "Usaha aktif",
-          desc: "Dipakai dan dibayar pelanggan beneran.",
-        },
-        {
-          value: "7",
-          unit: " hari",
-          label: "Dari brief ke live",
-          desc: "Website villa online dalam sepekan.",
-        },
-        {
-          value: "0",
-          unit: "%",
-          label: "Komisi OTA",
-          desc: "Booking direct masuk penuh ke pemilik.",
-        },
-        {
-          value: "24",
-          unit: "/7",
-          label: "Sistem bekerja",
-          desc: "Tetap jalan waktu kamu tidur.",
-        },
-      ],
-    },
-
     vision: {
       eyebrow: "04 · Visi & Misi",
       visionLabel: "Visi",
@@ -282,33 +222,6 @@ const content = {
         note: "Dibalas di hari yang sama.",
         cta: { label: "Ambil slot ngobrol", href: wa("id") },
       },
-    },
-
-    values: {
-      eyebrow: "05 · Nilai",
-      heading: "Empat prinsip,\ntanpa basa-basi.",
-      items: [
-        {
-          key: "local",
-          title: "Berakar di Bali",
-          desc: "Tim kami di sini, sezona waktu sama kamu.",
-        },
-        {
-          key: "practical",
-          title: "Hasil di atas gaya",
-          desc: "Fitur yang gak nambah hasil ya kami buang.",
-        },
-        {
-          key: "trust",
-          title: "Kepercayaan dulu",
-          desc: "Kami ngomong apa adanya, termasuk pas harus nolak.",
-        },
-        {
-          key: "craft",
-          title: "Rekayasa rapi",
-          desc: "Cepat, aman, gampang dirawat bertahun-tahun.",
-        },
-      ],
     },
 
     faq: {
@@ -338,14 +251,6 @@ const content = {
           a: "Udah. PT Dewata Artificial Intelligence (Perseroan Perorangan), NIB 1708260005107.",
         },
       ],
-    },
-
-    cta: {
-      eyebrow: "Kontak",
-      headline: "Mau ngobrol\nbentar?",
-      sub: "Kirim pesan, kami bales di hari yang sama.",
-      primary: { label: "Chat WhatsApp", href: wa("id") },
-      secondary: { label: EMAIL, href: `mailto:${EMAIL}` },
     },
 
     footer: {
@@ -428,37 +333,31 @@ const content = {
 
     hero: {
       eyebrow: "PT Dewata Artificial Intelligence",
-      titleTop: "Build.",
-      titleAccent: "Grow.",
-      sub: "A Bali technology group that builds and runs AI products for Indonesian business.",
-      taglines: [
-        "Our own products, not an agency",
-        "Two ventures live today",
-        "Built and run from Bali",
+      statement: "We build it.\nWe keep it.",
+      essay: [
+        "Most software in Indonesia gets built for someone else, then abandoned the moment the invoice clears. We took the other road: we own the products, we run them day to day, and we are the ones awake when something breaks at two in the morning.",
+        "That changes how we pick work. We are not looking for the biggest project, but for the most expensive problem, the kind that comes back every month. OTA commission skimming a villa's revenue. Shop books that are never current, so profit is only ever a guess.",
+        "Neither of those is a technology problem. They are money leaking slowly, and software happens to be able to close the leak.",
+        "We are a family business, and that changes the horizon. We are not building something to sell in three years. The product we start today is one we still hold when our children are grown.",
       ],
-      ctaPrimary: { label: "See the ecosystem", href: "#ekosistem" },
-      ctaSecondary: { label: "Free 15-min chat", href: "#penawaran" },
-      demo: {
-        eco: "Group structure",
-        active: "Active",
-        parentMeta: "Parent company",
-        techDesc: "Villa websites & booking",
-        dagangDesc: "SME business assistant",
-        webTag: "Web",
-        aiTag: "AI",
+      register: {
+        label: "Holdings",
+        statusActive: "Active",
+        statusOpen: "Open",
+        vacantName: "Not filled yet",
+        vacantNote: "The third slot is still empty",
+        all: "See all ventures",
+      },
+      writing: {
+        label: "Writing",
+        all: "All writing",
+        empty: "The first piece is being written.",
+      },
+      closing: {
+        line: "Is there a job draining your time and money every month?",
+        cta: "Tell us about it",
       },
     },
-
-    marquee: [
-      "AI Products",
-      "Web & Engineering",
-      "Business Automation",
-      "Applied Research",
-      "Villa & Hospitality",
-      "Indonesian SMEs",
-      "Bali",
-      "Indonesia",
-    ],
 
     about: {
       eyebrow: "01 · About",
@@ -473,34 +372,6 @@ const content = {
         { value: "2", label: "Ventures live" },
         { value: "1", label: "In the works" },
         { value: "2026", label: "Incorporated" },
-      ],
-    },
-
-    pillars: {
-      eyebrow: "02 · Capabilities",
-      heading: "Four areas\nwe work in.",
-      sub: "All of it already shipped as product, not research on a slide.",
-      items: [
-        {
-          key: "brain",
-          title: "AI Products",
-          desc: "AI apps that do real work from day one.",
-        },
-        {
-          key: "code",
-          title: "Web & Engineering",
-          desc: "Websites and booking engines that close orders.",
-        },
-        {
-          key: "automation",
-          title: "Automation",
-          desc: "Manual work moved into a system that runs itself.",
-        },
-        {
-          key: "research",
-          title: "Applied Research",
-          desc: "New models get tested before they reach a product.",
-        },
       ],
     },
 
@@ -582,37 +453,6 @@ const content = {
       },
     },
 
-    stats: {
-      eyebrow: "Proof",
-      heading: "Numbers we\ncan back up.",
-      items: [
-        {
-          value: "2",
-          unit: "",
-          label: "Ventures live",
-          desc: "Used and paid for by real customers.",
-        },
-        {
-          value: "7",
-          unit: " days",
-          label: "From brief to live",
-          desc: "A villa website online in a week.",
-        },
-        {
-          value: "0",
-          unit: "%",
-          label: "OTA commission",
-          desc: "Direct bookings land with the owner in full.",
-        },
-        {
-          value: "24",
-          unit: "/7",
-          label: "Systems working",
-          desc: "Serving your customers while you sleep.",
-        },
-      ],
-    },
-
     vision: {
       eyebrow: "04 · Vision & Mission",
       visionLabel: "Vision",
@@ -636,33 +476,6 @@ const content = {
         note: "Answered the same day.",
         cta: { label: "Grab a slot", href: wa("en") },
       },
-    },
-
-    values: {
-      eyebrow: "05 · Values",
-      heading: "Four principles,\nno fluff.",
-      items: [
-        {
-          key: "local",
-          title: "Rooted in Bali",
-          desc: "Our team is here, in your time zone.",
-        },
-        {
-          key: "practical",
-          title: "Results over polish",
-          desc: "If a feature adds nothing, we cut it.",
-        },
-        {
-          key: "trust",
-          title: "Trust comes first",
-          desc: "We tell you straight, including when we say no.",
-        },
-        {
-          key: "craft",
-          title: "Clean engineering",
-          desc: "Fast, secure, and easy to maintain for years.",
-        },
-      ],
     },
 
     faq: {
@@ -692,14 +505,6 @@ const content = {
           a: "Yes. PT Dewata Artificial Intelligence (Perseroan Perorangan), NIB 1708260005107.",
         },
       ],
-    },
-
-    cta: {
-      eyebrow: "Contact",
-      headline: "Want to talk\nit over?",
-      sub: "Send a message and we reply the same day.",
-      primary: { label: "Chat on WhatsApp", href: wa("en") },
-      secondary: { label: EMAIL, href: `mailto:${EMAIL}` },
     },
 
     footer: {
