@@ -16,6 +16,56 @@ export type VentureSlug = (typeof VENTURE_SLUGS)[number]
 /** Bump when the privacy policy text changes. */
 export const POLICY_UPDATED = "2026-08-17"
 
+/** Shared toolbar strings for the journal and press indexes. */
+const toolbar = {
+  id: {
+    searchLabel: "Cari",
+    searchPlaceholder: "Cari judul atau isi…",
+    submit: "Cari",
+    sortLabel: "Urutkan",
+    sortNewest: "Terbaru",
+    sortOldest: "Terlama",
+    filterCategory: "Kategori",
+    filterYear: "Tahun",
+    all: "Semua",
+    reset: "Atur ulang",
+    count: (shown: number, total: number) =>
+      shown === total ? `${total} tulisan` : `${shown} dari ${total} tulisan`,
+    noResults: "Nggak ada yang cocok. Coba kata lain atau atur ulang filternya.",
+    categories: {
+      produk: "Produk",
+      rekayasa: "Rekayasa",
+      bisnis: "Bisnis",
+      catatan: "Catatan",
+    } as Record<string, string>,
+  },
+  en: {
+    searchLabel: "Search",
+    searchPlaceholder: "Search titles or text…",
+    submit: "Search",
+    sortLabel: "Sort",
+    sortNewest: "Newest",
+    sortOldest: "Oldest",
+    filterCategory: "Category",
+    filterYear: "Year",
+    all: "All",
+    reset: "Reset",
+    count: (shown: number, total: number) =>
+      shown === total ? `${total} entries` : `${shown} of ${total} entries`,
+    noResults: "Nothing matches. Try another word, or reset the filters.",
+    categories: {
+      produk: "Product",
+      rekayasa: "Engineering",
+      bisnis: "Business",
+      catatan: "Notes",
+    } as Record<string, string>,
+  },
+}
+
+export function getToolbar(lang: Lang) {
+  return toolbar[lang] ?? toolbar.id
+}
+
 const content = {
   id: {
     ventures: {
@@ -194,16 +244,24 @@ const content = {
         certLabel: "Lihat sertifikat pendirian AHU",
       },
       team: {
-        label: "Orang di baliknya",
-        heading: "Siapa yang jalanin.",
+        label: "Keluarga Ksatriawarma",
+        heading: "Dua bersaudara.",
+        intro: "Dewata AI dijalankan langsung sama pendirinya. Usaha keluarga, jadi rentang waktunya panjang: kami bukan lagi bangun sesuatu buat dijual cepat.",
         /* Bagian ini otomatis tersembunyi kalau array-nya kosong. */
         members: [
           {
             name: "Anak Agung Gde Weida Ksatriawarma",
-            initials: "AW",
-            role: "Pendiri",
-            bio: "Membangun dan menjalankan Dewata Tech dan Dagangku AI dari Denpasar. Ikut turun langsung tiap hari: nulis kode, ngobrol sama pelanggan, dan mutusin usaha mana yang layak dibangun berikutnya.",
+            initials: "WD",
+            role: "Pendiri & CEO",
+            bio: "Pegang arah grup dan produk. Sehari-hari masih ikut turun langsung: nulis kode, ngobrol sama pelanggan, dan mutusin usaha mana yang layak dibangun berikutnya.",
             // TODO: isi URL LinkedIn kalau mau ditampilkan.
+            linkedin: undefined,
+          },
+          {
+            name: "Anak Agung Gde Wijaya Ksatriawarma",
+            initials: "WJ",
+            role: "Co-founder",
+            bio: "Ikut mendirikan Dewata AI bareng Weida, kakaknya.",
             linkedin: undefined,
           },
         ] as {
@@ -561,14 +619,22 @@ const content = {
         certLabel: "View AHU incorporation certificate",
       },
       team: {
-        label: "The people",
-        heading: "Who runs it.",
+        label: "The Ksatriawarma family",
+        heading: "Two brothers.",
+        intro: "Dewata AI is run by the people who founded it. A family business, so the horizon is long: we are not building something to flip.",
         members: [
           {
             name: "Anak Agung Gde Weida Ksatriawarma",
-            initials: "AW",
-            role: "Founder",
-            bio: "Builds and runs Dewata Tech and Dagangku AI out of Denpasar. Hands on with the day to day: writing the code, talking to customers, and deciding which venture is worth building next.",
+            initials: "WD",
+            role: "Founder & CEO",
+            bio: "Sets the direction for the group and its products. Still hands on day to day: writing code, talking to customers, and deciding which venture is worth building next.",
+            linkedin: undefined,
+          },
+          {
+            name: "Anak Agung Gde Wijaya Ksatriawarma",
+            initials: "WJ",
+            role: "Co-founder",
+            bio: "Co-founded Dewata AI with his older brother, Weida.",
             linkedin: undefined,
           },
         ] as {

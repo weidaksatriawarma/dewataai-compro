@@ -47,6 +47,23 @@ export default defineType({
       type: "string",
     }),
     defineField({
+      name: "category",
+      title: "Kategori",
+      description: "Dipakai untuk filter di halaman jurnal. Nilainya sama di ID dan EN.",
+      type: "string",
+      options: {
+        list: [
+          { title: "Produk", value: "produk" },
+          { title: "Rekayasa", value: "rekayasa" },
+          { title: "Bisnis", value: "bisnis" },
+          { title: "Catatan", value: "catatan" },
+        ],
+        layout: "radio",
+      },
+      initialValue: "catatan",
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
       name: "excerpt",
       title: "Ringkasan",
       description: "Satu atau dua kalimat. Dipakai di daftar dan di hasil pencarian.",

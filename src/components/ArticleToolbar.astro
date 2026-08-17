@@ -1,0 +1,183 @@
+---
+/**
+ * Search, filter and sort for the journal and press indexes.
+ *
+ * State lives in the query string and is resolved on the server, so a filtered
+ * view is a shareable URL and the controls still work with JavaScript off. The
+ * client script only removes the need to press enter.
+ */
+import { HugeiconsIcon } from "@hugeicons/react"
+import { Search01Icon } from "@hugeicons/core-free-icons"
+import { getToolbar } from "@/lib/pages"
+import { resolveLang } from "@/lib/i18n"
+import type { ArticleQuery, ArticleFacets } from "@/lib/cms"
+
+interface Props {
+  basePath: string
+  params: ArticleQuery
+  facets: ArticleFacets
+  /** Journal filters by category, press by year. */
+  facet: "category" | "year"
+}
+
+const { basePath, params, facets, facet } = Astro.props
+const lang = resolveLang(Astro.currentLocale)
+const t = getToolbar(lang)
+
+const byCategory = facet === "category"
+const values = byCategory ? facets.categories : facets.years
+const active = byCategory ? params.category : params.year
+const key = byCategory ? "kategori" : "tahun"
+const label = (value: string) => (byCategory ? (t.categories[value] ?? value) : value)
+
+/** Build a URL that keeps the other controls intact. */
+function href(overrides: Record<string, string>) {
+  const next = new URLSearchParams()
+  const current: Record<string, string> = {
+    q: params.q,
+    kategori: params.category,
+    tahun: params.year,
+    urut: params.sort === "lama" ? "lama" : "",
+    ...overrides,
+  }
+  for (const [k, v] of Object.entries(current)) if (v) next.set(k, v)
+  const qs = next.toString()
+  return qs ? `${basePath}?${qs}` : basePath
+}
+---
+
+<div class="border-y border-hairline">
+  <form
+    method="get"
+    action={basePath}
+    data-toolbar
+    class="mx-auto flex max-w-4xl flex-wrap items-center gap-x-4 gap-y-3 px-5 py-4 sm:px-8"
+  >
+    <!-- search -->
+    <div class="relative min-w-0 flex-1 basis-full sm:basis-64">
+      <label class="sr-only" for="article-search">{t.searchLabel}</label>
+      <span
+        class="pointer-events-none absolute top-1/2 left-3.5 -translate-y-1/2 text-muted-foreground"
+      >
+        <HugeiconsIcon icon={Search01Icon} size={15} strokeWidth={1.8} />
+      </span>
+      <input
+        id="article-search"
+        type="search"
+        name="q"
+        value={params.q}
+        placeholder={t.searchPlaceholder}
+        autocomplete="off"
+        class="h-10 w-full rounded-full border border-hairline bg-background pr-4 pl-10 text-sm text-ink placeholder:text-muted-foreground focus-visible:border-ink/40"
+      />
+    </div>
+
+    <!-- keep the other controls when the form submits -->
+    {params.category && <input type="hidden" name="kategori" value={params.category} />}
+    {params.year && <input type="hidden" name="tahun" value={params.year} />}
+    {params.sort === "lama" && <input type="hidden" name="urut" value="lama" />}
+
+    <!-- sort -->
+    <div class="flex items-center gap-2">
+      <span class="eyebrow hidden text-muted-foreground sm:inline">{t.sortLabel}</span>
+      <div class="flex rounded-full border border-hairline p-0.5 text-xs font-medium">
+        <a
+          href={href({ urut: "" })}
+          aria-current={params.sort === "baru" ? "true" : undefined}
+          class:list={[
+            "rounded-full px-3 py-1.5 transition-colors",
+            params.sort === "baru" ? "bg-ink text-background" : "text-muted-foreground hover:text-ink",
+          ]}
+        >
+          {t.sortNewest}
+        </a>
+        <a
+          href={href({ urut: "lama" })}
+          aria-current={params.sort === "lama" ? "true" : undefined}
+          class:list={[
+            "rounded-full px-3 py-1.5 transition-colors",
+            params.sort === "lama" ? "bg-ink text-background" : "text-muted-foreground hover:text-ink",
+          ]}
+        >
+          {t.sortOldest}
+        </a>
+      </div>
+    </div>
+
+    <noscript>
+      <button
+        type="submit"
+        class="h-10 rounded-full border border-hairline px-4 text-sm font-medium text-ink"
+      >
+        {t.submit}
+      </button>
+    </noscript>
+  </form>
+
+  {
+    values.length > 0 && (
+      <div class="mx-auto max-w-4xl px-5 pb-4 sm:px-8">
+        <div class="flex flex-wrap items-center gap-2">
+          <span class="eyebrow mr-1 text-muted-foreground">
+            {byCategory ? t.filterCategory : t.filterYear}
+          </span>
+          <a
+            href={href({ [key]: "" })}
+            aria-current={!active ? "true" : undefined}
+            class:list={[
+              "rounded-full border px-3 py-1 text-xs transition-colors",
+              !active
+                ? "border-ink bg-ink text-background"
+                : "border-hairline text-muted-foreground hover:border-ink/30 hover:text-ink",
+            ]}
+          >
+            {t.all}
+          </a>
+          {values.map((value) => (
+            <a
+              href={href({ [key]: value })}
+              aria-current={active === value ? "true" : undefined}
+              class:list={[
+                "rounded-full border px-3 py-1 text-xs transition-colors",
+                active === value
+                  ? "border-ink bg-ink text-background"
+                  : "border-hairline text-muted-foreground hover:border-ink/30 hover:text-ink",
+              ]}
+            >
+              {label(value)}
+            </a>
+          ))}
+        </div>
+      </div>
+    )
+  }
+</div>
+
+<script>
+  // Progressive enhancement: submit shortly after the visitor stops typing, so
+  // the URL stays the source of truth without needing the enter key.
+  const form = document.querySelector<HTMLFormElement>("[data-toolbar]")
+  const input = form?.querySelector<HTMLInputElement>('input[name="q"]')
+
+  if (form && input) {
+    let timer: number | undefined
+    const submit = () => {
+      // Drop an empty q so the reset state gives a clean URL.
+      if (!input.value.trim()) input.removeAttribute("name")
+      form.submit()
+    }
+
+    input.addEventListener("input", () => {
+      window.clearTimeout(timer)
+      timer = window.setTimeout(submit, 400)
+    })
+
+    input.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        input.value = ""
+        window.clearTimeout(timer)
+        submit()
+      }
+    })
+  }
+</script>

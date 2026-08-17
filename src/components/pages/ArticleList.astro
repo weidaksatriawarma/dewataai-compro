@@ -3,10 +3,11 @@
 import { HugeiconsIcon } from "@hugeicons/react"
 import { ArrowUpRight01Icon } from "@hugeicons/core-free-icons"
 import PageHero from "@/components/PageHero.astro"
+import ArticleToolbar from "@/components/ArticleToolbar.astro"
 import { getSite } from "@/lib/site"
-import { getPages } from "@/lib/pages"
-import { resolveLang, getUI, detailPath } from "@/lib/i18n"
-import { listArticles, formatDate, imageUrl } from "@/lib/cms"
+import { getPages, getToolbar } from "@/lib/pages"
+import { resolveLang, getUI, detailPath, path } from "@/lib/i18n"
+import { searchArticles, parseArticleQuery, formatDate, imageUrl } from "@/lib/cms"
 
 interface Props {
   kind: "post" | "pressRelease"
@@ -15,26 +16,59 @@ interface Props {
 const { kind } = Astro.props
 const lang = resolveLang(Astro.currentLocale)
 const ui = getUI(lang)
+const tb = getToolbar(lang)
 const site = getSite(lang)
 const pages = getPages(lang)
 const p = kind === "post" ? pages.journal : pages.press
 const routeKey = kind === "post" ? "journal" : "press"
-
-const articles = await listArticles(kind, lang)
 const isPress = kind === "pressRelease"
+
+const params = parseArticleQuery(Astro.url)
+const { items: articles, facets } = await searchArticles(kind, lang, params)
+const basePath = path(routeKey, lang)
+const isFiltered = Boolean(params.q || params.category || params.year)
 ---
 
 <PageHero eyebrow={p.eyebrow} heading={p.heading} lead={p.lead} />
 
-<section class="bg-paper py-16 sm:py-24">
+{
+  facets.total > 0 && (
+    <ArticleToolbar
+      basePath={basePath}
+      params={params}
+      facets={facets}
+      facet={isPress ? "year" : "category"}
+    />
+  )
+}
+
+<section class="bg-paper py-10 sm:py-14">
   <div class="mx-auto max-w-4xl px-5 sm:px-8">
+    {
+      facets.total > 0 && (
+        <div class="flex flex-wrap items-center justify-between gap-3 pb-6">
+          <p class="font-mono text-xs text-muted-foreground" aria-live="polite">
+            {tb.count(articles.length, facets.total)}
+          </p>
+          {isFiltered && (
+            <a
+              href={basePath}
+              class="font-mono text-xs text-muted-foreground transition-colors hover:text-ink"
+            >
+              {tb.reset}
+            </a>
+          )}
+        </div>
+      )
+    }
+
     {
       articles.length === 0 ? (
         <p
           data-reveal
           class="rounded-3xl border border-dashed border-ink/20 bg-background px-6 py-14 text-center text-muted-foreground"
         >
-          {ui.empty}
+          {isFiltered ? tb.noResults : ui.empty}
         </p>
       ) : (
         <ul>
@@ -50,6 +84,9 @@ const isPress = kind === "pressRelease"
                     <p class="font-mono text-xs text-muted-foreground">
                       {isPress && article.dateline ? `${article.dateline} · ` : ""}
                       {formatDate(article.publishedAt, lang)}
+                      {!isPress && article.category
+                        ? ` · ${tb.categories[article.category] ?? article.category}`
+                        : ""}
                     </p>
                     <h2 class="mt-3 font-serif text-2xl leading-snug text-ink sm:text-3xl">
                       {article.title}

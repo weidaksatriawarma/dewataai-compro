@@ -21,6 +21,7 @@ export interface Article {
   excerpt: string
   publishedAt: string
   author?: string
+  category?: string
   coverImage?: { asset?: { _ref: string }; alt?: string }
   body?: unknown[]
   /* press release only */
@@ -28,6 +29,20 @@ export interface Article {
   boilerplate?: string
   contactName?: string
   contactEmail?: string
+}
+
+/** Toolbar state, parsed from the query string. */
+export interface ArticleQuery {
+  q: string
+  category: string
+  year: string
+  sort: "baru" | "lama"
+}
+
+export interface ArticleFacets {
+  categories: string[]
+  years: string[]
+  total: number
 }
 
 async function query<T>(groq: string, params: Record<string, unknown>, fallback: T): Promise<T> {
@@ -49,6 +64,7 @@ const CARD_FIELDS = `
   excerpt,
   publishedAt,
   author,
+  category,
   coverImage,
   dateline
 `
@@ -63,6 +79,80 @@ export function listArticles(type: "post" | "pressRelease", lang: Lang) {
     { type, lang },
     [],
   )
+}
+
+/** Read and sanitise the toolbar state from a URL. */
+export function parseArticleQuery(url: URL): ArticleQuery {
+  const get = (key: string) => (url.searchParams.get(key) ?? "").trim().slice(0, 80)
+  return {
+    q: get("q"),
+    category: get("kategori").toLowerCase(),
+    year: /^\d{4}$/.test(get("tahun")) ? get("tahun") : "",
+    sort: get("urut") === "lama" ? "lama" : "baru",
+  }
+}
+
+/**
+ * One round trip: the filtered, sorted list plus the facet values needed to
+ * build the toolbar. Search covers the title, the excerpt, and the body text,
+ * which stays on the server rather than shipping the body to the browser.
+ */
+export async function searchArticles(
+  type: "post" | "pressRelease",
+  lang: Lang,
+  params: ArticleQuery,
+): Promise<{ items: Article[]; facets: ArticleFacets }> {
+  // Direction is whitelisted above, never interpolated from raw input.
+  const direction = params.sort === "lama" ? "asc" : "desc"
+  const term = params.q ? `${params.q.replace(/[*"]/g, "")}*` : ""
+
+  const filters = [
+    `_type == $type`,
+    `lang == $lang`,
+    `defined(slug.current)`,
+    `($category == "" || category == $category)`,
+    `($year == "" || string::startsWith(publishedAt, $year))`,
+    `($term == "" || title match $term || excerpt match $term || pt::text(body) match $term)`,
+  ].join(" && ")
+
+  const groq = `{
+    "items": *[${filters}] | order(publishedAt ${direction}) { ${CARD_FIELDS} },
+    "facets": *[_type == $type && lang == $lang && defined(slug.current)] {
+      category,
+      "year": string::split(publishedAt, "-")[0]
+    }
+  }`
+
+  const empty = { items: [] as Article[], facets: { categories: [], years: [], total: 0 } }
+
+  const result = await query<{
+    items: Article[]
+    facets: { category?: string; year?: string }[]
+  } | null>(
+    groq,
+    {
+      type,
+      lang,
+      category: params.category,
+      year: params.year,
+      term,
+    },
+    null,
+  )
+
+  if (!result) return empty
+
+  const categories = [...new Set(result.facets.map((f) => f.category).filter(Boolean))] as string[]
+  const years = [...new Set(result.facets.map((f) => f.year).filter(Boolean))] as string[]
+
+  return {
+    items: result.items ?? [],
+    facets: {
+      categories: categories.sort(),
+      years: years.sort().reverse(),
+      total: result.facets.length,
+    },
+  }
 }
 
 export function getArticle(type: "post" | "pressRelease", lang: Lang, slug: string) {
