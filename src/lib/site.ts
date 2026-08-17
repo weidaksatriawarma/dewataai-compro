@@ -77,11 +77,6 @@ const content = {
       titleTop: "Kami bikin.",
       titleAccent: "Kami jalanin.",
       sub: "Software AI buat bisnis Indonesia: booking direct buat villa, dan pembukuan otomatis buat UMKM.",
-      taglines: [
-        "Produk sendiri, bukan agensi",
-        "Dua usaha jalan hari ini",
-        "Usaha keluarga dari Denpasar",
-      ],
       ctaPrimary: { label: "Lihat ekosistem", href: "#ekosistem" },
       ctaSecondary: { label: "Ngobrol 15 menit", href: "#penawaran" },
       demo: {
@@ -445,11 +440,6 @@ const content = {
       titleTop: "We build it.",
       titleAccent: "We run it.",
       sub: "AI software for Indonesian business: direct booking for villas, and automatic bookkeeping for small shops.",
-      taglines: [
-        "Our own products, not an agency",
-        "Two ventures live today",
-        "A family business from Denpasar",
-      ],
       ctaPrimary: { label: "See the ecosystem", href: "#ekosistem" },
       ctaSecondary: { label: "Free 15-min chat", href: "#penawaran" },
       demo: {
