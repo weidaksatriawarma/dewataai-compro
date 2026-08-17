@@ -1,218 +1,167 @@
 ---
-/**
- * Homepage, in the shape a holding company actually argues for itself: a
- * statement, the reasoning behind it, what it owns, what it has written, and
- * one line of contact. No feature grid, no stat tiles, no offer box. Those
- * belong on /kontak, where someone ready to talk goes looking.
- */
 import { HugeiconsIcon } from "@hugeicons/react"
-import { ArrowUpRight01Icon } from "@hugeicons/core-free-icons"
+import { ArrowUpRight01Icon, Tick02Icon } from "@hugeicons/core-free-icons"
+import { getSite } from "@/lib/site"
+import { resolveLang } from "@/lib/i18n"
 import DagangkuWordmark from "@/components/DagangkuWordmark.astro"
-import { getSite, lines } from "@/lib/site"
-import { resolveLang, path, detailPath } from "@/lib/i18n"
-import { listArticles, formatDate } from "@/lib/cms"
-
-const lang = resolveLang(Astro.currentLocale)
-const site = getSite(lang)
-const h = site.hero
-const legal = site.brand.legal
-
-const posts = (await listArticles("post", lang)).slice(0, 3)
+const h = getSite(resolveLang(Astro.currentLocale)).hero
+const d = h.demo
+const STAR =
+  "M16 3 L18 12.6 L24.5 6.6 L20.5 14.1 L30 16 L20.5 17.9 L24.5 25.4 L18 19.4 L16 29 L14 19.4 L7.5 25.4 L11.5 17.9 L2 16 L11.5 14.1 L7.5 6.6 L14 12.6 Z"
 ---
 
-<section id="top" class="relative overflow-hidden bg-background pt-32 pb-20 sm:pt-40 sm:pb-28">
+<section id="top" class="relative isolate overflow-hidden bg-background pt-32 pb-16 sm:pt-36 sm:pb-24">
+  <!-- backdrop layers -->
   <div class="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
     <div
-      class="absolute inset-0 grid-overlay opacity-40 [mask-image:radial-gradient(ellipse_80%_45%_at_50%_0%,#000_35%,transparent_100%)]"
+      class="absolute inset-0 grid-overlay opacity-70 [mask-image:radial-gradient(ellipse_72%_56%_at_50%_0%,#000_55%,transparent_100%)]"
     >
     </div>
+    <div
+      class="glow absolute top-[-12%] left-1/2 h-[560px] w-[860px] max-w-[120vw] -translate-x-1/2 bg-[radial-gradient(closest-side,var(--glow-fg),transparent)]"
+    >
+    </div>
+    <div class="absolute inset-x-0 bottom-0 h-72 bg-gradient-to-b from-transparent to-muted/60"></div>
   </div>
 
-  <div class="mx-auto max-w-5xl px-5 sm:px-8">
-    <p data-reveal class="eyebrow text-muted-foreground">{h.eyebrow}</p>
+  <div class="mx-auto max-w-4xl px-5 text-center sm:px-8">
+    <p data-reveal class="flex justify-center">
+      <span
+        class="inline-flex items-center gap-2 rounded-full border border-hairline bg-card/80 px-3.5 py-1.5"
+      >
+        <svg viewBox="0 0 32 32" class="size-3.5 text-ink" fill="currentColor" aria-hidden="true">
+          <path d={STAR}></path>
+        </svg>
+        <span class="eyebrow text-muted-foreground">{h.eyebrow}</span>
+      </span>
+    </p>
 
     <h1
       data-reveal
-      style="--reveal-delay:80ms"
-      class="t-display mt-8 max-w-4xl font-serif font-medium text-ink"
+      style="--reveal-delay:90ms"
+      class="t-display mt-7 font-serif font-medium text-ink"
     >
-      {lines(h.statement).map((line) => <span class="t-line">{line}</span>)}
+      <span class="t-line">{h.titleTop}</span>
+      <span class="t-line">{h.titleAccent}</span>
     </h1>
-
-    <!-- the argument -->
-    <div class="mt-14 max-w-2xl space-y-6 sm:mt-20">
-      {
-        h.essay.map((para, i) => (
-          <p
-            data-reveal
-            style={`--reveal-delay:${160 + i * 70}ms`}
-            class="text-lg leading-[1.7] text-ink/75"
-          >
-            {para}
-          </p>
-        ))
-      }
-    </div>
 
     <p
       data-reveal
-      class="mt-12 font-mono text-xs text-muted-foreground"
+      style="--reveal-delay:210ms"
+      class="mx-auto mt-7 max-w-2xl text-base leading-relaxed text-balance text-muted-foreground sm:text-lg"
     >
-      {legal.legalName} · Denpasar, Bali
+      {h.sub}
     </p>
-  </div>
-</section>
 
-<!-- what we own -->
-<section id="ekosistem" class="border-t border-hairline bg-background py-16 sm:py-20">
-  <div class="mx-auto max-w-5xl px-5 sm:px-8">
-    <div data-reveal class="flex items-baseline justify-between gap-6 border-b border-ink pb-3">
-      <p class="eyebrow text-ink">{h.register.label}</p>
-      <a
-        href={path("ventures", lang)}
-        class="link-underline font-mono text-xs text-muted-foreground transition-colors hover:text-ink"
-      >
-        {h.register.all}
-      </a>
-    </div>
-
-    {
-      site.ventures.items.map((venture, i) => (
-        <a
-          data-reveal
-          style={`--reveal-delay:${i * 80}ms`}
-          href={detailPath("ventures", lang, venture.slug)}
-          class="hold-row group grid grid-cols-[2.5rem_1fr_auto] items-baseline gap-x-4 gap-y-1 border-b border-hairline py-6 sm:items-center sm:gap-6"
-        >
-          <span class="font-mono text-sm text-muted-foreground tabular-nums">{venture.index}</span>
-
-          <span class="min-w-0">
-            {venture.slug === "dagangku-ai" ? (
-              <DagangkuWordmark class="text-2xl text-ink sm:text-3xl" />
-            ) : (
-              <span class="font-serif text-2xl text-ink sm:text-3xl">{venture.name}</span>
-            )}
-            <span class="mt-1.5 block max-w-md text-sm leading-relaxed text-muted-foreground">
-              {venture.desc}
-            </span>
-          </span>
-
-          <span class="col-start-3 row-start-1 flex items-center gap-2 justify-self-end font-mono text-xs text-muted-foreground">
-            <span class="size-1.5 rounded-full bg-ink" />
-            {h.register.statusActive}
-          </span>
-        </a>
-      ))
-    }
-
-    <a
+    <div
       data-reveal
-      href={path("contact", lang)}
-      class="hold-row grid grid-cols-[2.5rem_1fr_auto] items-baseline gap-x-4 gap-y-1 border-b border-hairline py-6 sm:items-center sm:gap-6"
+      style="--reveal-delay:290ms"
+      class="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row"
     >
-      <span class="font-mono text-sm text-ink/30 tabular-nums">03</span>
-      <span class="min-w-0">
-        <span class="hold-blank font-serif text-2xl text-ink/35 sm:text-3xl">
-          {h.register.vacantName}
-        </span>
-        <span class="mt-1.5 block text-sm text-muted-foreground">{h.register.vacantNote}</span>
-      </span>
-      <span class="col-start-3 row-start-1 flex items-center gap-2 justify-self-end font-mono text-xs text-ink/40">
-        <span class="size-1.5 rounded-full border border-ink/35" />
-        {h.register.statusOpen}
-      </span>
-    </a>
-  </div>
-</section>
-
-<!-- what we've written -->
-<section class="bg-paper py-16 sm:py-20">
-  <div class="mx-auto max-w-5xl px-5 sm:px-8">
-    <div data-reveal class="flex items-baseline justify-between gap-6 border-b border-ink pb-3">
-      <p class="eyebrow text-ink">{h.writing.label}</p>
       <a
-        href={path("journal", lang)}
-        class="link-underline font-mono text-xs text-muted-foreground transition-colors hover:text-ink"
+        href={h.ctaPrimary.href}
+        class="btn-glossy inline-flex h-12 w-full items-center justify-center gap-2 rounded-full px-7 text-sm font-medium sm:w-auto"
       >
-        {h.writing.all}
+        {h.ctaPrimary.label}
+        <HugeiconsIcon icon={ArrowUpRight01Icon} size={17} strokeWidth={2} />
+      </a>
+      <a
+        href={h.ctaSecondary.href}
+        class="inline-flex h-12 w-full items-center justify-center gap-2 rounded-full border border-ink/15 bg-card/70 px-7 text-sm font-medium text-ink transition-colors hover:border-ink/30 hover:bg-card sm:w-auto"
+      >
+        {h.ctaSecondary.label}
       </a>
     </div>
 
-    {
-      posts.length === 0 ? (
-        <p data-reveal class="border-b border-hairline py-8 text-muted-foreground">
-          {h.writing.empty}
-        </p>
-      ) : (
-        posts.map((post, i) => (
-          <a
-            data-reveal
-            style={`--reveal-delay:${i * 80}ms`}
-            href={detailPath("journal", lang, post.slug)}
-            class="hold-row group block border-b border-hairline py-6"
-          >
-            <span class="font-mono text-xs text-muted-foreground">
-              {formatDate(post.publishedAt, lang)}
+    <ul
+      data-reveal
+      style="--reveal-delay:360ms"
+      class="mx-auto mt-8 flex max-w-2xl flex-col items-center justify-center gap-x-8 gap-y-2.5 text-sm text-muted-foreground sm:flex-row sm:flex-wrap"
+    >
+      {
+        h.taglines.map((line) => (
+          <li class="flex items-center gap-2">
+            <span class="grid size-4 shrink-0 place-items-center rounded-full border border-hairline text-ink">
+              <HugeiconsIcon icon={Tick02Icon} size={10} strokeWidth={2.6} />
             </span>
-            <span class="mt-2 block max-w-2xl font-serif text-xl leading-snug text-ink sm:text-2xl">
-              {post.title}
+            {line}
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+
+  <!-- Group structure: the parent company and the ventures it owns.
+       The connector offsets (25% ∓ 5px) put the drop lines exactly on the
+       centre of each card in the gap-5 two-column grid below. -->
+  <div data-reveal style="--reveal-delay:440ms" class="mx-auto mt-16 max-w-4xl px-5 sm:mt-20 sm:px-8">
+    <p class="eyebrow text-center text-muted-foreground">{d.eco}</p>
+
+    <!-- parent -->
+    <div class="mt-6 flex justify-center">
+      <div
+        class="inline-flex items-center gap-4 rounded-2xl border border-hairline bg-card px-6 py-5 shadow-[0_24px_60px_-36px_rgba(0,0,0,0.5)]"
+      >
+        <span class="grid size-11 shrink-0 place-items-center rounded-xl bg-ink text-background">
+          <svg viewBox="0 0 32 32" class="size-[18px]" fill="currentColor" aria-hidden="true">
+            <path d={STAR}></path>
+          </svg>
+        </span>
+        <span class="text-left">
+          <span class="block font-serif text-xl leading-tight text-ink">Dewata AI</span>
+          <span class="block text-xs text-muted-foreground">{d.parentMeta}</span>
+        </span>
+      </div>
+    </div>
+
+    <!-- connector -->
+    <div class="relative h-10 w-full sm:h-14" aria-hidden="true">
+      <span class="absolute inset-y-0 left-1/2 w-px -translate-x-1/2 bg-hairline sm:hidden"></span>
+      <span class="absolute top-0 left-1/2 hidden h-7 w-px -translate-x-1/2 bg-hairline sm:block"></span>
+      <span
+        class="absolute top-7 right-[calc(25%-5px)] left-[calc(25%-5px)] hidden h-px bg-hairline sm:block"
+      ></span>
+      <span class="absolute top-7 left-[calc(25%-5px)] hidden h-7 w-px bg-hairline sm:block"></span>
+      <span class="absolute top-7 right-[calc(25%-5px)] hidden h-7 w-px bg-hairline sm:block"></span>
+    </div>
+
+    <!-- ventures -->
+    <div class="grid gap-5 sm:grid-cols-2">
+      {
+        [
+          { name: "Dewata Tech", desc: d.techDesc, tag: d.webTag, domain: "dewatatech.com" },
+          { name: null, desc: d.dagangDesc, tag: d.aiTag, domain: "dagangkuai.com" },
+        ].map((venture) => (
+          <a
+            href={`https://${venture.domain}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="lift rounded-2xl border border-hairline bg-card p-6 transition-colors hover:border-ink/25"
+          >
+            <span class="flex items-center justify-between gap-3">
+              {venture.name ? (
+                <span class="font-serif text-lg leading-none text-ink">{venture.name}</span>
+              ) : (
+                <DagangkuWordmark class="text-lg leading-none text-ink" />
+              )}
+              <span class="rounded-full bg-muted px-2.5 py-0.5 text-[10px] font-medium text-muted-foreground">
+                {venture.tag}
+              </span>
+            </span>
+
+            <span class="mt-2 block text-sm text-muted-foreground">{venture.desc}</span>
+
+            <span class="mt-5 flex items-center gap-1.5 text-xs text-muted-foreground">
+              <span class="size-1.5 rounded-full bg-ink" />
+              {d.active}
+              <span class="ml-auto inline-flex items-center gap-1 font-medium text-ink">
+                {venture.domain}
+                <HugeiconsIcon icon={ArrowUpRight01Icon} size={13} strokeWidth={2} />
+              </span>
             </span>
           </a>
         ))
-      )
-    }
-  </div>
-</section>
-
-<!-- one line of contact -->
-<section id="kontak" class="ink-section relative overflow-hidden py-20 sm:py-24">
-  <div class="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
-    <div
-      class="glow absolute top-[-40%] left-1/2 h-[420px] w-[760px] max-w-[120vw] -translate-x-1/2 bg-[radial-gradient(closest-side,rgba(255,255,255,0.06),transparent)]"
-    >
+      }
     </div>
   </div>
-
-  <div class="mx-auto max-w-3xl px-5 sm:px-8">
-    <p data-reveal class="t-heading-sm max-w-2xl font-serif text-white">{h.closing.line}</p>
-    <a
-      data-reveal
-      style="--reveal-delay:90ms"
-      href={path("contact", lang)}
-      class="link-underline mt-8 inline-flex items-center gap-2 font-mono text-sm text-white/70 transition-colors hover:text-white"
-    >
-      {h.closing.cta}
-      <HugeiconsIcon icon={ArrowUpRight01Icon} size={15} strokeWidth={1.8} />
-    </a>
-  </div>
 </section>
-
-<style>
-  .hold-row {
-    transition:
-      background-color 0.3s ease,
-      padding-left 0.3s cubic-bezier(0.22, 0.61, 0.36, 1);
-  }
-  .hold-row:hover,
-  .hold-row:focus-visible {
-    background-color: color-mix(in oklch, var(--foreground) 4%, transparent);
-    padding-left: 0.75rem;
-  }
-  .hold-blank {
-    padding-bottom: 0.15em;
-    background-image: linear-gradient(
-      to right,
-      color-mix(in oklch, var(--foreground) 35%, transparent) 0 2px,
-      transparent 2px 6px
-    );
-    background-repeat: repeat-x;
-    background-position: 0 100%;
-    background-size: 6px 1px;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .hold-row {
-      transition: none;
-    }
-  }
-</style>
