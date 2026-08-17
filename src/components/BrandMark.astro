@@ -1,0 +1,53 @@
+---
+/**
+ * The Dewata AI and Dewata Tech "D" marks.
+ *
+ * Both source files are a white silhouette on transparency, which would vanish
+ * on a light background. Rather than ship a second colour of each file, the
+ * shape is used as a CSS mask over `currentColor`, so the mark inherits the
+ * text colour of wherever it sits: dark in light mode, light in dark mode, and
+ * still correct inside the always-dark `.ink-section` bands where a
+ * `dark:` variant would get it wrong.
+ *
+ * The caller sets the size. The Dewata AI mark is square; the Dewata Tech mark
+ * is 722x571, so `aspect-tech` keeps it from stretching.
+ */
+interface Props {
+  mark?: "ai" | "tech"
+  class?: string
+  title?: string
+}
+
+const { mark = "ai", class: className = "", title } = Astro.props
+
+const SOURCES = {
+  ai: "/brand/dewata-ai-d.webp",
+  tech: "/brand/dewata-tech-d.png",
+} as const
+---
+
+<span
+  class:list={["brand-mark", mark === "tech" && "aspect-tech", className]}
+  style={`--brand-mask:url('${SOURCES[mark]}')`}
+  role={title ? "img" : undefined}
+  aria-label={title}
+  aria-hidden={title ? undefined : "true"}
+></span>
+
+<style>
+  .brand-mark {
+    display: block;
+    background-color: currentColor;
+    -webkit-mask-image: var(--brand-mask);
+    mask-image: var(--brand-mask);
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+    -webkit-mask-size: contain;
+    mask-size: contain;
+  }
+  .aspect-tech {
+    aspect-ratio: 722 / 571;
+  }
+</style>

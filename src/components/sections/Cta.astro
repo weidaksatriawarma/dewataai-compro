@@ -1,11 +1,10 @@
 ---
 import { HugeiconsIcon } from "@hugeicons/react"
 import { WhatsappIcon, Mail01Icon } from "@hugeicons/core-free-icons"
+import BrandMark from "@/components/BrandMark.astro"
 import { getSite, lines } from "@/lib/site"
 import { resolveLang } from "@/lib/i18n"
 const c = getSite(resolveLang(Astro.currentLocale)).cta
-const STAR =
-  "M16 3 L18 12.6 L24.5 6.6 L20.5 14.1 L30 16 L20.5 17.9 L24.5 25.4 L18 19.4 L16 29 L14 19.4 L7.5 25.4 L11.5 17.9 L2 16 L11.5 14.1 L7.5 6.6 L14 12.6 Z"
 ---
 
 <section id="kontak" class="ink-section relative isolate overflow-hidden py-28 sm:py-36">
@@ -28,9 +27,7 @@ const STAR =
     aria-hidden="true"
   >
     <span class="grid size-14 place-items-center rounded-2xl border border-white/12 bg-white/[0.06]">
-      <svg viewBox="0 0 32 32" class="size-5 text-white/70" fill="currentColor">
-        <path d={STAR}></path>
-      </svg>
+      <BrandMark class="size-5 text-white/70" />
     </span>
   </div>
   <div

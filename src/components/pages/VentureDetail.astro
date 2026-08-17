@@ -1,4 +1,5 @@
 ---
+import DewataTechWordmark from "@/components/DewataTechWordmark.astro"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { ArrowUpRight01Icon, ArrowLeft01Icon, Tick02Icon } from "@hugeicons/core-free-icons"
 import PageHero from "@/components/PageHero.astro"
@@ -30,7 +31,7 @@ const indexPath = path("ventures", lang)
         slug === "dagangku-ai" ? (
           <DagangkuWordmark class="text-2xl text-ink" />
         ) : (
-          <span class="font-serif text-2xl text-ink">{venture.name}</span>
+          <DewataTechWordmark class="text-xl text-ink" />
         )
       }
       <span class="rounded-full border border-hairline px-3 py-1 text-xs text-muted-foreground">

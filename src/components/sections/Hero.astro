@@ -1,13 +1,13 @@
 ---
+import DewataTechWordmark from "@/components/DewataTechWordmark.astro"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { ArrowUpRight01Icon } from "@hugeicons/core-free-icons"
+import BrandMark from "@/components/BrandMark.astro"
 import { getSite } from "@/lib/site"
 import { resolveLang } from "@/lib/i18n"
 import DagangkuWordmark from "@/components/DagangkuWordmark.astro"
 const h = getSite(resolveLang(Astro.currentLocale)).hero
 const d = h.demo
-const STAR =
-  "M16 3 L18 12.6 L24.5 6.6 L20.5 14.1 L30 16 L20.5 17.9 L24.5 25.4 L18 19.4 L16 29 L14 19.4 L7.5 25.4 L11.5 17.9 L2 16 L11.5 14.1 L7.5 6.6 L14 12.6 Z"
 ---
 
 <section
@@ -32,9 +32,7 @@ const STAR =
       <span
         class="inline-flex items-center gap-2 rounded-full border border-hairline bg-card/80 px-3.5 py-1.5"
       >
-        <svg viewBox="0 0 32 32" class="size-3.5 text-ink" fill="currentColor" aria-hidden="true">
-          <path d={STAR}></path>
-        </svg>
+        <BrandMark class="size-3.5 text-ink" />
         <span class="eyebrow text-muted-foreground">{h.eyebrow}</span>
       </span>
     </p>
@@ -94,9 +92,7 @@ const STAR =
         class="inline-flex items-center gap-4 rounded-2xl border border-hairline bg-card px-6 py-5 shadow-[0_24px_60px_-36px_rgba(0,0,0,0.5)]"
       >
         <span class="grid size-11 shrink-0 place-items-center rounded-xl bg-ink text-background">
-          <svg viewBox="0 0 32 32" class="size-[18px]" fill="currentColor" aria-hidden="true">
-            <path d={STAR}></path>
-          </svg>
+          <BrandMark class="size-[19px]" />
         </span>
         <span class="text-left">
           <span class="block font-serif text-xl leading-tight text-ink">Dewata AI</span>
@@ -131,7 +127,7 @@ const STAR =
           >
             <span class="flex items-center justify-between gap-3">
               {venture.name ? (
-                <span class="font-serif text-lg leading-none text-ink">{venture.name}</span>
+                <DewataTechWordmark class="text-base leading-none text-ink" />
               ) : (
                 <DagangkuWordmark class="text-lg leading-none text-ink" />
               )}

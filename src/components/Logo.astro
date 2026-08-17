@@ -1,11 +1,11 @@
 ---
 /**
- * Dewata AI wordmark.
- * The mark is an 8-point compass-star (a nod to the Balinese Nawa Sanga —
- * the nine guardian deities arranged by compass direction) doubling as an AI spark.
+ * Dewata AI lockup: the D mark in a rounded badge plus the Montserrat wordmark.
  * tone="ink"  → dark badge + dark wordmark (use on light backgrounds)
  * tone="paper" → light badge + light wordmark (use on dark/ink backgrounds)
  */
+import BrandMark from "@/components/BrandMark.astro"
+import DewataAiWordmark from "@/components/DewataAiWordmark.astro"
 import { resolveLang, getUI } from "@/lib/i18n"
 
 interface Props {
@@ -15,9 +15,6 @@ interface Props {
 }
 const { tone = "ink", href = "#top", class: cls = "" } = Astro.props
 const ui = getUI(resolveLang(Astro.currentLocale))
-
-const star =
-  "M16 3 L18 12.6 L24.5 6.6 L20.5 14.1 L30 16 L20.5 17.9 L24.5 25.4 L18 19.4 L16 29 L14 19.4 L7.5 25.4 L11.5 17.9 L2 16 L11.5 14.1 L7.5 6.6 L14 12.6 Z"
 
 const badgeCls =
   tone === "ink"
@@ -30,13 +27,7 @@ const wordCls = tone === "ink" ? "text-ink" : "text-white"
   <span
     class={`relative grid size-8 place-items-center rounded-[10px] ${badgeCls} shadow-[0_2px_10px_-3px_rgba(0,0,0,0.4)] transition-transform duration-500 group-hover:rotate-[18deg]`}
   >
-    <svg viewBox="0 0 32 32" class="size-[18px]" fill="currentColor" aria-hidden="true">
-      <path d={star} />
-    </svg>
+    <BrandMark class="size-[17px]" />
   </span>
-  <span class={`text-[1.075rem] leading-none ${wordCls}`}>
-    <span class="font-sans font-semibold tracking-tight">Dewata</span><span
-      class="font-serif italic font-medium ml-1">AI</span
-    >
-  </span>
+  <DewataAiWordmark class={`text-[1.075rem] leading-none ${wordCls}`} />
 </a>

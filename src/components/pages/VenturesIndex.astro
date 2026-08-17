@@ -1,4 +1,5 @@
 ---
+import DewataTechWordmark from "@/components/DewataTechWordmark.astro"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { ArrowUpRight01Icon, PlusSignIcon, Tick02Icon } from "@hugeicons/core-free-icons"
 import DagangkuWordmark from "@/components/DagangkuWordmark.astro"
@@ -87,7 +88,7 @@ const legal = site.brand.legal
               {venture.slug === "dagangku-ai" ? (
                 <DagangkuWordmark class="text-xl text-ink sm:text-2xl" />
               ) : (
-                <span class="font-serif text-xl text-ink sm:text-2xl">{venture.name}</span>
+                <DewataTechWordmark class="text-lg text-ink sm:text-xl" />
               )}
               <span class="mt-1 block font-mono text-xs text-muted-foreground sm:hidden">
                 {venture.tag} · {venture.domain}
@@ -155,7 +156,7 @@ const legal = site.brand.legal
             {venture.slug === "dagangku-ai" ? (
               <DagangkuWordmark class="text-2xl text-ink" />
             ) : (
-              <span class="font-serif text-2xl text-ink">{venture.name}</span>
+              <DewataTechWordmark class="text-xl text-ink" />
             )}
             <span class="rounded-full border border-hairline px-3 py-1 text-xs text-muted-foreground">
               {venture.tag}

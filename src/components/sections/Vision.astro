@@ -6,12 +6,11 @@ import {
   Shield01Icon,
   ArrowUpRight01Icon,
 } from "@hugeicons/core-free-icons"
+import BrandMark from "@/components/BrandMark.astro"
 import { getSite, lines } from "@/lib/site"
 import { resolveLang } from "@/lib/i18n"
 const v = getSite(resolveLang(Astro.currentLocale)).vision
 const o = v.offer
-const STAR =
-  "M16 3 L18 12.6 L24.5 6.6 L20.5 14.1 L30 16 L20.5 17.9 L24.5 25.4 L18 19.4 L16 29 L14 19.4 L7.5 25.4 L11.5 17.9 L2 16 L11.5 14.1 L7.5 6.6 L14 12.6 Z"
 ---
 
 <section id="visi" class="ink-section relative overflow-hidden py-24 sm:py-32">
@@ -21,13 +20,7 @@ const STAR =
       class="absolute inset-0 grid-overlay opacity-40 [mask-image:radial-gradient(ellipse_70%_60%_at_30%_0%,#000_45%,transparent_100%)]"
     >
     </div>
-    <svg
-      viewBox="0 0 32 32"
-      class="absolute -right-16 -bottom-16 h-[440px] w-[440px] max-w-[60vw] text-white/[0.05] sm:-right-24"
-      fill="currentColor"
-    >
-      <path d={STAR}></path>
-    </svg>
+    <BrandMark class="absolute -right-16 -bottom-16 h-[440px] w-[440px] max-w-[60vw] text-white/[0.05] sm:-right-24" />
   </div>
 
   <div class="mx-auto max-w-6xl px-5 sm:px-8">

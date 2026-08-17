@@ -73,6 +73,18 @@ export default defineConfig({
       fallbacks: ["system-ui", "sans-serif"],
     },
     {
+      // Dewata Tech sets its wordmark in Montserrat 900, so the lockup here
+      // matches dewatatech.com rather than approximating it.
+      provider: fontProviders.google(),
+      name: "Montserrat",
+      cssVariable: "--font-montserrat",
+      // 700 for the Dewata AI wordmark, 900 for Dewata Tech's.
+      weights: [700, 900],
+      styles: ["normal"],
+      subsets: ["latin"],
+      fallbacks: ["system-ui", "sans-serif"],
+    },
+    {
       provider: fontProviders.google(),
       name: "JetBrains Mono",
       cssVariable: "--font-jetbrains",

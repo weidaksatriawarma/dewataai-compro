@@ -1,4 +1,5 @@
 ---
+import BrandMark from "@/components/BrandMark.astro"
 import { HugeiconsIcon } from "@hugeicons/react"
 import {
   Tick02Icon,
@@ -59,8 +60,8 @@ const upcoming = v.upcoming
           <span class="block font-mono text-5xl font-light text-white/25 sm:text-6xl">{tech.index}</span>
 
           <div class="mt-6 flex items-center gap-3">
-            <span class="grid size-11 place-items-center rounded-xl border border-white/15 bg-white/10 font-mono font-semibold text-white">
-              {tech.mono}
+            <span class="grid size-11 place-items-center rounded-xl border border-white/15 bg-white/10 text-white">
+              <BrandMark mark="tech" class="h-[18px] text-white" />
             </span>
             <span class="rounded-full border border-white/15 px-3 py-1 text-xs text-white/70">
               {tech.tag}

@@ -1,0 +1,23 @@
+---
+/**
+ * Dewata AI wordmark: Montserrat Bold. Colour and size come from the caller,
+ * so it sits on light and ink backgrounds alike.
+ *
+ *   <DewataAiWordmark class="text-lg text-ink" />
+ */
+interface Props {
+  class?: string
+}
+const { class: className = "" } = Astro.props
+---
+
+<span class:list={["dai-wordmark", className]}>Dewata AI</span>
+
+<style>
+  .dai-wordmark {
+    font-family: var(--font-wordmark);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+  }
+</style>

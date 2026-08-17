@@ -1,4 +1,6 @@
 ---
+import BrandMark from "@/components/BrandMark.astro"
+import DewataAiWordmark from "@/components/DewataAiWordmark.astro"
 import { getSite } from "@/lib/site"
 import { resolveLang, getUI, localeHref } from "@/lib/i18n"
 
@@ -12,8 +14,6 @@ const { pathId = "/", pathEn = "/en/" } = Astro.props
 const lang = resolveLang(Astro.currentLocale)
 const t = getSite(lang)
 const ui = getUI(lang)
-const STAR =
-  "M16 3 L18 12.6 L24.5 6.6 L20.5 14.1 L30 16 L20.5 17.9 L24.5 25.4 L18 19.4 L16 29 L14 19.4 L7.5 25.4 L11.5 17.9 L2 16 L11.5 14.1 L7.5 6.6 L14 12.6 Z"
 
 const langs = [
   { code: "id", label: "ID", href: pathId },
@@ -29,15 +29,9 @@ const homeHref = localeHref(lang)
       <!-- wordmark -->
       <a href={homeHref} class="brand group inline-flex items-center gap-2.5" aria-label={ui.homeAria}>
         <span class="grid size-8 place-items-center rounded-[10px] bg-ink text-background shadow-[0_2px_10px_-3px_rgba(0,0,0,0.4)] transition-transform duration-500 group-hover:rotate-[18deg]">
-          <svg viewBox="0 0 32 32" class="size-[18px]" fill="currentColor" aria-hidden="true">
-            <path d={STAR}></path>
-          </svg>
+          <BrandMark class="size-[17px]" />
         </span>
-        <span class="text-[1.075rem] leading-none text-ink">
-          <span class="font-sans font-semibold tracking-tight">Dewata</span><span
-            class="ml-1 font-serif font-medium italic">AI</span
-          >
-        </span>
+        <DewataAiWordmark class="text-[1.075rem] leading-none text-ink" />
       </a>
 
       <!-- desktop links -->
