@@ -32,9 +32,7 @@ const about = t.about
           {lines(about.heading).map((line) => <span class="t-line">{line}</span>)}
         </h2>
 
-        <div data-reveal style="--reveal-delay:160ms" class="rule mt-8 h-px w-40"></div>
-
-        <div data-reveal style="--reveal-delay:240ms" class="mt-7 space-y-5">
+        <div data-reveal style="--reveal-delay:240ms" class="mt-8 space-y-5">
           {about.paragraphs.map((p) => (
             <p class="max-w-xl leading-relaxed text-muted-foreground">{p}</p>
           ))}
