@@ -246,14 +246,14 @@ const content = {
       team: {
         label: "Keluarga Ksatriawarma",
         heading: "Dua bersaudara.",
-        intro: "Dewata AI dijalankan langsung sama pendirinya. Usaha keluarga, jadi rentang waktunya panjang: kami bukan lagi bangun sesuatu buat dijual cepat.",
+        intro: "Dewata AI dijalankan langsung sama pendirinya: satu pegang sisi bisnis, satu pegang sisi teknis. Usaha keluarga, jadi rentang waktunya panjang, kami bukan lagi bangun sesuatu buat dijual cepat.",
         /* Bagian ini otomatis tersembunyi kalau array-nya kosong. */
         members: [
           {
             name: "Anak Agung Gde Weida Ksatriawarma",
             initials: "WD",
             role: "Pendiri & CEO",
-            bio: "Pegang arah grup dan produk. Sehari-hari masih ikut turun langsung: nulis kode, ngobrol sama pelanggan, dan mutusin usaha mana yang layak dibangun berikutnya.",
+            bio: "Pegang arah grup, penjualan, dan pemasaran. Yang mutusin usaha mana yang layak dibangun berikutnya, dan yang duduk langsung sama pelanggan.",
             // TODO: isi URL LinkedIn kalau mau ditampilkan.
             linkedin: undefined,
           },
@@ -261,7 +261,7 @@ const content = {
             name: "Anak Agung Gde Wijaya Ksatriawarma",
             initials: "WJ",
             role: "Co-founder",
-            bio: "Ikut mendirikan Dewata AI bareng Weida, kakaknya.",
+            bio: "Pegang sisi teknis grup. Yang bangun produknya dan jaga supaya tetap jalan, dari kode sampai sistem yang nyala 24 jam.",
             linkedin: undefined,
           },
         ] as {
@@ -621,20 +621,20 @@ const content = {
       team: {
         label: "The Ksatriawarma family",
         heading: "Two brothers.",
-        intro: "Dewata AI is run by the people who founded it. A family business, so the horizon is long: we are not building something to flip.",
+        intro: "Dewata AI is run by the people who founded it: one on the business side, one on the technical side. A family business, so the horizon is long, we are not building something to flip.",
         members: [
           {
             name: "Anak Agung Gde Weida Ksatriawarma",
             initials: "WD",
             role: "Founder & CEO",
-            bio: "Sets the direction for the group and its products. Still hands on day to day: writing code, talking to customers, and deciding which venture is worth building next.",
+            bio: "Runs direction, sales and marketing for the group. Decides which venture is worth building next, and is the one sitting across from the customer.",
             linkedin: undefined,
           },
           {
             name: "Anak Agung Gde Wijaya Ksatriawarma",
             initials: "WJ",
             role: "Co-founder",
-            bio: "Co-founded Dewata AI with his older brother, Weida.",
+            bio: "Runs the technical side of the group. Builds the products and keeps them running, from the code to the systems that stay up around the clock.",
             linkedin: undefined,
           },
         ] as {
