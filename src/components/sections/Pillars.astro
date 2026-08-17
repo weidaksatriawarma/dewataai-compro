@@ -42,35 +42,59 @@ const ICONS = {
       </p>
     </div>
 
-    <!-- cards -->
-    <div class="mt-12 grid gap-5 sm:mt-16 sm:grid-cols-2 lg:grid-cols-4">
+    <!-- Ruled entries rather than cards: the right-hand column carries where
+         each capability actually runs, which is what the sub-headline claims. -->
+    <div class="mt-12 border-t border-ink sm:mt-16">
       {
         p.items.map((item, i) => (
           <article
             data-reveal
-            style={`--reveal-delay:${(i + 1) * 80}ms`}
-            class="lift relative rounded-2xl border border-hairline bg-background p-6"
+            style={`--reveal-delay:${(i + 1) * 70}ms`}
+            class="cap-row grid grid-cols-[2.5rem_1fr] items-start gap-x-5 gap-y-3 border-b border-hairline py-7 pr-1 sm:grid-cols-[3rem_auto_1fr_auto] sm:items-center sm:gap-x-8 sm:pr-6"
           >
-            <span
-              class="absolute top-6 right-6 font-mono text-xs text-muted-foreground"
-              aria-hidden="true"
-            >
+            <span class="font-mono text-sm text-muted-foreground tabular-nums">
               {String(i + 1).padStart(2, "0")}
             </span>
 
-            <span class="grid size-12 place-items-center rounded-xl border border-hairline text-ink">
+            <span class="hidden text-ink sm:block">
               <HugeiconsIcon
                 icon={ICONS[item.key as keyof typeof ICONS]}
-                size={22}
-                strokeWidth={1.5}
+                size={26}
+                strokeWidth={1.2}
               />
             </span>
 
-            <h3 class="mt-5 text-lg font-semibold text-ink">{item.title}</h3>
-            <p class="mt-2 text-sm leading-relaxed text-muted-foreground">{item.desc}</p>
+            <span class="min-w-0">
+              <h3 class="font-serif text-2xl leading-tight text-ink sm:text-[1.75rem]">
+                {item.title}
+              </h3>
+              <p class="mt-1.5 max-w-md leading-relaxed text-muted-foreground">{item.desc}</p>
+            </span>
+
+            <span class="col-start-2 sm:col-start-auto sm:text-right">
+              <span class="eyebrow block text-muted-foreground">{p.proofLabel}</span>
+              <span class="mt-1 block font-mono text-sm text-ink">{item.proof}</span>
+            </span>
           </article>
         ))
       }
     </div>
   </div>
 </section>
+
+<style>
+  .cap-row {
+    transition:
+      background-color 0.3s ease,
+      padding-left 0.3s cubic-bezier(0.22, 0.61, 0.36, 1);
+  }
+  .cap-row:hover {
+    background-color: color-mix(in oklch, var(--foreground) 3.5%, transparent);
+    padding-left: 0.75rem;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cap-row {
+      transition: none;
+    }
+  }
+</style>

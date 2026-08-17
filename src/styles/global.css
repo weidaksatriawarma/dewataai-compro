@@ -202,8 +202,11 @@
    The vw term is derived from the longest authored line in each tier: a line
    grows until it nearly fills the column, then the max caps it. The subtracted
    px is the safety margin that keeps the tightest line off the edge at 320px. */
+/* Sized for a short sentence, not two bare words: the previous scale only fit
+   about twelve characters per line, which forced verb fragments into the
+   headline. */
 .t-display {
-    font-size: clamp(2.5rem, 13.5vw, 5.5rem);
+    font-size: clamp(2.1rem, 11vw, 5.5rem);
     line-height: 1.02;
     letter-spacing: -0.03em;
 }

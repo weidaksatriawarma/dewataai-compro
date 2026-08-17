@@ -74,13 +74,13 @@ const content = {
 
     hero: {
       eyebrow: "PT Dewata Artificial Intelligence",
-      titleTop: "Bangun.",
-      titleAccent: "Tumbuhkan.",
-      sub: "Grup teknologi asal Bali. Kami bikin dan jalanin produk AI buat bisnis Indonesia.",
+      titleTop: "Kami bikin.",
+      titleAccent: "Kami jalanin.",
+      sub: "Software AI buat bisnis Indonesia: booking direct buat villa, dan pembukuan otomatis buat UMKM.",
       taglines: [
         "Produk sendiri, bukan agensi",
         "Dua usaha jalan hari ini",
-        "Dibikin dan dijalanin dari Bali",
+        "Usaha keluarga dari Denpasar",
       ],
       ctaPrimary: { label: "Lihat ekosistem", href: "#ekosistem" },
       ctaSecondary: { label: "Ngobrol 15 menit", href: "#penawaran" },
@@ -126,26 +126,33 @@ const content = {
       eyebrow: "02 · Kapabilitas",
       heading: "Empat bidang\nkerja kami.",
       sub: "Semuanya udah jadi produk, bukan riset di slide.",
+      /* `proof` names where the capability actually runs, so the claim is
+         checkable instead of decorative. */
+      proofLabel: "Terbukti di",
       items: [
         {
           key: "brain",
           title: "Produk AI",
           desc: "Aplikasi AI yang langsung kepake tiap hari.",
+          proof: "Dagangku AI",
         },
         {
           key: "code",
           title: "Web & Rekayasa",
           desc: "Website dan booking engine yang nutup pesanan.",
+          proof: "Dewata Tech",
         },
         {
           key: "automation",
           title: "Otomatisasi",
           desc: "Kerjaan manual dipindah ke sistem yang jalan sendiri.",
+          proof: "Dua usaha",
         },
         {
           key: "research",
           title: "Riset Terapan",
           desc: "Model baru kami tes dulu sebelum masuk produk.",
+          proof: "Uji internal",
         },
       ],
     },
@@ -287,26 +294,33 @@ const content = {
     values: {
       eyebrow: "05 · Nilai",
       heading: "Empat prinsip,\ntanpa basa-basi.",
+      /* Every company claims these. `cost` is what each one actually gives up,
+         which is the part that is hard to copy. */
+      costLabel: "Harganya",
       items: [
         {
           key: "local",
           title: "Berakar di Bali",
           desc: "Tim kami di sini, sezona waktu sama kamu.",
+          cost: "Tim tetap di satu kota, walau pilihan rekrutmennya jadi lebih sempit.",
         },
         {
           key: "practical",
           title: "Hasil di atas gaya",
           desc: "Fitur yang gak nambah hasil ya kami buang.",
+          cost: "Fitur yang udah jadi tetap kami buang kalau ternyata gak nambah hasil.",
         },
         {
           key: "trust",
           title: "Kepercayaan dulu",
           desc: "Kami ngomong apa adanya, termasuk pas harus nolak.",
+          cost: "Kalau produk kami bukan jawabannya, kami bilang, walau penjualannya batal.",
         },
         {
           key: "craft",
           title: "Rekayasa rapi",
           desc: "Cepat, aman, gampang dirawat bertahun-tahun.",
+          cost: "Kami nolak tenggat yang cuma bisa dikejar pakai utang teknis.",
         },
       ],
     },
@@ -428,13 +442,13 @@ const content = {
 
     hero: {
       eyebrow: "PT Dewata Artificial Intelligence",
-      titleTop: "Build.",
-      titleAccent: "Grow.",
-      sub: "A Bali technology group that builds and runs AI products for Indonesian business.",
+      titleTop: "We build it.",
+      titleAccent: "We run it.",
+      sub: "AI software for Indonesian business: direct booking for villas, and automatic bookkeeping for small shops.",
       taglines: [
         "Our own products, not an agency",
         "Two ventures live today",
-        "Built and run from Bali",
+        "A family business from Denpasar",
       ],
       ctaPrimary: { label: "See the ecosystem", href: "#ekosistem" },
       ctaSecondary: { label: "Free 15-min chat", href: "#penawaran" },
@@ -480,26 +494,31 @@ const content = {
       eyebrow: "02 · Capabilities",
       heading: "Four areas\nwe work in.",
       sub: "All of it already shipped as product, not research on a slide.",
+      proofLabel: "Proven in",
       items: [
         {
           key: "brain",
           title: "AI Products",
           desc: "AI apps that do real work from day one.",
+          proof: "Dagangku AI",
         },
         {
           key: "code",
           title: "Web & Engineering",
           desc: "Websites and booking engines that close orders.",
+          proof: "Dewata Tech",
         },
         {
           key: "automation",
           title: "Automation",
           desc: "Manual work moved into a system that runs itself.",
+          proof: "Both ventures",
         },
         {
           key: "research",
           title: "Applied Research",
           desc: "New models get tested before they reach a product.",
+          proof: "Internal testing",
         },
       ],
     },
@@ -641,26 +660,31 @@ const content = {
     values: {
       eyebrow: "05 · Values",
       heading: "Four principles,\nno fluff.",
+      costLabel: "What it costs",
       items: [
         {
           key: "local",
           title: "Rooted in Bali",
           desc: "Our team is here, in your time zone.",
+          cost: "The team stays in one city, even though it narrows who we can hire.",
         },
         {
           key: "practical",
           title: "Results over polish",
           desc: "If a feature adds nothing, we cut it.",
+          cost: "A finished feature still gets cut when it turns out to add nothing.",
         },
         {
           key: "trust",
           title: "Trust comes first",
           desc: "We tell you straight, including when we say no.",
+          cost: "If our product is not the answer we say so, even when the sale dies.",
         },
         {
           key: "craft",
           title: "Clean engineering",
           desc: "Fast, secure, and easy to maintain for years.",
+          cost: "We turn down deadlines that can only be met with technical debt.",
         },
       ],
     },

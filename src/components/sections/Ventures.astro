@@ -53,7 +53,7 @@ const upcoming = v.upcoming
     <!-- ventures -->
     <div class="mt-20 space-y-24 sm:space-y-28">
       <!-- ============ Venture 01 · Dewata Tech (text LEFT / visual RIGHT) ============ -->
-      <article class="grid items-center gap-10 md:grid-cols-2 md:gap-12 lg:gap-16">
+      <article class="grid items-stretch gap-10 md:grid-cols-2 md:gap-12 lg:gap-16">
         <!-- TEXT -->
         <div data-reveal class="md:order-1">
           <span class="block font-mono text-5xl font-light text-white/25 sm:text-6xl">{tech.index}</span>
@@ -108,9 +108,9 @@ const upcoming = v.upcoming
         </div>
 
         <!-- VISUAL -->
-        <div data-reveal style="--reveal-delay:140ms" class="md:order-2">
-          <div class="lift rounded-3xl border border-white/10 bg-white/[0.05] p-2 shadow-[0_30px_80px_-40px_rgba(0,0,0,0.8)]">
-            <div class="overflow-hidden rounded-2xl border border-white/10 bg-white/5">
+        <div data-reveal style="--reveal-delay:140ms" class="md:order-2 md:h-full">
+          <div class="lift flex h-full flex-col rounded-3xl border border-white/10 bg-white/[0.05] p-2 shadow-[0_30px_80px_-40px_rgba(0,0,0,0.8)]">
+            <div class="flex min-h-0 flex-1 flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/5">
               <!-- browser chrome -->
               <div class="flex items-center gap-3 border-b border-white/10 px-4 py-3">
                 <div class="flex gap-1.5">
@@ -128,13 +128,13 @@ const upcoming = v.upcoming
               </div>
 
               <!-- portfolio image -->
-              <div class="relative">
+              <div class="relative min-h-0 flex-1">
                 {/* TODO: ganti dengan gambar portofolio Anda */}
                 <PlaceholderImage
                   src={images.portfolio}
                   seed="portfolio"
                   alt={tech.demo.imageAlt}
-                  class="aspect-[16/10]"
+                  class="aspect-[16/10] md:h-full md:aspect-auto"
                 />
                 <div
                   class="absolute bottom-3 left-3 flex items-center gap-2 rounded-full border border-white/15 bg-black/70 px-3 py-1.5 text-xs font-medium text-white"
@@ -149,7 +149,7 @@ const upcoming = v.upcoming
       </article>
 
       <!-- ============ Venture 02 · Dagangku AI (visual LEFT / text RIGHT) ============ -->
-      <article class="grid items-center gap-10 md:grid-cols-2 md:gap-12 lg:gap-16">
+      <article class="grid items-stretch gap-10 md:grid-cols-2 md:gap-12 lg:gap-16">
         <!-- TEXT -->
         <div data-reveal class="md:order-2">
           <span class="block font-mono text-5xl font-light text-white/25 sm:text-6xl">{dagang.index}</span>
@@ -202,9 +202,9 @@ const upcoming = v.upcoming
         </div>
 
         <!-- VISUAL · monochrome chat mockup -->
-        <div data-reveal style="--reveal-delay:140ms" class="md:order-1">
-          <div class="lift rounded-3xl border border-white/10 bg-white/[0.05] p-2 shadow-[0_30px_80px_-40px_rgba(0,0,0,0.8)]">
-            <div class="overflow-hidden rounded-2xl border border-white/10 bg-white/5">
+        <div data-reveal style="--reveal-delay:140ms" class="md:order-1 md:h-full">
+          <div class="lift flex h-full flex-col rounded-3xl border border-white/10 bg-white/[0.05] p-2 shadow-[0_30px_80px_-40px_rgba(0,0,0,0.8)]">
+            <div class="flex min-h-0 flex-1 flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/5">
               <!-- app chrome -->
               <div class="flex items-center gap-3 border-b border-white/10 px-4 py-3">
                 <DagangkuWordmark class="text-base text-white" />
@@ -215,7 +215,7 @@ const upcoming = v.upcoming
               </div>
 
               <!-- chat thread -->
-              <div class="flex flex-col gap-3 p-4 sm:p-5">
+              <div class="flex min-h-0 flex-1 flex-col gap-3 p-4 sm:p-5">
                 <!-- user -->
                 <div class="flex justify-end">
                   <p class="max-w-[78%] rounded-2xl rounded-br-md bg-white px-3 py-2 text-sm text-ink">
@@ -244,7 +244,7 @@ const upcoming = v.upcoming
 
                 <!-- stat row -->
                 <div
-                  class="mt-1 flex items-center justify-between rounded-xl border border-white/10 bg-white/5 px-3.5 py-3"
+                  class="mt-auto flex items-center justify-between rounded-xl border border-white/10 bg-white/5 px-3.5 py-3"
                 >
                   <span class="text-xs text-white/55">{dagang.demo.statLabel}</span>
                   <span class="font-serif text-lg text-white">{dagang.demo.statValue}</span>
