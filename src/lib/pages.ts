@@ -153,11 +153,11 @@ const content = {
         meta: {
           title: "Dagangku AI | Usaha Dewata AI",
           description:
-            "Dagangku AI adalah asisten pembukuan berbasis chat untuk UMKM Indonesia. Catat transaksi secepat kirim pesan.",
+            "Dagangku AI adalah asisten pembukuan berbasis chat untuk bisnis Indonesia. Catat transaksi secepat kirim pesan.",
         },
         eyebrow: "Usaha 02",
         headline: "Satu chat.\nPembukuan beres.",
-        lead: "Asisten pembukuan lewat chat buat UMKM. Tanpa install, tanpa Excel.",
+        lead: "Asisten pembukuan lewat chat buat pemilik bisnis. Tanpa install, tanpa Excel.",
         problem: {
           label: "Masalahnya",
           heading: "Jualan tiap hari, untungnya gak tahu.",
@@ -165,7 +165,7 @@ const content = {
             "Kebanyakan pemilik usaha gak tahu untung aslinya berapa, karena nyatet itu ribet dan gampang kelewat.",
             "Tanpa catatan yang rapi, gak ada dasar buat naikin harga, ajukan modal, atau tahu produk mana yang sebenarnya rugi.",
           ],
-          cost: { value: "0", label: "Catatan yang biasanya dipegang UMKM" },
+          cost: { value: "0", label: "Catatan yang biasanya dipegang pemilik bisnis" },
         },
         solution: {
           label: "Yang kami bangun",
@@ -528,11 +528,11 @@ const content = {
         meta: {
           title: "Dagangku AI | A Dewata AI venture",
           description:
-            "Dagangku AI is a chat-based bookkeeping assistant for Indonesian small business. Log a sale as fast as sending a message.",
+            "Dagangku AI is a chat-based bookkeeping assistant for Indonesian business. Log a sale as fast as sending a message.",
         },
         eyebrow: "Venture 02",
         headline: "One chat.\nBooks done.",
-        lead: "A chat-based bookkeeping assistant for small business. No install, no Excel.",
+        lead: "A chat-based bookkeeping assistant for business owners. No install, no Excel.",
         problem: {
           label: "The problem",
           heading: "Selling daily, profit unknown.",
@@ -540,7 +540,7 @@ const content = {
             "Most owners have no idea what they actually earn, because recording it is tedious and easy to skip.",
             "Without clean records there is no basis to raise prices, apply for capital, or find out which product is quietly losing money.",
           ],
-          cost: { value: "0", label: "Records most small businesses keep" },
+          cost: { value: "0", label: "Records most business owners keep" },
         },
         solution: {
           label: "What we built",
