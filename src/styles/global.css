@@ -1,13 +1,30 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
-@import "@fontsource-variable/inter";
 
-@custom-variant dark (&:is(.dark *));
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* =========================================================================
+   DEWATA AI — Monochrome editorial design system
+   Black & white. Serif display (Fraunces) + grotesk (Hanken) + mono (JetBrains)
+   ========================================================================= */
 
 @theme inline {
-    --font-heading: var(--font-sans);
-    --font-sans: 'Inter Variable', sans-serif;
+    --font-sans: var(--font-hanken, ui-sans-serif, system-ui, sans-serif);
+    --font-serif: var(--font-fraunces, ui-serif, Georgia, serif);
+    --font-mono: var(--font-jetbrains, ui-monospace, "SFMono-Regular", monospace);
+    --font-heading: var(--font-serif);
+
+    /* Dagangku AI brand green, sampled from the logo. The one colour allowed
+       to break the monochrome palette, and only inside that wordmark. */
+    --color-dagangku: #79c802;
+
+    /* custom monochrome surfaces */
+    --color-paper: var(--paper);
+    --color-ink: var(--ink);
+    --color-ink-soft: var(--ink-soft);
+    --color-hairline: var(--hairline);
+
     --color-sidebar-ring: var(--sidebar-ring);
     --color-sidebar-border: var(--sidebar-border);
     --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -46,21 +63,29 @@
     --radius-2xl: calc(var(--radius) * 1.8);
     --radius-3xl: calc(var(--radius) * 2.2);
     --radius-4xl: calc(var(--radius) * 2.6);
+
+    --animate-marquee: marquee 38s linear infinite;
+    --animate-marquee-slow: marquee 64s linear infinite;
+    --animate-float: float 9s ease-in-out infinite;
+    --animate-drift: drift 22s ease-in-out infinite;
+    --animate-spin-slow: spin 38s linear infinite;
+    --animate-orbit: orbit 26s linear infinite;
 }
 
 :root {
+    color-scheme: light;
     --background: oklch(1 0 0);
     --foreground: oklch(0.145 0 0);
     --card: oklch(1 0 0);
     --card-foreground: oklch(0.145 0 0);
     --popover: oklch(1 0 0);
     --popover-foreground: oklch(0.145 0 0);
-    --primary: oklch(0.205 0 0);
+    --primary: oklch(0.145 0 0);
     --primary-foreground: oklch(0.985 0 0);
     --secondary: oklch(0.97 0 0);
     --secondary-foreground: oklch(0.205 0 0);
-    --muted: oklch(0.97 0 0);
-    --muted-foreground: oklch(0.556 0 0);
+    --muted: oklch(0.968 0 0);
+    --muted-foreground: oklch(0.44 0 0);
     --accent: oklch(0.97 0 0);
     --accent-foreground: oklch(0.205 0 0);
     --destructive: oklch(0.577 0.245 27.325);
@@ -72,7 +97,17 @@
     --chart-3: oklch(0.439 0 0);
     --chart-4: oklch(0.371 0 0);
     --chart-5: oklch(0.269 0 0);
-    --radius: 0.625rem;
+    --radius: 0.75rem;
+
+    /* custom monochrome surfaces */
+    --paper: oklch(0.984 0 0);
+    --ink: oklch(0.145 0 0);
+    --ink-soft: oklch(0.205 0 0);
+    --hairline: oklch(0.9 0 0);
+
+    /* adaptive ambient glow tint (follows --foreground in light/dark) */
+    --glow-fg: color-mix(in oklch, var(--foreground) 8%, transparent);
+
     --sidebar: oklch(0.985 0 0);
     --sidebar-foreground: oklch(0.145 0 0);
     --sidebar-primary: oklch(0.205 0 0);
@@ -84,13 +119,14 @@
 }
 
 .dark {
+    color-scheme: dark;
     --background: oklch(0.145 0 0);
     --foreground: oklch(0.985 0 0);
     --card: oklch(0.205 0 0);
     --card-foreground: oklch(0.985 0 0);
     --popover: oklch(0.205 0 0);
     --popover-foreground: oklch(0.985 0 0);
-    --primary: oklch(0.922 0 0);
+    --primary: oklch(0.985 0 0);
     --primary-foreground: oklch(0.205 0 0);
     --secondary: oklch(0.269 0 0);
     --secondary-foreground: oklch(0.985 0 0);
@@ -102,29 +138,276 @@
     --border: oklch(1 0 0 / 10%);
     --input: oklch(1 0 0 / 15%);
     --ring: oklch(0.556 0 0);
-    --chart-1: oklch(0.87 0 0);
-    --chart-2: oklch(0.556 0 0);
-    --chart-3: oklch(0.439 0 0);
-    --chart-4: oklch(0.371 0 0);
-    --chart-5: oklch(0.269 0 0);
-    --sidebar: oklch(0.205 0 0);
-    --sidebar-foreground: oklch(0.985 0 0);
-    --sidebar-primary: oklch(0.488 0.243 264.376);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.269 0 0);
-    --sidebar-accent-foreground: oklch(0.985 0 0);
-    --sidebar-border: oklch(1 0 0 / 10%);
-    --sidebar-ring: oklch(0.556 0 0);
+    --paper: oklch(0.205 0 0);
+    /* In dark mode "ink" becomes the light foreground so text-ink / bg-ink flip
+       correctly. The always-dark .ink-section band re-pins --ink below. */
+    --ink: oklch(0.985 0 0);
+    --ink-soft: oklch(0.87 0 0);
+    --hairline: oklch(1 0 0 / 12%);
 }
 
 @layer base {
-  * {
-    @apply border-border outline-ring/50;
+    * {
+        @apply border-border outline-ring/50;
     }
-  body {
-    @apply bg-background text-foreground;
+    html {
+        @apply font-sans antialiased;
+        scroll-behavior: smooth;
+        -webkit-font-smoothing: antialiased;
+        text-rendering: optimizeLegibility;
     }
-  html {
-    @apply font-sans;
+    body {
+        @apply bg-background text-foreground;
+        font-feature-settings: "ss01", "cv01";
     }
+    ::selection {
+        background: var(--ink);
+        color: var(--background);
+    }
+    /* Visible keyboard focus — adapts to light/ink sections via --foreground */
+    :focus-visible {
+        outline: 2px solid var(--foreground);
+        outline-offset: 2px;
+    }
+    h1, h2, h3, h4 {
+        font-feature-settings: "ss01";
+    }
+    @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after {
+            animation-duration: 0.001ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.001ms !important;
+            scroll-behavior: auto !important;
+        }
+    }
+}
+
+/* ============================ utilities ================================= */
+
+/* Mono eyebrow / kicker label */
+.eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    font-weight: 500;
+}
+
+/* ---- Headline scale -----------------------------------------------------
+   Every headline is authored as exactly two lines (see lib/site.ts) and each
+   line renders as its own block, so the break never depends on the viewport.
+   These fluid sizes keep one authored line on one row from 320px upward. In
+   mobile landscape the scale switches to vh, because there the constraint is
+   height, not width.
+   The vw term is derived from the longest authored line in each tier: a line
+   grows until it nearly fills the column, then the max caps it. The subtracted
+   px is the safety margin that keeps the tightest line off the edge at 320px. */
+.t-display {
+    font-size: clamp(2.5rem, 13.5vw, 5.5rem);
+    line-height: 1.02;
+    letter-spacing: -0.03em;
+}
+.t-heading {
+    font-size: clamp(1.9rem, 10vw, 3.25rem);
+    line-height: 1.06;
+    letter-spacing: -0.025em;
+}
+.t-heading-sm {
+    font-size: clamp(1.5rem, 7.2vw, 2.25rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+}
+/* one authored line */
+.t-line {
+    display: block;
+}
+
+@media (orientation: landscape) and (max-height: 560px) {
+    .t-display {
+        font-size: clamp(2rem, 11vh, 3.75rem);
+    }
+    .t-heading {
+        font-size: clamp(1.7rem, 8.5vh, 2.75rem);
+    }
+    .t-heading-sm {
+        font-size: clamp(1.35rem, 6vh, 2rem);
+    }
+}
+
+/* thin rule under a headline, Cluely-style */
+.rule {
+    height: 1px;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        color-mix(in oklch, var(--foreground) 28%, transparent),
+        transparent
+    );
+}
+
+/* Dark "ink" band — a dramatic dark section that stays dark in BOTH themes.
+   It re-pins the palette locally so adaptive utilities (text-ink, bg-card,
+   bg-background) resolve to dark-band values regardless of light/dark mode. */
+.ink-section {
+    background: oklch(0.145 0 0);
+    color: oklch(0.985 0 0);
+    --background: oklch(0.145 0 0);
+    --foreground: oklch(0.985 0 0);
+    --card: oklch(0.205 0 0);
+    --muted: oklch(0.269 0 0);
+    --ink: oklch(0.145 0 0); /* dark again: keeps white chips/bubbles legible */
+    --muted-foreground: oklch(0.72 0 0);
+    --border: oklch(1 0 0 / 12%);
+    --hairline: oklch(1 0 0 / 12%);
+}
+
+/* Glossy primary button (ink) */
+.btn-glossy {
+    position: relative;
+    background: linear-gradient(180deg, oklch(0.28 0 0), oklch(0.13 0 0));
+    color: oklch(0.985 0 0);
+    border: 1px solid oklch(0.32 0 0);
+    box-shadow:
+        0 1px 0 0 rgba(255, 255, 255, 0.16) inset,
+        0 10px 24px -10px rgba(0, 0, 0, 0.55),
+        0 2px 6px -2px rgba(0, 0, 0, 0.4);
+    transition:
+        transform 0.25s cubic-bezier(0.22, 0.61, 0.36, 1),
+        box-shadow 0.25s ease;
+}
+.btn-glossy:hover {
+    transform: translateY(-1px);
+    box-shadow:
+        0 1px 0 0 rgba(255, 255, 255, 0.22) inset,
+        0 16px 34px -12px rgba(0, 0, 0, 0.6),
+        0 3px 8px -2px rgba(0, 0, 0, 0.45);
+}
+.btn-glossy:active {
+    transform: translateY(0);
+}
+/* glossy on dark sections + dark mode → flips to a light/white glossy chip */
+.ink-section .btn-glossy,
+.dark .btn-glossy {
+    background: linear-gradient(180deg, oklch(1 0 0), oklch(0.9 0 0));
+    color: oklch(0.145 0 0);
+    border: 1px solid oklch(1 0 0 / 0.6);
+    box-shadow:
+        0 1px 0 0 rgba(255, 255, 255, 0.9) inset,
+        0 14px 30px -12px rgba(0, 0, 0, 0.7);
+}
+
+/* Theme-toggle icon swap (sun shown in light, moon shown in dark) */
+.theme-toggle .icon-moon {
+    display: none;
+}
+.dark .theme-toggle .icon-sun {
+    display: none;
+}
+.dark .theme-toggle .icon-moon {
+    display: block;
+}
+
+/* Fine grid backdrop (masked) */
+.grid-overlay {
+    background-image:
+        linear-gradient(to right, var(--hairline) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--hairline) 1px, transparent 1px);
+    background-size: 64px 64px;
+}
+.grid-overlay-sm {
+    background-image:
+        linear-gradient(to right, var(--hairline) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--hairline) 1px, transparent 1px);
+    background-size: 28px 28px;
+}
+
+/* Dot matrix backdrop */
+.dot-overlay {
+    background-image: radial-gradient(
+        color-mix(in oklch, var(--foreground) 16%, transparent) 1px,
+        transparent 1px
+    );
+    background-size: 22px 22px;
+}
+
+/* Soft radial glow blob (monochrome) — the radial-gradient itself is the glow,
+   no filter:blur (a large blurred layer is a scroll-jank/memory cost) */
+.glow {
+    border-radius: 9999px;
+}
+
+/* Marquee track */
+.marquee-mask {
+    -webkit-mask-image: linear-gradient(
+        90deg,
+        transparent,
+        #000 12%,
+        #000 88%,
+        transparent
+    );
+    mask-image: linear-gradient(
+        90deg,
+        transparent,
+        #000 12%,
+        #000 88%,
+        transparent
+    );
+}
+
+/* Scroll reveal */
+[data-reveal] {
+    opacity: 0;
+    transform: translateY(22px);
+    transition:
+        opacity 0.8s cubic-bezier(0.22, 0.61, 0.36, 1),
+        transform 0.8s cubic-bezier(0.22, 0.61, 0.36, 1);
+    transition-delay: var(--reveal-delay, 0ms);
+}
+[data-reveal].in {
+    opacity: 1;
+    transform: none;
+}
+
+/* Underline-on-hover link */
+.link-underline {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size: 0% 1px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size 0.3s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.link-underline:hover {
+    background-size: 100% 1px;
+}
+
+/* Card hover lift */
+.lift {
+    transition:
+        transform 0.4s cubic-bezier(0.22, 0.61, 0.36, 1),
+        box-shadow 0.4s ease;
+}
+.lift:hover {
+    transform: translateY(-4px);
+}
+
+@keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+}
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-14px); }
+}
+@keyframes drift {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(4%, -3%) scale(1.06); }
+    66% { transform: translate(-3%, 4%) scale(0.97); }
+}
+@keyframes orbit {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+@keyframes shimmer {
+    from { background-position: -200% 0; }
+    to { background-position: 200% 0; }
 }

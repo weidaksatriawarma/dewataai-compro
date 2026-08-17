@@ -1,0 +1,25 @@
+---
+/**
+ * Grayscale image with a graceful Picsum fallback (so a 404 never breaks layout).
+ * Replace `src` with a real asset anytime — keep the `grayscale` class for B&W,
+ * or drop it if you want a single colour accent image.
+ */
+interface Props {
+  src: string
+  alt: string
+  seed?: string
+  class?: string
+  loading?: "lazy" | "eager"
+}
+const { src, alt, seed = "dewata", class: cls = "", loading = "lazy" } = Astro.props
+const fb = `https://picsum.photos/seed/${seed}/1200/800?grayscale`
+---
+
+<img
+  src={src}
+  alt={alt}
+  loading={loading}
+  decoding="async"
+  onerror={`this.onerror=null;this.src='${fb}'`}
+  class={`h-full w-full object-cover grayscale ${cls}`}
+/>

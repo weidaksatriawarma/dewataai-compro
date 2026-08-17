@@ -1,0 +1,168 @@
+---
+import { HugeiconsIcon } from "@hugeicons/react"
+import {
+  InstagramIcon,
+  Linkedin01Icon,
+  WhatsappIcon,
+  ArrowUpRight01Icon,
+} from "@hugeicons/core-free-icons"
+import Logo from "@/components/Logo.astro"
+import { getSite } from "@/lib/site"
+import { resolveLang } from "@/lib/i18n"
+
+const site = getSite(resolveLang(Astro.currentLocale))
+const f = site.footer
+const legal = site.brand.legal
+
+const socialIcons = {
+  instagram: InstagramIcon,
+  linkedin: Linkedin01Icon,
+  whatsapp: WhatsappIcon,
+} as const
+---
+
+<footer class="ink-section relative overflow-hidden">
+  <!-- backdrop texture -->
+  <div class="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
+    <div
+      class="absolute inset-0 dot-overlay opacity-[0.18] [mask-image:radial-gradient(ellipse_70%_60%_at_50%_0%,#000_50%,transparent_100%)]"
+    >
+    </div>
+    <div
+      class="absolute top-[-20%] left-1/2 h-[520px] w-[820px] max-w-[120vw] -translate-x-1/2 bg-[radial-gradient(closest-side,rgba(255,255,255,0.06),transparent)]"
+    >
+    </div>
+  </div>
+
+  <!-- top area -->
+  <div class="mx-auto grid max-w-7xl gap-12 px-5 py-16 sm:px-8 sm:py-20 lg:grid-cols-[1.4fr_2fr]">
+    <!-- left: brand -->
+    <div data-reveal>
+      <Logo tone="paper" />
+      <p class="mt-5 max-w-sm text-sm leading-relaxed text-white/55">
+        {f.blurb}
+      </p>
+
+      <div class="mt-7 flex items-center gap-3">
+        {
+          f.socials.map((s) => {
+            const Icon = socialIcons[s.key as keyof typeof socialIcons]
+            const external = s.href !== "#"
+            return (
+              <a
+                href={s.href}
+                aria-label={s.label}
+                {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                class="grid size-10 place-items-center rounded-full border border-white/15 text-white/70 transition-colors hover:bg-white hover:text-ink"
+              >
+                <HugeiconsIcon icon={Icon} size={18} strokeWidth={1.7} />
+              </a>
+            )
+          })
+        }
+      </div>
+    </div>
+
+    <!-- right: link columns -->
+    <div
+      data-reveal
+      style="--reveal-delay:120ms"
+      class="grid grid-cols-2 gap-8 sm:grid-cols-3"
+    >
+      {
+        f.columns.map((col) => (
+          <div>
+            <p class="eyebrow text-white/55">{col.title}</p>
+            <ul class="mt-5 space-y-3">
+              {col.links.map((link) => {
+                const external = "external" in link && link.external
+                return (
+                  <li>
+                    <a
+                      href={link.href}
+                      {...(external
+                        ? { target: "_blank", rel: "noopener noreferrer" }
+                        : {})}
+                      class="link-underline inline-flex items-center gap-1 text-sm text-white/70 transition-colors hover:text-white"
+                    >
+                      {link.label}
+                      {external && (
+                        <HugeiconsIcon icon={ArrowUpRight01Icon} size={13} strokeWidth={1.8} />
+                      )}
+                    </a>
+                  </li>
+                )
+              })}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+
+  <!-- legal entity band -->
+  <div class="border-t border-white/10">
+    <div class="mx-auto max-w-7xl px-5 py-8 sm:px-8" data-reveal>
+      <p class="eyebrow text-white/45">{f.entity.heading}</p>
+
+      <div
+        class="mt-4 grid gap-x-10 gap-y-5 text-xs leading-relaxed text-white/60 sm:grid-cols-2 lg:grid-cols-[1.7fr_0.7fr_1.6fr]"
+      >
+        <p class="max-w-md">
+          {f.entity.operator}{" "}
+          <a
+            href={legal.ahuUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="link-underline inline-flex items-center gap-1 whitespace-nowrap text-white/80 transition-colors hover:text-white"
+          >
+            {f.entity.certLabel}
+            <HugeiconsIcon icon={ArrowUpRight01Icon} size={12} strokeWidth={1.8} />
+          </a>
+        </p>
+
+        <p>
+          <span class="block text-white/40">{f.entity.nibLabel}</span>
+          <span class="font-mono tracking-tight text-white/75">{legal.nib}</span>
+        </p>
+
+        <p>
+          <span class="block text-white/40">{f.entity.addressLabel}</span>
+          <span class="text-white/75">{legal.addressLine}</span>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- bottom bar -->
+  <div class="border-t border-white/10">
+    <div
+      class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-5 py-6 sm:flex-row sm:px-8"
+    >
+      <!-- status pill -->
+      <span
+        class="inline-flex items-center gap-2 rounded-full border border-white/15 px-3 py-1 text-xs text-white/60"
+      >
+        <span class="size-1.5 animate-pulse rounded-full bg-white"></span>
+        {f.status}
+      </span>
+
+      <!-- legal links -->
+      <div class="flex items-center gap-3 text-xs text-white/60">
+        {
+          f.legal.map((item, i) => (
+            <>
+              {i > 0 && <span class="text-white/20" aria-hidden="true">·</span>}
+              <a href={item.href} class="transition-colors hover:text-white/80">
+                {item.label}
+              </a>
+            </>
+          ))
+        }
+      </div>
+
+      <!-- copyright -->
+      <p class="text-xs text-white/55">{f.copyright}</p>
+    </div>
+  </div>
+</footer>

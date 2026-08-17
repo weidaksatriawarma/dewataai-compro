@@ -1,0 +1,21 @@
+---
+export const prerender = false
+
+import PageLayout from "@/layouts/page.astro"
+import ArticleDetail from "@/components/pages/ArticleDetail.astro"
+import { getArticle } from "@/lib/cms"
+import { detailPath } from "@/lib/i18n"
+
+const slug = Astro.params.slug!
+const article = await getArticle("pressRelease", "en", slug)
+if (!article) return Astro.rewrite("/404")
+---
+
+<PageLayout
+  title={`${article.title} | Dewata AI Press`}
+  description={article.excerpt}
+  pathId={detailPath("press", "id", slug)}
+  pathEn={detailPath("press", "en", slug)}
+>
+  <ArticleDetail kind="pressRelease" article={article} />
+</PageLayout>

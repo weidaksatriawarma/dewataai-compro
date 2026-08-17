@@ -1,0 +1,64 @@
+---
+import PageHero from "@/components/PageHero.astro"
+import { getSite } from "@/lib/site"
+import { getPages, POLICY_UPDATED } from "@/lib/pages"
+import { resolveLang } from "@/lib/i18n"
+import { formatDate } from "@/lib/cms"
+
+const lang = resolveLang(Astro.currentLocale)
+const site = getSite(lang)
+const p = getPages(lang).privacy
+const legal = site.brand.legal
+---
+
+<PageHero
+  eyebrow={p.eyebrow}
+  heading={p.heading}
+  lead={p.lead}
+  meta={`${p.updatedLabel}: ${formatDate(POLICY_UPDATED, lang)}`}
+/>
+
+<section class="bg-paper py-16 sm:py-24">
+  <div class="mx-auto max-w-3xl px-5 sm:px-8">
+    {
+      p.sections.map((section, i) => (
+        <div data-reveal style={`--reveal-delay:${i * 50}ms`} class="border-t border-hairline py-8">
+          <h2 class="font-serif text-xl text-ink sm:text-2xl">{section.title}</h2>
+          <div class="mt-4 space-y-3">
+            {section.body.map((para) => (
+              <p class="leading-relaxed text-muted-foreground">{para}</p>
+            ))}
+          </div>
+        </div>
+      ))
+    }
+
+    <div data-reveal class="mt-6 rounded-3xl border border-hairline bg-background p-6 sm:p-8">
+      <h2 class="font-serif text-xl text-ink">{p.contactHeading}</h2>
+      <p class="mt-2 leading-relaxed text-muted-foreground">{p.contactBody}</p>
+
+      <dl class="mt-6 space-y-3 border-t border-hairline pt-6 text-sm">
+        <div class="flex flex-wrap gap-x-3">
+          <dt class="text-muted-foreground">Email</dt>
+          <dd>
+            <a href={`mailto:${site.brand.email}`} class="link-underline font-medium text-ink">
+              {site.brand.email}
+            </a>
+          </dd>
+        </div>
+        <div class="flex flex-wrap gap-x-3">
+          <dt class="text-muted-foreground">{legal.legalName}</dt>
+          <dd class="text-ink">{legal.legalForm}</dd>
+        </div>
+        <div class="flex flex-wrap gap-x-3">
+          <dt class="text-muted-foreground">NIB</dt>
+          <dd class="font-mono tracking-tight text-ink">{legal.nib}</dd>
+        </div>
+        <div class="flex flex-wrap gap-x-3">
+          <dt class="shrink-0 text-muted-foreground">{site.footer.entity.addressLabel}</dt>
+          <dd class="text-ink">{legal.addressLine}</dd>
+        </div>
+      </dl>
+    </div>
+  </div>
+</section>

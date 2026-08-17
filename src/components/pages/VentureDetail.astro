@@ -1,0 +1,149 @@
+---
+import { HugeiconsIcon } from "@hugeicons/react"
+import { ArrowUpRight01Icon, ArrowLeft01Icon, Tick02Icon } from "@hugeicons/core-free-icons"
+import PageHero from "@/components/PageHero.astro"
+import DagangkuWordmark from "@/components/DagangkuWordmark.astro"
+import { getSite } from "@/lib/site"
+import { getPages, type VentureSlug } from "@/lib/pages"
+import { resolveLang, getUI, path } from "@/lib/i18n"
+
+interface Props {
+  slug: VentureSlug
+}
+
+const { slug } = Astro.props
+const lang = resolveLang(Astro.currentLocale)
+const ui = getUI(lang)
+const site = getSite(lang)
+const venture = site.ventures.items.find((item) => item.slug === slug)!
+const d = getPages(lang).ventureDetail[slug]
+const indexPath = path("ventures", lang)
+---
+
+<PageHero eyebrow={d.eyebrow} heading={d.headline} lead={d.lead} />
+
+<!-- identity + proof -->
+<section class="border-y border-hairline bg-paper py-10">
+  <div class="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-6 px-5 sm:px-8">
+    <div data-reveal class="flex items-center gap-3">
+      {
+        slug === "dagangku-ai" ? (
+          <DagangkuWordmark class="text-2xl text-ink" />
+        ) : (
+          <span class="font-serif text-2xl text-ink">{venture.name}</span>
+        )
+      }
+      <span class="rounded-full border border-hairline px-3 py-1 text-xs text-muted-foreground">
+        {venture.tag}
+      </span>
+    </div>
+
+    <div data-reveal style="--reveal-delay:100ms" class="flex divide-x divide-hairline">
+      {
+        venture.proof.map((proof) => (
+          <div class="px-5 first:pl-0 last:pr-0">
+            <div class="font-serif text-xl text-ink">{proof.value}</div>
+            <div class="mt-0.5 text-xs text-muted-foreground">{proof.label}</div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<!-- problem -->
+<section class="ink-section relative overflow-hidden py-20 sm:py-28">
+  <div class="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
+    <div
+      class="absolute inset-0 dot-overlay opacity-[0.16] [mask-image:radial-gradient(ellipse_60%_60%_at_50%_0%,#000_45%,transparent_100%)]"
+    >
+    </div>
+  </div>
+
+  <div class="mx-auto grid max-w-5xl gap-10 px-5 sm:px-8 lg:grid-cols-[1fr_0.7fr] lg:gap-16">
+    <div data-reveal>
+      <p class="eyebrow text-white/55">{d.problem.label}</p>
+      <h2 class="t-heading-sm mt-4 font-serif text-white">{d.problem.heading}</h2>
+      <div class="mt-6 space-y-4">
+        {d.problem.body.map((para) => <p class="max-w-xl leading-relaxed text-white/65">{para}</p>)}
+      </div>
+    </div>
+
+    <div
+      data-reveal
+      style="--reveal-delay:120ms"
+      class="self-start rounded-3xl border border-white/12 bg-white/[0.04] p-7"
+    >
+      <div class="font-serif text-4xl leading-none text-white">{d.problem.cost.value}</div>
+      <p class="mt-3 text-sm leading-relaxed text-white/60">{d.problem.cost.label}</p>
+    </div>
+  </div>
+</section>
+
+<!-- solution -->
+<section class="bg-background py-20 sm:py-28">
+  <div class="mx-auto max-w-5xl px-5 sm:px-8">
+    <div data-reveal class="max-w-2xl">
+      <p class="eyebrow text-muted-foreground">{d.solution.label}</p>
+      <h2 class="t-heading-sm mt-4 font-serif text-ink">{d.solution.heading}</h2>
+    </div>
+
+    <div class="mt-12 grid gap-x-10 gap-y-9 sm:grid-cols-2">
+      {
+        d.solution.items.map((item, i) => (
+          <div data-reveal style={`--reveal-delay:${i * 80}ms`} class="border-t border-hairline pt-5">
+            <h3 class="font-serif text-xl text-ink">{item.title}</h3>
+            <p class="mt-2 leading-relaxed text-muted-foreground">{item.desc}</p>
+          </div>
+        ))
+      }
+    </div>
+
+    <div data-reveal class="mt-14 border-t border-hairline pt-8">
+      <p class="eyebrow text-muted-foreground">{d.forWho.label}</p>
+      <ul class="mt-5 flex flex-wrap gap-2.5">
+        {
+          d.forWho.items.map((item) => (
+            <li class="inline-flex items-center gap-2 rounded-full border border-hairline px-4 py-2 text-sm text-ink">
+              <HugeiconsIcon icon={Tick02Icon} size={13} strokeWidth={2.2} />
+              {item}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- cta -->
+<section class="bg-paper py-16 sm:py-20">
+  <div
+    class="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-6 px-5 sm:px-8"
+  >
+    <div data-reveal class="max-w-xl">
+      <h2 class="font-serif text-2xl text-ink">{d.cta.heading}</h2>
+      <p class="mt-2 leading-relaxed text-muted-foreground">{d.cta.body}</p>
+    </div>
+    <a
+      data-reveal
+      style="--reveal-delay:100ms"
+      href={venture.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="btn-glossy inline-flex h-12 items-center gap-2 rounded-full px-6 text-sm font-medium"
+    >
+      {d.cta.label}
+      <HugeiconsIcon icon={ArrowUpRight01Icon} size={16} strokeWidth={2} />
+    </a>
+  </div>
+
+  <div class="mx-auto mt-12 max-w-5xl px-5 sm:px-8">
+    <a
+      href={indexPath}
+      class="link-underline inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-ink"
+    >
+      <HugeiconsIcon icon={ArrowLeft01Icon} size={15} strokeWidth={2} />
+      {ui.backTo} {getPages(lang).ventures.eyebrow.toLowerCase()}
+    </a>
+  </div>
+</section>

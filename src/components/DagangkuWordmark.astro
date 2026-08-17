@@ -1,0 +1,18 @@
+---
+/**
+ * Dagangku AI wordmark, set as live text instead of an image: the site serif
+ * (Fraunces) matches the brand lockup, stays crisp at any size, and inherits
+ * the surrounding colour. Only the "AI" carries the brand green.
+ *
+ * Size and colour come from the caller, e.g.
+ *   <DagangkuWordmark class="text-2xl text-white" />
+ */
+interface Props {
+  class?: string
+}
+const { class: className = "" } = Astro.props
+---
+
+<span class:list={["font-serif font-medium tracking-[-0.01em] whitespace-nowrap", className]}>
+  Dagangku<span class="text-dagangku">AI</span>
+</span>

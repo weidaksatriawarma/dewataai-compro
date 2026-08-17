@@ -1,0 +1,20 @@
+---
+// Rendered on demand so newly published entries appear without a rebuild.
+export const prerender = false
+
+import PageLayout from "@/layouts/page.astro"
+import ArticleList from "@/components/pages/ArticleList.astro"
+import { getPages } from "@/lib/pages"
+import { resolveLang, path } from "@/lib/i18n"
+
+const p = getPages(resolveLang(Astro.currentLocale)).journal
+---
+
+<PageLayout
+  title={p.meta.title}
+  description={p.meta.description}
+  pathId={path("journal", "id")}
+  pathEn={path("journal", "en")}
+>
+  <ArticleList kind="post" />
+</PageLayout>

@@ -1,0 +1,17 @@
+---
+import PageLayout from "@/layouts/page.astro"
+import ManifestoPage from "@/components/pages/ManifestoPage.astro"
+import { getPages } from "@/lib/pages"
+import { resolveLang, path } from "@/lib/i18n"
+
+const p = getPages(resolveLang(Astro.currentLocale)).manifesto
+---
+
+<PageLayout
+  title={p.meta.title}
+  description={p.meta.description}
+  pathId={path("manifesto", "id")}
+  pathEn={path("manifesto", "en")}
+>
+  <ManifestoPage />
+</PageLayout>

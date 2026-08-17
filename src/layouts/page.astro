@@ -1,0 +1,47 @@
+---
+/**
+ * Standard page chrome: head + nav + footer + the scroll-reveal observer.
+ * Route files stay thin; they only supply metadata and the page body.
+ */
+import Layout from "@/layouts/main.astro"
+import Navbar from "@/components/Navbar.astro"
+import Footer from "@/components/sections/Footer.astro"
+
+interface Props {
+  title?: string
+  description?: string
+  pathId?: string
+  pathEn?: string
+}
+
+const { title, description, pathId = "/", pathEn = "/en/" } = Astro.props
+---
+
+<Layout title={title} description={description} pathId={pathId} pathEn={pathEn}>
+  <Navbar pathId={pathId} pathEn={pathEn} />
+  <main id="main">
+    <slot />
+  </main>
+  <Footer />
+
+  <script>
+    const els = document.querySelectorAll<HTMLElement>("[data-reveal]")
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    if (!("IntersectionObserver" in window) || reduce) {
+      els.forEach((e) => e.classList.add("in"))
+    } else {
+      const io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((en) => {
+            if (en.isIntersecting) {
+              en.target.classList.add("in")
+              io.unobserve(en.target)
+            }
+          })
+        },
+        { threshold: 0.1, rootMargin: "0px 0px -8% 0px" },
+      )
+      els.forEach((e) => io.observe(e))
+    }
+  </script>
+</Layout>

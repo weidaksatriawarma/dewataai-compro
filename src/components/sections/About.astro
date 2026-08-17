@@ -1,0 +1,94 @@
+---
+import { HugeiconsIcon } from "@hugeicons/react"
+import { Location01Icon } from "@hugeicons/core-free-icons"
+import PlaceholderImage from "@/components/PlaceholderImage.astro"
+import { getSite, lines } from "@/lib/site"
+import { resolveLang } from "@/lib/i18n"
+import { images } from "@/lib/images"
+const t = getSite(resolveLang(Astro.currentLocale))
+const about = t.about
+---
+
+<section id="tentang" class="relative overflow-hidden bg-paper py-24 sm:py-32">
+  <!-- backdrop texture -->
+  <div class="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
+    <div
+      class="absolute inset-0 dot-overlay opacity-50 [mask-image:radial-gradient(ellipse_70%_60%_at_50%_0%,#000_40%,transparent_100%)]"
+    >
+    </div>
+  </div>
+
+  <div class="mx-auto max-w-7xl px-5 sm:px-8">
+    <div class="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+      <!-- LEFT: text -->
+      <div>
+        <p data-reveal class="eyebrow text-muted-foreground">{about.eyebrow}</p>
+
+        <h2
+          data-reveal
+          style="--reveal-delay:80ms"
+          class="t-heading mt-5 max-w-xl font-serif font-medium text-ink"
+        >
+          {lines(about.heading).map((line) => <span class="t-line">{line}</span>)}
+        </h2>
+
+        <div data-reveal style="--reveal-delay:160ms" class="rule mt-8 h-px w-40"></div>
+
+        <div data-reveal style="--reveal-delay:240ms" class="mt-7 space-y-5">
+          {about.paragraphs.map((p) => (
+            <p class="max-w-xl leading-relaxed text-muted-foreground">{p}</p>
+          ))}
+        </div>
+      </div>
+
+      <!-- RIGHT: framed image card -->
+      <div data-reveal style="--reveal-delay:320ms" class="relative">
+        <div
+          class="lift relative overflow-hidden rounded-3xl border border-hairline bg-background shadow-[0_40px_100px_-45px_rgba(0,0,0,0.4)]"
+        >
+          {/* TODO: ganti dengan foto tim / portofolio asli Anda */}
+          <PlaceholderImage
+            src={images.about}
+            seed="about"
+            alt={about.imageAlt}
+            class="aspect-[4/5] w-full"
+          />
+          <!-- subtle top sheen -->
+          <div
+            class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent"
+            aria-hidden="true"
+          >
+          </div>
+
+          <!-- floating location chip -->
+          <div class="absolute bottom-4 left-4 z-10">
+            <span
+              class="flex items-center gap-2 rounded-full border border-hairline bg-card/90 px-3.5 py-2 text-xs font-medium text-ink shadow-[0_8px_24px_-10px_rgba(0,0,0,0.35)]"
+            >
+              <HugeiconsIcon icon={Location01Icon} size={14} strokeWidth={1.8} />
+              {t.brand.location}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- facts grid -->
+    <div
+      class="rule mt-16 grid grid-cols-2 gap-px overflow-hidden border-y border-hairline md:mt-20 md:grid-cols-4"
+    >
+      {about.facts.map((fact, i) => (
+        <div
+          data-reveal
+          style={`--reveal-delay:${240 + i * 80}ms`}
+          class="border-hairline px-4 py-7 sm:px-6 sm:py-8 [&:nth-child(n+3)]:border-t [&:not(:nth-child(2n))]:border-r md:border-t-0 md:border-r md:[&:last-child]:border-r-0"
+        >
+          <p class="font-serif text-2xl font-medium tracking-[-0.01em] text-ink sm:text-3xl">
+            {fact.value}
+          </p>
+          <p class="mt-1.5 text-sm text-muted-foreground">{fact.label}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

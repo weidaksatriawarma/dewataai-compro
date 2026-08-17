@@ -1,15 +1,125 @@
 ---
+import { Font } from "astro:assets"
 import "@/styles/global.css"
+import { resolveLang, getUI } from "@/lib/i18n"
+import { getSite } from "@/lib/site"
+
+interface Props {
+  title?: string
+  description?: string
+  /** Path of this page in each locale, so canonical + hreflang stay correct. */
+  pathId?: string
+  pathEn?: string
+}
+
+const lang = resolveLang(Astro.currentLocale)
+const t = getSite(lang)
+const ui = getUI(lang)
+const {
+  title = t.meta.title,
+  description = t.meta.description,
+  pathId = "/",
+  pathEn = "/en/",
+} = Astro.props
+
+const urlId = new URL(pathId, Astro.site).href
+const urlEn = new URL(pathEn, Astro.site).href
+const canonical = lang === "en" ? urlEn : urlId
+
+/** Organization schema: legal entity, registered address and NIB (AHU / OSS records). */
+const legal = t.brand.legal
+const orgSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: t.brand.name,
+  legalName: `${legal.legalName} (${legal.legalForm})`,
+  url: urlId,
+  email: t.brand.email,
+  description: t.meta.description,
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: `${legal.address.street}, ${legal.address.village}, ${legal.address.district}`,
+    addressLocality: legal.address.city,
+    addressRegion: legal.address.region,
+    addressCountry: legal.address.country,
+  },
+  identifier: {
+    "@type": "PropertyValue",
+    name: "NIB",
+    value: legal.nib,
+  },
+  subjectOf: {
+    "@type": "CreativeWork",
+    name: "Sertifikat Pendirian AHU",
+    url: legal.ahuUrl,
+  },
+  subOrganization: t.ventures.items.map((v) => ({
+    "@type": "Organization",
+    name: v.name,
+    url: v.url,
+  })),
+}
 ---
 
-<html lang="en">
+<!doctype html>
+<html lang={lang} class="scroll-smooth">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <title>Astro App</title>
+    <meta name="generator" content={Astro.generator} />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#ffffff" id="theme-color-meta" />
+
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="id" href={urlId} />
+    <link rel="alternate" hreflang="en" href={urlEn} />
+    <link rel="alternate" hreflang="x-default" href={urlId} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content="Dewata AI" />
+    <meta property="og:locale" content={t.meta.ogLocale} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+
+    <script
+      type="application/ld+json"
+      is:inline
+      set:html={JSON.stringify(orgSchema)}
+    />
+
+    {/* No-flash theme init: applies .dark before first paint */}
+    <script is:inline>
+      ;(() => {
+        try {
+          const stored = localStorage.getItem("theme")
+          const dark =
+            stored === "dark" ||
+            (!stored && window.matchMedia("(prefers-color-scheme: dark)").matches)
+          document.documentElement.classList.toggle("dark", dark)
+          const meta = document.getElementById("theme-color-meta")
+          if (meta) meta.setAttribute("content", dark ? "#1a1a1a" : "#ffffff")
+        } catch (e) {}
+      })()
+    </script>
+
+    <Font cssVariable="--font-fraunces" preload />
+    <Font cssVariable="--font-hanken" preload />
+    <Font cssVariable="--font-jetbrains" />
   </head>
-  <body>
+  <body class="overflow-x-hidden">
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-ink focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-background"
+    >
+      {ui.skipToContent}
+    </a>
     <slot />
   </body>
 </html>

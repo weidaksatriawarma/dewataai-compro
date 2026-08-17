@@ -1,0 +1,17 @@
+---
+import PageLayout from "@/layouts/page.astro"
+import VenturesIndex from "@/components/pages/VenturesIndex.astro"
+import { getPages } from "@/lib/pages"
+import { resolveLang, path } from "@/lib/i18n"
+
+const p = getPages(resolveLang(Astro.currentLocale)).ventures
+---
+
+<PageLayout
+  title={p.meta.title}
+  description={p.meta.description}
+  pathId={path("ventures", "id")}
+  pathEn={path("ventures", "en")}
+>
+  <VenturesIndex />
+</PageLayout>

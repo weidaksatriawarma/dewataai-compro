@@ -1,0 +1,97 @@
+---
+/** Article body for both /jurnal/[slug] and /pers/[slug]. */
+import { HugeiconsIcon } from "@hugeicons/react"
+import { ArrowLeft01Icon } from "@hugeicons/core-free-icons"
+import { getSite } from "@/lib/site"
+import { getPages } from "@/lib/pages"
+import { resolveLang, getUI, path } from "@/lib/i18n"
+import { renderBody, formatDate, imageUrl, type Article } from "@/lib/cms"
+
+interface Props {
+  kind: "post" | "pressRelease"
+  article: Article
+}
+
+const { kind, article } = Astro.props
+const lang = resolveLang(Astro.currentLocale)
+const ui = getUI(lang)
+const site = getSite(lang)
+const pages = getPages(lang)
+const p = kind === "post" ? pages.journal : pages.press
+const routeKey = kind === "post" ? "journal" : "press"
+const isPress = kind === "pressRelease"
+
+const body = renderBody(article.body)
+const cover = imageUrl(article.coverImage, 1600)
+---
+
+<article class="relative bg-background pt-32 pb-16 sm:pt-40 sm:pb-24">
+  <div class="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
+    <div
+      class="absolute inset-0 grid-overlay opacity-50 [mask-image:radial-gradient(ellipse_70%_50%_at_50%_0%,#000_40%,transparent_100%)]"
+    >
+    </div>
+  </div>
+
+  <header class="mx-auto max-w-3xl px-5 sm:px-8">
+    <a
+      href={path(routeKey, lang)}
+      class="link-underline inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-ink"
+    >
+      <HugeiconsIcon icon={ArrowLeft01Icon} size={15} strokeWidth={2} />
+      {ui.backTo} {p.eyebrow.toLowerCase()}
+    </a>
+
+    <p class="mt-8 font-mono text-xs text-muted-foreground">
+      {isPress && article.dateline ? `${article.dateline} · ` : ""}
+      {formatDate(article.publishedAt, lang)}
+      {!isPress && article.author ? ` · ${article.author}` : ""}
+    </p>
+
+    <h1 class="mt-4 font-serif text-3xl leading-[1.1] font-medium tracking-[-0.02em] text-ink sm:text-4xl md:text-5xl">
+      {article.title}
+    </h1>
+
+    <p class="mt-6 text-lg leading-relaxed text-muted-foreground">{article.excerpt}</p>
+  </header>
+
+  {
+    cover && (
+      <div class="mx-auto mt-10 max-w-4xl px-5 sm:px-8">
+        <img
+          src={cover}
+          alt={article.coverImage?.alt ?? ""}
+          class="w-full rounded-3xl border border-hairline"
+        />
+      </div>
+    )
+  }
+
+  <div class="mx-auto mt-10 max-w-3xl px-5 sm:px-8">
+    <div class="prose-dewata" set:html={body} />
+
+    {
+      isPress && (
+        <div class="mt-14 space-y-6 border-t border-hairline pt-8">
+          {article.boilerplate && (
+            <div>
+              <p class="eyebrow text-muted-foreground">{pages.press.boilerplateLabel}</p>
+              <p class="mt-3 leading-relaxed text-muted-foreground">{article.boilerplate}</p>
+            </div>
+          )}
+
+          <div>
+            <p class="eyebrow text-muted-foreground">{pages.press.contactLabel}</p>
+            <p class="mt-3 text-sm text-ink">{article.contactName ?? site.brand.legal.legalName}</p>
+            <a
+              href={`mailto:${article.contactEmail ?? site.brand.email}`}
+              class="link-underline text-sm font-medium text-ink"
+            >
+              {article.contactEmail ?? site.brand.email}
+            </a>
+          </div>
+        </div>
+      )
+    }
+  </div>
+</article>
