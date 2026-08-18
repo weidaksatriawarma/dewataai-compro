@@ -116,8 +116,8 @@ const d = h.demo
     <div class="grid gap-5 sm:grid-cols-2">
       {
         [
-          { name: "Dewata Tech", desc: d.techDesc, tag: d.webTag, domain: "dewatatech.com" },
-          { name: null, desc: d.dagangDesc, tag: d.aiTag, domain: "dagangkuai.com" },
+          { brand: "tech", desc: d.techDesc, tag: d.webTag, domain: "dewatatech.com" },
+          { brand: "dagangku", desc: d.dagangDesc, tag: d.aiTag, domain: "dagangkuai.com" },
         ].map((venture) => (
           <a
             href={`https://${venture.domain}`}
@@ -125,13 +125,18 @@ const d = h.demo
             rel="noopener noreferrer"
             class="lift rounded-2xl border border-hairline bg-card p-6 transition-colors hover:border-ink/25"
           >
-            <span class="flex items-center justify-between gap-3">
-              {venture.name ? (
-                <DewataTechWordmark class="text-base leading-none text-ink" />
+            <span class="flex min-h-9 items-center gap-3">
+              {venture.brand === "tech" ? (
+                <>
+                  <span class="grid size-9 shrink-0 place-items-center rounded-xl border border-hairline bg-muted text-ink">
+                    <BrandMark mark="tech" class="h-[15px]" />
+                  </span>
+                  <DewataTechWordmark class="text-sm leading-none text-ink" />
+                </>
               ) : (
-                <DagangkuWordmark class="text-lg leading-none text-ink" />
+                <DagangkuWordmark class="text-base leading-none text-ink" />
               )}
-              <span class="rounded-full bg-muted px-2.5 py-0.5 text-[10px] font-medium text-muted-foreground">
+              <span class="ml-auto shrink-0 rounded-full bg-muted px-2.5 py-0.5 text-[10px] font-medium text-muted-foreground">
                 {venture.tag}
               </span>
             </span>

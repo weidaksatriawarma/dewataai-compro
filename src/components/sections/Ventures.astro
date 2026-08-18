@@ -12,6 +12,7 @@ import { resolveLang } from "@/lib/i18n"
 import { images } from "@/lib/images"
 import PlaceholderImage from "@/components/PlaceholderImage.astro"
 import DagangkuWordmark from "@/components/DagangkuWordmark.astro"
+import DewataTechWordmark from "@/components/DewataTechWordmark.astro"
 
 const v = getSite(resolveLang(Astro.currentLocale)).ventures
 const [tech, dagang] = v.items
@@ -59,10 +60,11 @@ const upcoming = v.upcoming
         <div data-reveal class="md:order-1">
           <span class="block font-mono text-5xl font-light text-white/25 sm:text-6xl">{tech.index}</span>
 
-          <div class="mt-6 flex items-center gap-3">
-            <span class="grid size-11 place-items-center rounded-xl border border-white/15 bg-white/10 text-white">
+          <div class="mt-6 flex flex-wrap items-center gap-3">
+            <span class="grid size-11 shrink-0 place-items-center rounded-xl border border-white/15 bg-white/10 text-white">
               <BrandMark mark="tech" class="h-[18px] text-white" />
             </span>
+            <DewataTechWordmark class="text-xl text-white sm:text-2xl" />
             <span class="rounded-full border border-white/15 px-3 py-1 text-xs text-white/70">
               {tech.tag}
             </span>
