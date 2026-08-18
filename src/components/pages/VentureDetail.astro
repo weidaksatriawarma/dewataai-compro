@@ -1,7 +1,19 @@
 ---
 import DewataTechWordmark from "@/components/DewataTechWordmark.astro"
 import { HugeiconsIcon } from "@hugeicons/react"
-import { ArrowUpRight01Icon, ArrowLeft01Icon, Tick02Icon } from "@hugeicons/core-free-icons"
+import {
+  ArrowUpRight01Icon,
+  ArrowLeft01Icon,
+  Tick02Icon,
+  Cursor02Icon,
+  Calendar03Icon,
+  ArrowDataTransferHorizontalIcon,
+  Search01Icon,
+  BubbleChatIcon,
+  Analytics01Icon,
+  Package01Icon,
+  Invoice01Icon,
+} from "@hugeicons/core-free-icons"
 import PageHero from "@/components/PageHero.astro"
 import DagangkuWordmark from "@/components/DagangkuWordmark.astro"
 import { getSite } from "@/lib/site"
@@ -19,6 +31,19 @@ const site = getSite(lang)
 const venture = site.ventures.items.find((item) => item.slug === slug)!
 const d = getPages(lang).ventureDetail[slug]
 const indexPath = path("ventures", lang)
+
+/* Keyed off `icon` in pages.ts so both locales render the same glyph for the
+   same capability. */
+const SOLUTION_ICONS = {
+  site: Cursor02Icon,
+  booking: Calendar03Icon,
+  sync: ArrowDataTransferHorizontalIcon,
+  seo: Search01Icon,
+  chat: BubbleChatIcon,
+  profit: Analytics01Icon,
+  stock: Package01Icon,
+  report: Invoice01Icon,
+} as const
 ---
 
 <PageHero eyebrow={d.eyebrow} heading={d.headline} lead={d.lead} />
@@ -93,7 +118,10 @@ const indexPath = path("ventures", lang)
       {
         d.solution.items.map((item, i) => (
           <div data-reveal style={`--reveal-delay:${i * 80}ms`} class="border-t border-hairline pt-5">
-            <h3 class="font-serif text-xl text-ink">{item.title}</h3>
+            <span class="grid size-10 place-items-center rounded-xl border border-hairline bg-muted text-ink">
+              <HugeiconsIcon icon={SOLUTION_ICONS[item.icon]} size={19} strokeWidth={1.7} />
+            </span>
+            <h3 class="mt-4 font-serif text-xl text-ink">{item.title}</h3>
             <p class="mt-2 leading-relaxed text-muted-foreground">{item.desc}</p>
           </div>
         ))

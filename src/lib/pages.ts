@@ -121,18 +121,22 @@ const content = {
           heading: "Jalur booking punya sendiri.",
           items: [
             {
+              icon: "site",
               title: "Website yang nutup booking",
               desc: "Bukan brosur online. Semua halaman diarahin ke satu tujuan: tamu klik pesan.",
             },
             {
+              icon: "booking",
               title: "Booking engine direct",
               desc: "Tamu pilih tanggal, bayar online, konfirmasi otomatis. Nol perantara.",
             },
             {
+              icon: "sync",
               title: "Integrasi channel manager",
               desc: "Kalender OTA sama direct tetap sinkron, jadi kamar gak pernah double booking.",
             },
             {
+              icon: "seo",
               title: "Brand SEO dan chatbot AI",
               desc: "Tamu yang cari nama villa kamu ketemu situsmu duluan, bukan listing OTA.",
             },
@@ -172,18 +176,22 @@ const content = {
           heading: "Pembukuan yang jalan dari chat.",
           items: [
             {
+              icon: "chat",
               title: "Catat secepat kirim chat",
               desc: 'Ketik "jual nasi goreng 25rb". AI yang urus kategori, tanggal, dan angkanya.',
             },
             {
+              icon: "profit",
               title: "Untung rugi hari ini",
               desc: "Bukan nunggu akhir bulan. Tanya kapan aja, jawabannya langsung keluar.",
             },
             {
+              icon: "stock",
               title: "Stok dan utang kepantau",
               desc: "Barang menipis sama tagihan jatuh tempo diingetin duluan, sebelum telat.",
             },
             {
+              icon: "report",
               title: "Laporan PDF siap pakai",
               desc: "Buat ajuin modal atau sekadar tahu posisi bisnis, tinggal unduh.",
             },
@@ -496,18 +504,22 @@ const content = {
           heading: "A booking channel you own.",
           items: [
             {
+              icon: "site",
               title: "A site built to close",
               desc: "Not an online brochure. Every page drives at one action: the guest books.",
             },
             {
+              icon: "booking",
               title: "Direct booking engine",
               desc: "Guests pick dates, pay online, get confirmed automatically. Zero middleman.",
             },
             {
+              icon: "sync",
               title: "Channel manager integration",
               desc: "OTA and direct calendars stay in sync, so rooms never double book.",
             },
             {
+              icon: "seo",
               title: "Brand SEO and an AI chatbot",
               desc: "Guests searching your villa name find your site first, not an OTA listing.",
             },
@@ -547,18 +559,22 @@ const content = {
           heading: "Bookkeeping that runs from a chat.",
           items: [
             {
+              icon: "chat",
               title: "Log it like a message",
               desc: 'Type "sold fried rice 25k". The AI handles category, date, and the numbers.',
             },
             {
+              icon: "profit",
               title: "Profit and loss today",
               desc: "Not at month end. Ask whenever and the answer comes straight back.",
             },
             {
+              icon: "stock",
               title: "Stock and debts tracked",
               desc: "Low stock and due invoices get flagged before they bite you.",
             },
             {
+              icon: "report",
               title: "PDF reports ready to use",
               desc: "For a loan application, or just to know where the business stands.",
             },
