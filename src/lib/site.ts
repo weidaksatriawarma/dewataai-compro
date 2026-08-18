@@ -14,11 +14,14 @@
 import { ROUTES, type Lang } from "@/lib/i18n"
 
 const WHATSAPP_NUMBER = "6285179755016"
+/* Pre-filled WhatsApp text. It ends mid-sentence on purpose: the person taps
+   through with the line already open and finishes it with their actual
+   problem, so the first message arrives with something to work with. */
 const WA_MESSAGE: Record<Lang, string> = {
-  id: "Halo Dewata AI! Saya menemukan website Anda dan ingin berdiskusi.",
-  en: "Hello Dewata AI! I found your website and would like to talk.",
+  id: "Halo Dewata AI! Aku dari website nih. Mau ambil slot ngobrol 15 menit yang gratis. Masalah paling bikin pusing di bisnisku sekarang: ",
+  en: "Hey Dewata AI! Came from your site. I want the free 15-minute slot. The biggest headache in my business right now: ",
 }
-const EMAIL = "halo@dewataai.com" // TODO: konfirmasi alamat email resmi
+const EMAIL = "gungdeweida8@gmail.com"
 const wa = (lang: Lang) =>
   `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(WA_MESSAGE[lang])}`
 
@@ -74,17 +77,17 @@ const content = {
 
     hero: {
       eyebrow: "PT Dewata Artificial Intelligence",
-      titleTop: "Kami bikin.",
-      titleAccent: "Kami jalanin.",
-      sub: "Software AI buat bisnis Indonesia: booking direct buat villa, dan pembukuan otomatis buat pemilik usaha.",
-      ctaPrimary: { label: "Lihat ekosistem", href: "#ekosistem" },
+      titleTop: "Cuan naik.",
+      titleAccent: "Ribet auto turun.",
+      sub: "Kami bikin software AI buat bisnis Indonesia. Villa dapet booking direct tanpa komisi OTA, pemilik usaha dapet pembukuan yang beres cuma modal chat.",
+      ctaPrimary: { label: "Cek yang udah jalan", href: "#ekosistem" },
       ctaSecondary: { label: "Ngobrol 15 menit", href: "#penawaran" },
       demo: {
         eco: "Struktur grup",
         active: "Aktif",
         parentMeta: "Perusahaan induk",
-        techDesc: "Website & booking villa",
-        dagangDesc: "Asisten pembukuan bisnis",
+        techDesc: "Booking direct buat villa",
+        dagangDesc: "Pembukuan modal chat",
         webTag: "Web",
         aiTag: "AI",
       },
@@ -106,8 +109,8 @@ const content = {
       heading: "Induk, bukan\nagensi.",
       imageAlt: "Tim Dewata AI di Bali",
       paragraphs: [
-        "Dewata AI punya dan jalanin produk software sendiri dari Bali.",
-        "Tiap usaha punya tim, produk, dan pelanggannya masing-masing.",
+        "Kami gak jualan jasa. Produknya punya kami, kami yang bangun, kami juga yang jalanin tiap hari dari Bali.",
+        "Tiap usaha punya tim, produk, dan pelanggan sendiri. Gak ada yang dianggurin.",
       ],
       facts: [
         { value: "Bali", label: "Basis operasi" },
@@ -119,8 +122,8 @@ const content = {
 
     pillars: {
       eyebrow: "02 · Kapabilitas",
-      heading: "Empat bidang\nkerja kami.",
-      sub: "Semuanya udah jadi produk, bukan riset di slide.",
+      heading: "Empat cara kami\nnambah cuan.",
+      sub: "Semua udah jadi produk yang dipakai orang, bukan slide yang cakep doang.",
       /* `proof` names where the capability actually runs, so the claim is
          checkable instead of decorative. */
       proofLabel: "Terbukti di",
@@ -128,25 +131,25 @@ const content = {
         {
           key: "brain",
           title: "Produk AI",
-          desc: "Aplikasi AI yang langsung kepake tiap hari.",
+          desc: "AI yang kepake tiap hari, bukan sekadar demo.",
           proof: "Dagangku AI",
         },
         {
           key: "code",
           title: "Web & Rekayasa",
-          desc: "Website dan booking engine yang nutup pesanan.",
+          desc: "Website yang nutup booking, bukan cuma cakep.",
           proof: "Dewata Tech",
         },
         {
           key: "automation",
           title: "Otomatisasi",
-          desc: "Kerjaan manual dipindah ke sistem yang jalan sendiri.",
+          desc: "Kerjaan manual pindah ke sistem. Kamu tidur, dia tetap jalan.",
           proof: "Dua usaha",
         },
         {
           key: "research",
           title: "Riset Terapan",
-          desc: "Model baru kami tes dulu sebelum masuk produk.",
+          desc: "Model baru kami tes dulu, biar kamu gak jadi kelinci percobaan.",
           proof: "Uji internal",
         },
       ],
@@ -155,7 +158,7 @@ const content = {
     ventures: {
       eyebrow: "03 · Ekosistem",
       heading: "Dua usaha jalan.\nSatu dibangun.",
-      sub: "Tiap usaha nyelesain satu masalah yang mahal.",
+      sub: "Tiap usaha ngebunuh satu masalah yang bikin duit kamu bocor.",
       items: [
         {
           index: "01",
@@ -165,12 +168,12 @@ const content = {
           domain: "dewatatech.com",
           url: "https://dewatatech.com",
           tag: "Web & Software",
-          headline: "Booking langsung.\nKomisi jadi nol.",
-          desc: "Website dan booking engine buat villa. Live dalam 7 hari.",
+          headline: "Booking langsung.\nKomisi auto nol.",
+          desc: "Website plus booking engine buat villa. Live 7 hari, komisi OTA langsung nol.",
           features: [
-            "Website villa yang nutup booking",
-            "Booking direct plus pembayaran online",
-            "Integrasi channel manager",
+            "Website villa yang nutup booking, bukan brosur",
+            "Booking direct plus bayar online",
+            "Kalender OTA sinkron, no double booking",
           ],
           proof: [
             { value: "7 hari", label: "Website live" },
@@ -193,11 +196,11 @@ const content = {
           url: "https://dagangkuai.com",
           tag: "Produk AI",
           headline: "Satu chat.\nPembukuan beres.",
-          desc: "Asisten pembukuan lewat chat buat pemilik bisnis. Tanpa install, tanpa Excel.",
+          desc: "Pembukuan lewat chat. Gak perlu install, gak perlu Excel, gak perlu ngerti akuntansi.",
           features: [
-            "Catat transaksi secepat kirim chat",
-            "Untung rugi kelihatan hari ini",
-            "Laporan PDF siap dipakai",
+            "Nyatet secepat kirim chat",
+            "Untung rugi kelihatan hari ini juga",
+            "Laporan PDF tinggal unduh",
           ],
           proof: [
             { value: "30 dtk", label: "Waktu setup" },
@@ -224,7 +227,7 @@ const content = {
         name: "Usaha ketiga",
         tag: "Segera",
         status: "Sedang dibangun",
-        desc: "Kami lagi nyari masalah mahal berikutnya.",
+        desc: "Lagi nyari masalah mahal berikutnya buat dibunuh.",
         cta: "Ceritain masalah kamu",
         href: "#kontak",
       },
@@ -232,31 +235,31 @@ const content = {
 
     stats: {
       eyebrow: "Bukti",
-      heading: "Angka yang\nbisa dibuktikan.",
+      heading: "Angka, bukan\njanji manis.",
       items: [
         {
           value: "2",
           unit: "",
           label: "Usaha aktif",
-          desc: "Dipakai dan dibayar pelanggan beneran.",
+          desc: "Dipakai dan dibayar pelanggan beneran, bukan demo.",
         },
         {
           value: "7",
           unit: " hari",
           label: "Dari brief ke live",
-          desc: "Website villa online dalam sepekan.",
+          desc: "Dari brief ke website villa online, sepekan aja.",
         },
         {
           value: "0",
           unit: "%",
           label: "Komisi OTA",
-          desc: "Booking direct masuk penuh ke pemilik.",
+          desc: "Booking direct masuk penuh ke kantong pemilik.",
         },
         {
           value: "24",
           unit: "/7",
           label: "Sistem bekerja",
-          desc: "Tetap jalan waktu kamu tidur.",
+          desc: "Sistemnya tetap kerja pas kamu lagi tidur.",
         },
       ],
     },
@@ -267,22 +270,22 @@ const content = {
       visionText: "Bisnis Indonesia\nkerja pakai AI.",
       missionLabel: "Misi",
       missionPoints: [
-        "Bikin produk yang dampaknya kelihatan di rupiah.",
-        "Kasih bisnis kecil teknologi selevel perusahaan besar.",
-        "Jaga data pelanggan kayak jaga uang mereka sendiri.",
+        "Bikin produk yang dampaknya kelihatan di rupiah, bukan di slide.",
+        "Kasih bisnis kecil senjata selevel perusahaan gede.",
+        "Jaga data pelanggan kayak jaga duit sendiri.",
       ],
       offer: {
         eyebrow: "Penawaran",
         heading: "15 menit.\nGratis, no pitch.",
-        sub: "Ceritain masalahnya, kita bedah bareng. Keluar dari obrolan, kamu udah pegang langkah konkret.",
+        sub: "Ceritain masalahnya, kita bedah bareng. Keluar dari obrolan kamu udah pegang rencana yang bisa langsung dijalanin.",
         items: [
-          "Audit singkat: di mana duitmu bocor",
-          "Rencana 30 hari yang bisa langsung jalan",
-          "Rekomendasi jujur, walau bukan produk kami",
+          "Audit kilat: di mana duit kamu bocor",
+          "Rencana 30 hari, tinggal eksekusi",
+          "Rekomendasi jujur, walau ujungnya bukan produk kami",
         ],
-        guarantee: "Gak cocok? Kami bilang terus terang. Gratis tetap gratis.",
-        note: "Dibalas di hari yang sama.",
-        cta: { label: "Ambil slot ngobrol", href: wa("id") },
+        guarantee: "Gak cocok? Kami bilang apa adanya. Gratis ya tetap gratis, gak ada jebakan.",
+        note: "Biasanya dibales di hari yang sama.",
+        cta: { label: "Gas, ambil slotnya", href: wa("id") },
       },
     },
 
@@ -296,13 +299,13 @@ const content = {
         {
           key: "local",
           title: "Berakar di Bali",
-          desc: "Tim kami di sini, sezona waktu sama kamu.",
+          desc: "Tim kami di sini, jam kerjanya sama kayak kamu.",
           cost: "Tim tetap di satu kota, walau pilihan rekrutmennya jadi lebih sempit.",
         },
         {
           key: "practical",
           title: "Hasil di atas gaya",
-          desc: "Fitur yang gak nambah hasil ya kami buang.",
+          desc: "Fitur yang gak nambah hasil ya kami buang, sesayang apa pun.",
           cost: "Fitur yang udah jadi tetap kami buang kalau ternyata gak nambah hasil.",
         },
         {
@@ -351,14 +354,14 @@ const content = {
 
     cta: {
       eyebrow: "Kontak",
-      headline: "Mau ngobrol\nbentar?",
-      sub: "Kirim pesan, kami bales di hari yang sama.",
+      headline: "Ngobrol dulu,\ngratis kok.",
+      sub: "Chat aja. Biasanya kebales di hari yang sama.",
       primary: { label: "Chat WhatsApp", href: wa("id") },
       secondary: { label: EMAIL, href: `mailto:${EMAIL}` },
     },
 
     footer: {
-      blurb: "Grup teknologi asal Bali. Kami bikin dan jalanin produk AI.",
+      blurb: "Grup teknologi dari Bali. Kami bikin produknya, kami juga yang jalanin.",
       columns: [
         {
           title: "Perusahaan",
@@ -437,17 +440,17 @@ const content = {
 
     hero: {
       eyebrow: "PT Dewata Artificial Intelligence",
-      titleTop: "We build it.",
-      titleAccent: "We run it.",
-      sub: "AI software for Indonesian business: direct booking for villas, and automatic bookkeeping for owners.",
-      ctaPrimary: { label: "See the ecosystem", href: "#ekosistem" },
+      titleTop: "Revenue up.",
+      titleAccent: "Busywork gone.",
+      sub: "We build AI software for Indonesian business. Villas take bookings direct with zero OTA commission, and owners get books that close themselves.",
+      ctaPrimary: { label: "See what is live", href: "#ekosistem" },
       ctaSecondary: { label: "Free 15-min chat", href: "#penawaran" },
       demo: {
         eco: "Group structure",
         active: "Active",
         parentMeta: "Parent company",
-        techDesc: "Villa websites & booking",
-        dagangDesc: "Business bookkeeping assistant",
+        techDesc: "Direct booking for villas",
+        dagangDesc: "Bookkeeping by chat",
         webTag: "Web",
         aiTag: "AI",
       },
@@ -469,8 +472,8 @@ const content = {
       heading: "Holding company,\nnot an agency.",
       imageAlt: "The Dewata AI team in Bali",
       paragraphs: [
-        "Dewata AI owns and runs its own software products out of Bali.",
-        "Each venture has its own team, product, and customers.",
+        "We do not sell services. We own the products, we built them, and we run them every day out of Bali.",
+        "Each venture has its own team, product, and customers. Nothing is left to coast.",
       ],
       facts: [
         { value: "Bali", label: "Home base" },
@@ -482,32 +485,32 @@ const content = {
 
     pillars: {
       eyebrow: "02 · Capabilities",
-      heading: "Four areas\nwe work in.",
-      sub: "All of it already shipped as product, not research on a slide.",
+      heading: "Four ways we\nmove the money.",
+      sub: "All of it already shipped and in use, not research on a slide.",
       proofLabel: "Proven in",
       items: [
         {
           key: "brain",
           title: "AI Products",
-          desc: "AI apps that do real work from day one.",
+          desc: "AI that gets used every day, not just demoed.",
           proof: "Dagangku AI",
         },
         {
           key: "code",
           title: "Web & Engineering",
-          desc: "Websites and booking engines that close orders.",
+          desc: "Websites that close bookings, not just look good.",
           proof: "Dewata Tech",
         },
         {
           key: "automation",
           title: "Automation",
-          desc: "Manual work moved into a system that runs itself.",
+          desc: "Manual work moves into a system. You sleep, it keeps going.",
           proof: "Both ventures",
         },
         {
           key: "research",
           title: "Applied Research",
-          desc: "New models get tested before they reach a product.",
+          desc: "New models get tested here first, so you are never the guinea pig.",
           proof: "Internal testing",
         },
       ],
@@ -516,7 +519,7 @@ const content = {
     ventures: {
       eyebrow: "03 · Ecosystem",
       heading: "Two live now.\nOne building.",
-      sub: "Each venture solves one expensive problem.",
+      sub: "Each venture kills one problem that costs real money.",
       items: [
         {
           index: "01",
@@ -527,11 +530,11 @@ const content = {
           url: "https://dewatatech.com",
           tag: "Web & Software",
           headline: "Book direct.\nZero commission.",
-          desc: "Websites and booking engines for villas. Live in 7 days.",
+          desc: "Websites plus a booking engine for villas. Live in 7 days, OTA commission straight to zero.",
           features: [
-            "Villa websites built to close bookings",
-            "Direct booking and online payment",
-            "Channel manager integration",
+            "Villa sites built to close, not to browse",
+            "Direct booking with online payment",
+            "OTA calendars in sync, no double bookings",
           ],
           proof: [
             { value: "7 days", label: "Website live" },
@@ -554,11 +557,11 @@ const content = {
           url: "https://dagangkuai.com",
           tag: "AI Product",
           headline: "One chat.\nBooks done.",
-          desc: "A chat-based bookkeeping assistant for business owners. No install, no Excel.",
+          desc: "Bookkeeping over chat. No install, no Excel, no accounting degree.",
           features: [
-            "Log a sale as fast as sending a chat",
-            "Profit and loss visible today",
-            "PDF reports ready to use",
+            "Log a sale as fast as sending a text",
+            "Profit and loss visible today, not month end",
+            "PDF reports ready to download",
           ],
           proof: [
             { value: "30 sec", label: "Setup time" },
@@ -585,7 +588,7 @@ const content = {
         name: "Third venture",
         tag: "Coming soon",
         status: "In the works",
-        desc: "We are hunting for the next expensive problem.",
+        desc: "We are hunting the next expensive problem to kill.",
         cta: "Tell us the problem",
         href: "#kontak",
       },
@@ -593,31 +596,31 @@ const content = {
 
     stats: {
       eyebrow: "Proof",
-      heading: "Numbers we\ncan back up.",
+      heading: "Numbers, not\npromises.",
       items: [
         {
           value: "2",
           unit: "",
           label: "Ventures live",
-          desc: "Used and paid for by real customers.",
+          desc: "Used and paid for by real customers, not demoed.",
         },
         {
           value: "7",
           unit: " days",
           label: "From brief to live",
-          desc: "A villa website online in a week.",
+          desc: "From brief to a villa website online, one week.",
         },
         {
           value: "0",
           unit: "%",
           label: "OTA commission",
-          desc: "Direct bookings land with the owner in full.",
+          desc: "Direct bookings land in the owner pocket in full.",
         },
         {
           value: "24",
           unit: "/7",
           label: "Systems working",
-          desc: "Serving your customers while you sleep.",
+          desc: "The system keeps working while you sleep.",
         },
       ],
     },
@@ -628,21 +631,21 @@ const content = {
       visionText: "Every business\nruns on AI.",
       missionLabel: "Mission",
       missionPoints: [
-        "Build products whose impact is measured in rupiah.",
-        "Give small businesses enterprise-grade technology.",
-        "Guard customer data the way we would guard their money.",
+        "Build products whose impact shows up in rupiah, not in slides.",
+        "Give small businesses the same firepower as the big ones.",
+        "Guard customer data the way we would guard our own money.",
       ],
       offer: {
         eyebrow: "The offer",
         heading: "15 minutes.\nFree, no pitch.",
-        sub: "Tell us the problem and we break it down with you. You leave the call with concrete steps.",
+        sub: "Tell us the problem and we break it down with you. You leave with a plan you can start on tomorrow.",
         items: [
-          "A quick audit of where the money leaks",
-          "A 30-day plan you can start on",
+          "A fast audit of where the money leaks",
+          "A 30-day plan you can just execute",
           "An honest answer, even if it is not our product",
         ],
-        guarantee: "Not a fit? We say so straight. Free stays free.",
-        note: "Answered the same day.",
+        guarantee: "Not a fit? We say so straight. Free stays free, no catch.",
+        note: "Usually answered the same day.",
         cta: { label: "Grab a slot", href: wa("en") },
       },
     },
@@ -655,13 +658,13 @@ const content = {
         {
           key: "local",
           title: "Rooted in Bali",
-          desc: "Our team is here, in your time zone.",
+          desc: "Our team is here, working your hours.",
           cost: "The team stays in one city, even though it narrows who we can hire.",
         },
         {
           key: "practical",
           title: "Results over polish",
-          desc: "If a feature adds nothing, we cut it.",
+          desc: "If a feature adds nothing, we cut it, however much we liked it.",
           cost: "A finished feature still gets cut when it turns out to add nothing.",
         },
         {
@@ -710,14 +713,14 @@ const content = {
 
     cta: {
       eyebrow: "Contact",
-      headline: "Want to talk\nit over?",
-      sub: "Send a message and we reply the same day.",
+      headline: "Got 15 minutes?\nIt is free.",
+      sub: "Message us. Usually answered the same day.",
       primary: { label: "Chat on WhatsApp", href: wa("en") },
       secondary: { label: EMAIL, href: `mailto:${EMAIL}` },
     },
 
     footer: {
-      blurb: "A technology group out of Bali. We build and run AI products.",
+      blurb: "A technology group from Bali. We build the products and we run them.",
       columns: [
         {
           title: "Company",

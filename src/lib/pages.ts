@@ -76,7 +76,7 @@ const content = {
       },
       eyebrow: "Usaha",
       heading: "Yang kami punya\ndan jalankan.",
-      lead: "Bukan portofolio investasi. Semua usaha di bawah ini kami bangun sendiri, kami jalankan sendiri, dan kami pegang sampai sekarang.",
+      lead: "Ini bukan portofolio investasi. Semua usaha di bawah ini kami bangun sendiri, kami jalanin sendiri, dan sampai sekarang masih kami pegang.",
       openLabel: "Lihat detail",
       visitLabel: "Kunjungi situs",
       /* The hero renders as a register of holdings: entry 03 is deliberately
@@ -91,7 +91,7 @@ const content = {
           no: "03",
           name: "Belum diisi",
           field: "Terbuka",
-          desc: "Slot berikutnya masih kosong. Ceritain kerjaan yang tiap bulan nguras waktu dan uang kamu.",
+          desc: "Slot berikutnya masih kosong. Ceritain kerjaan yang tiap bulan nguras waktu sama duit kamu.",
           action: "Ajukan",
         },
       },
@@ -105,32 +105,32 @@ const content = {
             "Dewata Tech membangun website dan booking engine untuk villa di Bali. Tamu booking langsung, komisi OTA jadi nol.",
         },
         eyebrow: "Usaha 01",
-        headline: "Booking langsung.\nKomisi jadi nol.",
-        lead: "Website dan booking engine buat villa dan properti sewa. Live dalam 7 hari.",
+        headline: "Booking langsung.\nKomisi auto nol.",
+        lead: "Website plus booking engine buat villa dan properti sewa. Live 7 hari, komisi OTA langsung nol.",
         problem: {
           label: "Masalahnya",
           heading: "Villa penuh, rekening tetap tipis.",
           body: [
-            "Setiap booking lewat OTA motong 15% sampai 30% pendapatan sebelum uangnya sampai ke pemilik.",
+            "Tiap booking lewat OTA motong 15% sampai 30% pendapatan sebelum duitnya nyampe ke pemilik.",
             "Villa dengan omzet Rp100 juta sebulan bisa kehilangan Rp20 juta cuma dari komisi. Tiap bulan, selamanya.",
           ],
           cost: { value: "15-30%", label: "Pendapatan yang lari ke OTA" },
         },
         solution: {
           label: "Yang kami bangun",
-          heading: "Jalur booking milik sendiri.",
+          heading: "Jalur booking punya sendiri.",
           items: [
             {
               title: "Website yang nutup booking",
-              desc: "Bukan brosur online. Setiap halaman diarahkan ke satu tujuan: tamu klik pesan.",
+              desc: "Bukan brosur online. Semua halaman diarahin ke satu tujuan: tamu klik pesan.",
             },
             {
               title: "Booking engine direct",
-              desc: "Tamu pilih tanggal, bayar online, konfirmasi otomatis. Tanpa perantara.",
+              desc: "Tamu pilih tanggal, bayar online, konfirmasi otomatis. Nol perantara.",
             },
             {
               title: "Integrasi channel manager",
-              desc: "Kalender OTA dan direct tetap sinkron, jadi kamar gak pernah double booking.",
+              desc: "Kalender OTA sama direct tetap sinkron, jadi kamar gak pernah double booking.",
             },
             {
               title: "Brand SEO dan chatbot AI",
@@ -144,7 +144,7 @@ const content = {
         },
         cta: {
           heading: "Mau lihat versinya buat villa kamu?",
-          body: "Dewata Tech punya tim dan situsnya sendiri. Semua detail harga dan portofolio ada di sana.",
+          body: "Dewata Tech punya tim sama situsnya sendiri. Detail harga dan portofolionya lengkap di sana.",
           label: "Buka dewatatech.com",
         },
       },
@@ -157,13 +157,13 @@ const content = {
         },
         eyebrow: "Usaha 02",
         headline: "Satu chat.\nPembukuan beres.",
-        lead: "Asisten pembukuan lewat chat buat pemilik bisnis. Tanpa install, tanpa Excel.",
+        lead: "Pembukuan lewat chat buat pemilik bisnis. Gak perlu install, gak perlu Excel, gak perlu ngerti akuntansi.",
         problem: {
           label: "Masalahnya",
           heading: "Jualan tiap hari, untungnya gak tahu.",
           body: [
-            "Kebanyakan pemilik usaha gak tahu untung aslinya berapa, karena nyatet itu ribet dan gampang kelewat.",
-            "Tanpa catatan yang rapi, gak ada dasar buat naikin harga, ajukan modal, atau tahu produk mana yang sebenarnya rugi.",
+            "Kebanyakan pemilik usaha gak tahu untung aslinya berapa, soalnya nyatet itu ribet dan gampang kelewat.",
+            "Tanpa catatan yang rapi, gak ada dasar buat naikin harga, ajuin modal, atau tahu produk mana yang diam-diam bikin rugi.",
           ],
           cost: { value: "0", label: "Catatan yang biasanya dipegang pemilik bisnis" },
         },
@@ -177,15 +177,15 @@ const content = {
             },
             {
               title: "Untung rugi hari ini",
-              desc: "Bukan akhir bulan. Tanya kapan saja, jawabannya langsung keluar.",
+              desc: "Bukan nunggu akhir bulan. Tanya kapan aja, jawabannya langsung keluar.",
             },
             {
               title: "Stok dan utang kepantau",
-              desc: "Barang menipis dan tagihan jatuh tempo diingetin duluan.",
+              desc: "Barang menipis sama tagihan jatuh tempo diingetin duluan, sebelum telat.",
             },
             {
               title: "Laporan PDF siap pakai",
-              desc: "Buat pengajuan modal atau sekadar tahu posisi bisnis, tinggal unduh.",
+              desc: "Buat ajuin modal atau sekadar tahu posisi bisnis, tinggal unduh.",
             },
           ],
         },
@@ -195,7 +195,7 @@ const content = {
         },
         cta: {
           heading: "Mau coba sendiri?",
-          body: "Dagangku AI gratis buat mulai. Buka chatnya dan catat transaksi pertama kamu.",
+          body: "Dagangku AI gratis buat mulai. Buka chatnya, catat transaksi pertama kamu, kelar.",
           label: "Buka dagangkuai.com",
         },
       },
@@ -209,7 +209,7 @@ const content = {
       },
       eyebrow: "Tentang",
       heading: "Induk, bukan\nagensi.",
-      lead: "Dewata AI bukan penyedia jasa yang ngerjain proyek orang lain. Kami punya produknya, kami yang jalanin, dan kami yang nanggung risikonya.",
+      lead: "Dewata AI bukan penyedia jasa yang ngerjain proyek orang. Produknya punya kami, kami yang jalanin, dan kami juga yang nanggung risikonya.",
       model: {
         label: "Cara kami kerja",
         heading: "Tiga tahap, tanpa lompatan.",
@@ -217,17 +217,17 @@ const content = {
           {
             index: "01",
             title: "Bangun",
-            desc: "Kami cari satu masalah yang mahal dan berulang, lalu bikin produknya sampai benar-benar dipakai.",
+            desc: "Kami cari satu masalah yang mahal dan berulang, terus bikin produknya sampai beneran dipakai.",
           },
           {
             index: "02",
             title: "Jalankan",
-            desc: "Produk yang jalan butuh operator, bukan cuma developer. Tim kami yang pegang harian.",
+            desc: "Produk yang jalan butuh operator, bukan cuma developer. Tim kami yang pegang hariannya.",
           },
           {
             index: "03",
             title: "Tumbuhkan",
-            desc: "Kami pegang usahanya lama. Tidak dijual cepat, tidak ditinggal setengah jalan.",
+            desc: "Kami pegang usahanya lama. Gak dijual buru-buru, gak ditinggal setengah jalan.",
           },
         ],
       },
@@ -350,24 +350,24 @@ const content = {
       meta: {
         title: "Kontak | Dewata AI",
         description:
-          "Hubungi PT Dewata Artificial Intelligence lewat WhatsApp atau email. Dibalas di hari yang sama.",
+          "Hubungi PT Dewata Artificial Intelligence lewat WhatsApp atau email. Biasanya dibales di hari yang sama.",
       },
       eyebrow: "Kontak",
-      heading: "Mau ngobrol\nbentar?",
-      lead: "Ceritain masalahnya, kita bedah bareng. Gak ada presentasi jualan, gak ada biaya.",
+      heading: "Ngobrol dulu,\ngratis kok.",
+      lead: "Ceritain masalahnya, kita bedah bareng. Gak ada presentasi jualan, gak ada biaya, gak ada jebakan.",
       channels: {
         label: "Jalur langsung",
         items: [
-          { key: "whatsapp", title: "WhatsApp", desc: "Paling cepat. Dibalas di hari yang sama." },
-          { key: "email", title: "Email", desc: "Buat hal yang butuh lampiran atau jejak tertulis." },
-          { key: "office", title: "Kantor", desc: "Denpasar, Bali. Ketemu langsung bisa diatur." },
+          { key: "whatsapp", title: "WhatsApp", desc: "Paling gercep. Biasanya kebales hari itu juga." },
+          { key: "email", title: "Email", desc: "Buat yang butuh lampiran atau jejak tertulis." },
+          { key: "office", title: "Kantor", desc: "Denpasar, Bali. Mau ketemu langsung juga bisa." },
         ],
       },
       steps: {
         label: "Setelah kamu kirim pesan",
         items: [
           { index: "01", title: "Kami bales hari itu juga", desc: "Bukan bot, bukan template." },
-          { index: "02", title: "Ngobrol 15 menit", desc: "Kamu cerita, kami tanya balik secukupnya." },
+          { index: "02", title: "Ngobrol 15 menit", desc: "Kamu cerita, kami tanya balik seperlunya." },
           {
             index: "03",
             title: "Kamu dapat jawaban jujur",
@@ -453,7 +453,7 @@ const content = {
       },
       eyebrow: "Ventures",
       heading: "What we own\nand operate.",
-      lead: "Not an investment portfolio. We built each of these ourselves, we run them ourselves, and we still hold them.",
+      lead: "This is not an investment portfolio. We built each of these ourselves, we run them ourselves, and we still hold every one.",
       openLabel: "See details",
       visitLabel: "Visit site",
       register: {
@@ -466,7 +466,7 @@ const content = {
           no: "03",
           name: "Not filled yet",
           field: "Open",
-          desc: "The next slot is still empty. Tell us about the job that drains your time and money every month.",
+          desc: "The next slot is still empty. Tell us about the job that drains your time and your money every month.",
           action: "Propose",
         },
       },
@@ -481,13 +481,13 @@ const content = {
         },
         eyebrow: "Venture 01",
         headline: "Book direct.\nZero commission.",
-        lead: "Websites and booking engines for villas and short-stay rentals. Live in 7 days.",
+        lead: "Websites plus a booking engine for villas and short-stay rentals. Live in 7 days, OTA commission straight to zero.",
         problem: {
           label: "The problem",
           heading: "Full villa, thin bank account.",
           body: [
             "Every OTA booking takes 15% to 30% of the revenue before it ever reaches the owner.",
-            "A villa doing Rp100 million a month can lose Rp20 million to commission alone. Every month, forever.",
+            "A villa doing Rp100 million a month loses Rp20 million to commission alone. Every month, forever.",
           ],
           cost: { value: "15-30%", label: "Of revenue lost to the OTA" },
         },
@@ -497,11 +497,11 @@ const content = {
           items: [
             {
               title: "A site built to close",
-              desc: "Not an online brochure. Every page points at one action: the guest books.",
+              desc: "Not an online brochure. Every page drives at one action: the guest books.",
             },
             {
               title: "Direct booking engine",
-              desc: "Guests pick dates, pay online, get confirmed automatically. No middleman.",
+              desc: "Guests pick dates, pay online, get confirmed automatically. Zero middleman.",
             },
             {
               title: "Channel manager integration",
@@ -519,7 +519,7 @@ const content = {
         },
         cta: {
           heading: "Want to see it for your villa?",
-          body: "Dewata Tech has its own team and its own site. Pricing and portfolio live there.",
+          body: "Dewata Tech has its own team and its own site. Full pricing and portfolio live there.",
           label: "Open dewatatech.com",
         },
       },
@@ -532,13 +532,13 @@ const content = {
         },
         eyebrow: "Venture 02",
         headline: "One chat.\nBooks done.",
-        lead: "A chat-based bookkeeping assistant for business owners. No install, no Excel.",
+        lead: "Bookkeeping over chat for business owners. No install, no Excel, no accounting degree.",
         problem: {
           label: "The problem",
           heading: "Selling daily, profit unknown.",
           body: [
             "Most owners have no idea what they actually earn, because recording it is tedious and easy to skip.",
-            "Without clean records there is no basis to raise prices, apply for capital, or find out which product is quietly losing money.",
+            "Without clean records there is no basis to raise prices, apply for capital, or catch the product that is quietly losing money.",
           ],
           cost: { value: "0", label: "Records most business owners keep" },
         },
@@ -552,11 +552,11 @@ const content = {
             },
             {
               title: "Profit and loss today",
-              desc: "Not at month end. Ask any time and the answer comes straight back.",
+              desc: "Not at month end. Ask whenever and the answer comes straight back.",
             },
             {
               title: "Stock and debts tracked",
-              desc: "Low stock and due invoices get flagged before they bite.",
+              desc: "Low stock and due invoices get flagged before they bite you.",
             },
             {
               title: "PDF reports ready to use",
@@ -570,7 +570,7 @@ const content = {
         },
         cta: {
           heading: "Want to try it?",
-          body: "Dagangku AI is free to start. Open the chat and log your first transaction.",
+          body: "Dagangku AI is free to start. Open the chat, log your first transaction, done.",
           label: "Open dagangkuai.com",
         },
       },
@@ -723,15 +723,15 @@ const content = {
       meta: {
         title: "Contact | Dewata AI",
         description:
-          "Reach PT Dewata Artificial Intelligence by WhatsApp or email. We reply the same day.",
+          "Reach PT Dewata Artificial Intelligence by WhatsApp or email. Usually answered the same day.",
       },
       eyebrow: "Contact",
-      heading: "Want to talk\nit over?",
-      lead: "Tell us the problem and we break it down with you. No sales deck, no fee.",
+      heading: "Got 15 minutes?\nIt is free.",
+      lead: "Tell us the problem and we break it down with you. No sales deck, no fee, no catch.",
       channels: {
         label: "Direct lines",
         items: [
-          { key: "whatsapp", title: "WhatsApp", desc: "Fastest route. Answered the same day." },
+          { key: "whatsapp", title: "WhatsApp", desc: "Fastest route. Usually answered the same day." },
           { key: "email", title: "Email", desc: "For anything needing attachments or a paper trail." },
           { key: "office", title: "Office", desc: "Denpasar, Bali. Meeting in person can be arranged." },
         ],
