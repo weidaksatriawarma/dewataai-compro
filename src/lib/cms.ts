@@ -45,10 +45,19 @@ export interface ArticleFacets {
   total: number
 }
 
+/**
+ * CMS reads deliberately bypass apicdn.sanity.io. The journal and press routes
+ * render per request, so the only thing standing between "Publish" in the
+ * Studio and the live page is this client. The CDN purges on publish, but the
+ * invalidation is queued, so a fresh read is the only way to guarantee a new
+ * post is on the site immediately rather than a few moments later.
+ */
+const freshClient = sanityClient.withConfig({ useCdn: false })
+
 async function query<T>(groq: string, params: Record<string, unknown>, fallback: T): Promise<T> {
   if (!cmsConfigured) return fallback
   try {
-    return await sanityClient.fetch<T>(groq, params)
+    return await freshClient.fetch<T>(groq, params)
   } catch (error) {
     console.warn(`[cms] query failed, falling back to empty: ${(error as Error).message}`)
     return fallback
