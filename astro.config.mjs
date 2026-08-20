@@ -6,11 +6,68 @@ import react from "@astrojs/react"
 import sanity from "@sanity/astro"
 import cloudflare from "@astrojs/cloudflare"
 import { loadEnv } from "vite"
+import path from "node:path"
 
 // Host platforms inject env vars into process.env; local development uses .env
 // files, which loadEnv reads. Check both so either source works.
 const fileEnv = loadEnv(process.env.NODE_ENV ?? "development", process.cwd(), "")
 const env = { ...fileEnv, ...process.env }
+
+// @sanity/astro builds its Vite aliases by resolving `<pkg>/package.json` and
+// stripping the suffix with a POSIX-only regex. On Windows the resolved path
+// uses backslashes, so nothing is stripped and `sanity` and `styled-components`
+// alias to package.json itself. Dependency pre-bundling then fails and the
+// Studio at /admin renders a blank page.
+//
+// Declaring correct aliases here does not help, because the integration's
+// entries are matched first. Correcting them in `configResolved` is too late,
+// because Vite has already snapshotted the list by then. The `config` hook is
+// the window that works: `post` runs it after the integration has added its
+// entries, while the config is still being assembled.
+function fixSanityWindowsAliases() {
+  const misdirected = /[\\/]node_modules[\\/](sanity|styled-components)[\\/]package\.json$/
+
+  /**
+   * The directory an alias meant to point at, or null if it is already fine.
+   * @param {unknown} target
+   */
+  const repointed = (target) =>
+    typeof target === "string" && misdirected.test(target)
+      ? path.dirname(target).split(path.sep).join("/")
+      : null
+
+  /**
+   * Vite accepts aliases as an array of entries or as a find/replace record,
+   * so handle both. Foreign config shapes, hence the loose type.
+   * @param {any} alias
+   */
+  const repoint = (alias) => {
+    if (!alias) return
+    if (Array.isArray(alias)) {
+      for (const entry of alias) {
+        const fixed = repointed(entry?.replacement)
+        if (fixed) entry.replacement = fixed
+      }
+      return
+    }
+    for (const [key, value] of Object.entries(alias)) {
+      const fixed = repointed(value)
+      if (fixed) alias[key] = fixed
+    }
+  }
+
+  /** @type {import("vite").Plugin} */
+  const plugin = {
+    name: "dewataai:fix-sanity-windows-aliases",
+    enforce: "post",
+    apply: "serve",
+    config(config) {
+      repoint(config.resolve?.alias)
+    },
+  }
+
+  return plugin
+}
 
 // https://astro.build/config
 export default defineConfig({
@@ -32,15 +89,17 @@ export default defineConfig({
   },
 
   vite: {
-    plugins: [tailwindcss()],
+    plugins: [tailwindcss(), fixSanityWindowsAliases()],
   },
 
   integrations: [
-    // Sanity powers the journal + press release pages. The placeholder project
-    // id keeps builds working before the real credentials land in .env; every
-    // query goes through lib/cms.ts, which falls back to an empty result.
+    // Sanity powers the journal + press release pages. The project id and
+    // dataset are committed as defaults because Astro inlines them into the
+    // browser bundle at build time regardless, so they are public either way.
+    // A host that builds from git without the env vars set then still gets a
+    // working CMS; .env overrides when pointing at a different project.
     sanity({
-      projectId: env.PUBLIC_SANITY_PROJECT_ID || "placeholder",
+      projectId: env.PUBLIC_SANITY_PROJECT_ID || "obs57lvl",
       dataset: env.PUBLIC_SANITY_DATASET || "production",
       // The CDN purges on publish, so on-demand pages stay fast and still show
       // new content within seconds.
