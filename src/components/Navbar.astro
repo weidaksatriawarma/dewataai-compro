@@ -78,7 +78,7 @@ const homeHref = localeHref(lang)
           id="theme-toggle"
           type="button"
           aria-label={ui.themeToggle}
-          class="theme-toggle grid size-10 place-items-center rounded-full border border-hairline bg-background/60 text-ink transition-colors hover:bg-muted"
+          class="theme-toggle grid size-10 place-items-center rounded-full border border-hairline bg-background text-ink transition-colors hover:bg-muted"
         >
           <svg class="icon-sun size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <circle cx="12" cy="12" r="4"></circle>
@@ -107,7 +107,7 @@ const homeHref = localeHref(lang)
           aria-controls="mobile-menu"
           data-open={ui.openMenu}
           data-close={ui.closeMenu}
-          class="nav-toggle grid size-10 place-items-center rounded-full border border-hairline bg-background/60 text-ink transition-colors hover:bg-muted md:hidden"
+          class="nav-toggle grid size-10 place-items-center rounded-full border border-hairline bg-background text-ink transition-colors hover:bg-muted md:hidden"
         >
           <svg class="icon-menu size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
             <path d="M4 9h16M4 15h16"></path>
@@ -150,15 +150,15 @@ const homeHref = localeHref(lang)
 
 <style>
   .nav-bar {
-    transition:
-      background-color 0.3s ease,
-      border-color 0.3s ease,
-      backdrop-filter 0.3s ease;
+    /* Fully opaque, and opaque from the very top of the page rather than only
+       once scrolled. The mobile panel expands inside this element, so any
+       translucency here lets the page show through the open menu. Scrolling now
+       only draws the bottom rule. */
+    background-color: var(--background);
+    transition: border-color 0.3s ease;
   }
   .nav-bar.is-scrolled {
     border-bottom-color: var(--hairline);
-    /* solid translucent (no backdrop-filter) so the sticky bar never repaints a blur on scroll */
-    background-color: color-mix(in oklch, var(--background) 92%, transparent);
   }
   .nav-toggle .icon-close {
     display: none;
