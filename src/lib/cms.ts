@@ -10,7 +10,13 @@ import { createImageUrlBuilder } from "@sanity/image-url"
 import { toHTML } from "@portabletext/to-html"
 import type { Lang } from "@/lib/i18n"
 
-export const cmsConfigured = Boolean(import.meta.env.PUBLIC_SANITY_PROJECT_ID)
+// Read the id the client was actually built with rather than the env var.
+// The env var is absent on any host that builds from git without it set, which
+// would switch every query to its empty fallback even though the client is
+// perfectly well configured from the committed default.
+const configuredProjectId = sanityClient.config().projectId
+
+export const cmsConfigured = Boolean(configuredProjectId) && configuredProjectId !== "placeholder"
 
 export interface Article {
   _id: string

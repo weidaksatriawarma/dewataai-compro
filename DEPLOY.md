@@ -60,9 +60,19 @@ binds for sessions. Follow the prompts.
 
 - Build command: `npm run build`
 - Output directory: `dist`
-- Add `PUBLIC_SANITY_PROJECT_ID` and `PUBLIC_SANITY_DATASET` as **build**
-  environment variables. They are read in `astro.config.mjs`, so they must be
-  present at build time, not only at runtime.
+- No environment variables are required. The project id and dataset are
+  committed as defaults, so a build from git is self-sufficient.
+
+Set `PUBLIC_SANITY_PROJECT_ID` / `PUBLIC_SANITY_DATASET` as **build**
+environment variables only to point a deployment at a different project or
+dataset. They are read in `astro.config.mjs` and inlined into the bundle, so
+they have to be present at build time; setting them as runtime-only variables
+does nothing.
+
+> Both values were previously supplied by `.env` alone. Because `.env` is
+> gitignored, a git-driven build had no way to see them and the Studio at
+> `/admin` came up with the project id `placeholder`. Committing the defaults
+> is what removes that failure mode.
 
 After the first deploy, add your production domain to the Sanity CORS list if
 it differs from `dewataai.com`.
