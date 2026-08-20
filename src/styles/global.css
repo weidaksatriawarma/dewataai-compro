@@ -140,7 +140,12 @@
     --border: oklch(1 0 0 / 10%);
     --input: oklch(1 0 0 / 15%);
     --ring: oklch(0.556 0 0);
-    --paper: oklch(0.205 0 0);
+    /* Matches --background on purpose. In light mode paper sits 1.6% below
+       background, a separation you barely register. Carrying that idea over as
+       0.205 against 0.145 is a far larger step in the dark, and every bg-paper
+       section reads as a grey slab rather than a quiet layer. Sections that sit
+       on paper hold their own borders, so they stay legible without it. */
+    --paper: oklch(0.145 0 0);
     /* In dark mode "ink" becomes the light foreground so text-ink / bg-ink flip
        correctly. The always-dark .ink-section band re-pins --ink below. */
     --ink: oklch(0.985 0 0);
