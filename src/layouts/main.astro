@@ -10,6 +10,8 @@ interface Props {
   /** Path of this page in each locale, so canonical + hreflang stay correct. */
   pathId?: string
   pathEn?: string
+  /** Share card image, root-relative. Articles pass their own cover here. */
+  ogImage?: string
 }
 
 const lang = resolveLang(Astro.currentLocale)
@@ -20,11 +22,16 @@ const {
   description = t.meta.description,
   pathId = "/",
   pathEn = "/en/",
+  ogImage = "/og.png",
 } = Astro.props
 
 const urlId = new URL(pathId, Astro.site).href
 const urlEn = new URL(pathEn, Astro.site).href
 const canonical = lang === "en" ? urlEn : urlId
+
+// Scrapers reject relative image paths, so this has to be absolute.
+const ogImageUrl = new URL(ogImage, Astro.site).href
+const usingDefaultCard = ogImage === "/og.png"
 
 /** Organization schema: legal entity, registered address and NIB (AHU / OSS records). */
 const legal = t.brand.legal
@@ -70,7 +77,14 @@ const orgSchema = {
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    {/* .ico carries 16/32/48 for tabs, bookmarks and Google's search result
+        favicon; the PNG serves browsers that prefer a higher-resolution
+        bitmap; apple-touch-icon is what iOS uses when a page is saved to the
+        home screen; the manifest supplies the Android and PWA icons. */}
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
     <meta name="generator" content={Astro.generator} />
 
     <title>{title}</title>
@@ -88,9 +102,17 @@ const orgSchema = {
     <meta property="og:url" content={canonical} />
     <meta property="og:site_name" content="Dewata AI" />
     <meta property="og:locale" content={t.meta.ogLocale} />
+    {/* Dimensions let Facebook, LinkedIn and WhatsApp lay the card out on
+        first scrape instead of showing nothing until they fetch the file. */}
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:type" content="image/png" />
+    {usingDefaultCard && <meta property="og:image:width" content="1200" />}
+    {usingDefaultCard && <meta property="og:image:height" content="630" />}
+    <meta property="og:image:alt" content={usingDefaultCard ? "Dewata AI" : title} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
 
     <script
       type="application/ld+json"
