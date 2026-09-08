@@ -1,0 +1,17 @@
+---
+import PageLayout from "@/layouts/page.astro"
+import SafetyPage from "@/components/pages/SafetyPage.astro"
+import { getSafety } from "@/lib/safety"
+import { resolveLang, path } from "@/lib/i18n"
+
+const p = getSafety(resolveLang(Astro.currentLocale))
+---
+
+<PageLayout
+  title={p.meta.title}
+  description={p.meta.description}
+  pathId={path("safety", "id")}
+  pathEn={path("safety", "en")}
+>
+  <SafetyPage />
+</PageLayout>

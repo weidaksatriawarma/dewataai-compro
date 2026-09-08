@@ -24,6 +24,7 @@ export const ROUTES = {
   journal: { id: "/jurnal/", en: "/en/journal/" },
   press: { id: "/pers/", en: "/en/press/" },
   vision: { id: "/visi/", en: "/en/vision/" },
+  safety: { id: "/keselamatan/", en: "/en/safety/" },
   investor: { id: "/investor/", en: "/en/investor/" },
   thesis: { id: "/tesis/", en: "/en/thesis/" },
   contact: { id: "/kontak/", en: "/en/contact/" },

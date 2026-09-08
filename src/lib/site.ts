@@ -86,8 +86,8 @@ const content = {
             },
             {
               label: "Usaha ketiga",
-              href: `${ROUTES.ventures.id}#usaha-ketiga`,
-              desc: "Keselamatan publik, masih tahap riset",
+              href: ROUTES.safety.id,
+              desc: "Nyegah serangan teror di infrastruktur penting",
               icon: "safety",
             },
             {
@@ -295,9 +295,16 @@ const content = {
         tag: "Dijajaki",
         status: "Masih riset",
         desc: "Teknologi buat nyegah serangan teror di infrastruktur penting: bandara, pelabuhan, pembangkit, tempat ibadah. Dipasang cuma kalau operator lokasinya sendiri yang minta, pakai dasar hukum dan batas simpan data. Bukan pemantauan massal warga.",
-        cta: "Ceritain masalah kamu",
-        href: "#kontak",
+        cta: "Lihat usaha ketiga",
+        href: ROUTES.safety.id,
       },
+    },
+
+    dataThesis: {
+      label: "Yang numpuk",
+      statement: "Fitur bisa disalin.\nData yang numpuk tiap hari, enggak.",
+      body: "Tiap pemilik usaha yang benerin catatan salah di Dagangku ninggalin satu pasangan data yang gak dijual di mana pun: bahasa warung ke jurnal akuntansi. Itu yang kami kejar, bukan jumlah fitur.",
+      cta: "Lihat hitungannya",
     },
 
     stats: {
@@ -521,8 +528,8 @@ const content = {
             },
             {
               label: "Third venture",
-              href: `${ROUTES.ventures.en}#usaha-ketiga`,
-              desc: "Public safety, still at research stage",
+              href: ROUTES.safety.en,
+              desc: "Preventing terror attacks on critical infrastructure",
               icon: "safety",
             },
             {
@@ -728,9 +735,16 @@ const content = {
         tag: "Exploring",
         status: "Research stage",
         desc: "Technology for preventing terror attacks on critical infrastructure: airports, ports, power plants, places of worship. Deployed only where the site operator asks for it, with a legal basis and retention limits. Not population-scale monitoring.",
-        cta: "Tell us the problem",
-        href: "#kontak",
+        cta: "See the third venture",
+        href: ROUTES.safety.en,
       },
+    },
+
+    dataThesis: {
+      label: "What compounds",
+      statement: "Features get copied.\nWhat compounds daily does not.",
+      body: "Every owner who fixes a wrong line in Dagangku leaves behind a pair nobody sells anywhere: shop-floor Indonesian mapped to an accounting entry. That is what we are after, not the feature count.",
+      cta: "See the arithmetic",
     },
 
     stats: {

@@ -110,7 +110,7 @@ const content = {
           "Keputusan tetap di tangan orang",
           "Bukan pemantauan massal warga",
         ],
-        cta: "Ngobrol soal ini",
+        cta: "Buka halamannya",
       },
     },
 
@@ -568,7 +568,7 @@ const content = {
           "Decisions stay with people",
           "Not population-scale monitoring",
         ],
-        cta: "Talk to us about it",
+        cta: "Open the page",
       },
     },
 

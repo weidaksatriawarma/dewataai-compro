@@ -1,0 +1,213 @@
+---
+/**
+ * The third venture. Structured so the limits are impossible to skim past:
+ * they get their own numbered section, in the ink band, at the visual centre
+ * of the page rather than tucked under the fold.
+ */
+import { HugeiconsIcon } from "@hugeicons/react"
+import {
+  ArrowRight01Icon,
+  ArrowDown01Icon,
+  Cancel01Icon,
+  Tick02Icon,
+  BorderAll01Icon,
+  Alert01Icon,
+  UserGroupIcon,
+  UnlinkIcon,
+} from "@hugeicons/core-free-icons"
+import PlaceholderImage from "@/components/PlaceholderImage.astro"
+import { lines } from "@/lib/site"
+import { images } from "@/lib/images"
+import { getSafety } from "@/lib/safety"
+import { resolveLang, path } from "@/lib/i18n"
+
+const lang = resolveLang(Astro.currentLocale)
+const p = getSafety(lang)
+
+/* Icon order matches the scope items in lib/safety.ts. */
+const SCOPE_ICONS = [BorderAll01Icon, Alert01Icon, UserGroupIcon, UnlinkIcon]
+
+const slab = "border-b border-hairline"
+const wrap = "mx-auto w-full max-w-7xl px-6 sm:px-10"
+const chip =
+  "grid size-10 shrink-0 place-items-center rounded-xl border border-hairline bg-muted text-ink"
+---
+
+<!-- hero -->
+<section class="ink-section relative flex min-h-[74vh] flex-col justify-between overflow-hidden">
+  <div class="pointer-events-none absolute inset-0 z-0" aria-hidden="true">
+    <PlaceholderImage
+      src={images.safetyHero}
+      alt=""
+      seed="safety-hero"
+      loading="eager"
+      class="opacity-[0.34]"
+    />
+    <div class="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(10,10,10,0.45),rgba(10,10,10,0.92))]">
+    </div>
+  </div>
+
+  <div class={`relative z-10 ${wrap} pt-32 sm:pt-40`}>
+    <p class="eyebrow text-white/50">{p.eyebrow}</p>
+  </div>
+
+  <div class={`relative z-10 ${wrap} pb-16 sm:pb-24`}>
+    <h1 class="t-display max-w-4xl font-serif font-medium text-white">
+      {lines(p.heading).map((line) => <span class="t-line">{line}</span>)}
+    </h1>
+    <div class="mt-12 grid gap-8 border-t border-white/12 pt-8 lg:grid-cols-[0.55fr_0.45fr]">
+      <p class="max-w-2xl leading-relaxed text-white/65">{p.lead}</p>
+      <p class="font-mono text-[0.7rem] leading-relaxed tracking-[0.06em] text-white/40 lg:text-right">
+        {p.meta_}
+      </p>
+    </div>
+  </div>
+
+  <span class="pointer-events-none absolute right-6 bottom-8 z-10 text-white/30 sm:right-10">
+    <HugeiconsIcon icon={ArrowDown01Icon} size={22} strokeWidth={1.5} />
+  </span>
+</section>
+
+<!-- the one sentence -->
+<section class={`bg-paper py-28 sm:py-44 ${slab}`}>
+  <div class={wrap}>
+    <p class="t-display text-center font-serif font-medium text-ink">
+      {lines(p.statement).map((line) => <span class="t-line">{line}</span>)}
+    </p>
+  </div>
+</section>
+
+<!-- 01 problem -->
+<section class={`bg-background py-24 sm:py-36 ${slab}`}>
+  <div class={wrap}>
+    <p class="eyebrow text-muted-foreground">{p.problem.label}</p>
+    <div class="mt-6 grid gap-8 lg:grid-cols-[0.5fr_0.5fr] lg:gap-16">
+      <h2 class="t-heading font-serif font-medium text-ink">
+        {lines(p.problem.heading).map((line) => <span class="t-line">{line}</span>)}
+      </h2>
+      <div class="space-y-5 self-end">
+        {p.problem.body.map((para) => <p class="leading-relaxed text-muted-foreground">{para}</p>)}
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 scope -->
+<section class={`bg-paper py-24 sm:py-36 ${slab}`}>
+  <div class={wrap}>
+    <p class="eyebrow text-muted-foreground">{p.scope.label}</p>
+    <h2 class="t-heading mt-6 max-w-2xl font-serif font-medium text-ink">
+      {lines(p.scope.heading).map((line) => <span class="t-line">{line}</span>)}
+    </h2>
+
+    <div class="mt-14 grid gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
+      {
+        p.scope.items.map((item, i) => (
+          <div data-reveal style={`--reveal-delay:${i * 70}ms`} class="border-t border-ink pt-6">
+            <span class={chip}>
+              <HugeiconsIcon icon={SCOPE_ICONS[i]} size={19} strokeWidth={1.7} />
+            </span>
+            <h3 class="mt-5 font-serif text-lg leading-snug text-ink">{item.title}</h3>
+            <p class="mt-2.5 leading-relaxed text-muted-foreground">{item.body}</p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<!-- 03 limits: the centre of the page, not the footnote -->
+<section class="ink-section py-24 sm:py-36">
+  <div class={wrap}>
+    <p class="eyebrow text-white/50">{p.limits.label}</p>
+    <div class="mt-6 grid gap-6 lg:grid-cols-[0.55fr_0.45fr] lg:items-end lg:gap-16">
+      <h2 class="t-heading font-serif font-medium text-white">
+        {lines(p.limits.heading).map((line) => <span class="t-line">{line}</span>)}
+      </h2>
+      <p class="leading-relaxed text-white/60">{p.limits.sub}</p>
+    </div>
+
+    <ul class="mt-14 grid gap-x-12 gap-y-1 sm:grid-cols-2">
+      {
+        p.limits.items.map((item, i) => (
+          <li
+            data-reveal
+            style={`--reveal-delay:${i * 50}ms`}
+            class="flex items-start gap-4 border-t border-white/20 py-5"
+          >
+            <span class="mt-0.5 grid size-6 shrink-0 place-items-center rounded-full border border-white/30 text-white">
+              <HugeiconsIcon icon={Cancel01Icon} size={12} strokeWidth={2.4} />
+            </span>
+            <span class="leading-relaxed text-white/85">{item}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<!-- 04 why -->
+<section class={`bg-background py-24 sm:py-32 ${slab}`}>
+  <div class={wrap}>
+    <p class="eyebrow text-muted-foreground">{p.why.label}</p>
+    <div class="mt-6 grid gap-8 lg:grid-cols-[0.5fr_0.5fr] lg:gap-16">
+      <h2 class="t-heading font-serif font-medium text-ink">
+        {lines(p.why.heading).map((line) => <span class="t-line">{line}</span>)}
+      </h2>
+      <p class="self-end leading-relaxed text-muted-foreground">{p.why.body}</p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 status -->
+<section class={`bg-paper py-24 sm:py-32 ${slab}`}>
+  <div class={wrap}>
+    <p class="eyebrow text-muted-foreground">{p.status.label}</p>
+    <ul class="mt-8 grid gap-x-12 gap-y-1 sm:grid-cols-2">
+      {
+        p.status.items.map((item) => (
+          <li class="flex items-start gap-3 border-t border-hairline py-4">
+            <span class="mt-0.5 grid size-5 shrink-0 place-items-center rounded-full border border-hairline text-ink">
+              <HugeiconsIcon icon={Tick02Icon} size={11} strokeWidth={2.2} />
+            </span>
+            <span class="text-sm leading-relaxed text-ink">{item}</span>
+          </li>
+        ))
+      }
+    </ul>
+    <p class="mt-8 max-w-2xl leading-relaxed text-muted-foreground">{p.status.note}</p>
+  </div>
+</section>
+
+<!-- legal -->
+<section class={`bg-background py-14 ${slab}`}>
+  <div class={wrap}>
+    <p class="eyebrow text-muted-foreground">{p.legal.label}</p>
+    <ul class="mt-4 grid gap-2.5 sm:grid-cols-3 sm:gap-8">
+      {
+        p.legal.items.map((item) => (
+          <li class="max-w-md text-xs leading-relaxed text-muted-foreground">{item}</li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<!-- cta -->
+<section class="ink-section py-24 sm:py-32">
+  <div class={wrap}>
+    <div class="flex flex-wrap items-end justify-between gap-8">
+      <div class="max-w-xl">
+        <h2 class="t-heading-sm font-serif font-medium text-white">{p.cta.heading}</h2>
+        <p class="mt-4 leading-relaxed text-white/60">{p.cta.body}</p>
+      </div>
+      <a
+        href={path("contact", lang)}
+        class="btn-glossy inline-flex h-12 items-center gap-2 rounded-full px-6 text-sm font-medium"
+      >
+        {p.cta.label}
+        <HugeiconsIcon icon={ArrowRight01Icon} size={16} strokeWidth={2} />
+      </a>
+    </div>
+  </div>
+</section>

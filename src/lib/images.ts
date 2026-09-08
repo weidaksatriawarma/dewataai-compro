@@ -35,4 +35,5 @@ export const images = {
   buildBand: U("1558494949-ef010cbdcc31", 1800, 760),
   visionHero: U("1537996194471-e657df975ab4", 1800, 1000),
   visionBand: U("1522071820081-009f0129c71c", 1800, 760),
+  safetyHero: U("1518709268805-4e9042af9f23", 1800, 1000),
 } as const

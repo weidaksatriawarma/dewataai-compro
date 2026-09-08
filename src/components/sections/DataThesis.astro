@@ -1,0 +1,52 @@
+---
+/**
+ * One sentence, full width, between the ventures and the numbers.
+ *
+ * It sits here because the ventures section has just shown what we run, and
+ * the claim that matters next is what those two things accumulate. Everything
+ * else on this band is restraint: one line, one link, a lot of air.
+ */
+import { HugeiconsIcon } from "@hugeicons/react"
+import { ArrowRight01Icon } from "@hugeicons/core-free-icons"
+import { getSite, lines } from "@/lib/site"
+import { resolveLang, path } from "@/lib/i18n"
+
+const lang = resolveLang(Astro.currentLocale)
+const d = getSite(lang).dataThesis
+---
+
+<section class="ink-section relative overflow-hidden py-28 sm:py-40">
+  <div class="pointer-events-none absolute inset-0 z-0" aria-hidden="true">
+    <div
+      class="absolute inset-0 grid-overlay opacity-25 [mask-image:radial-gradient(ellipse_70%_60%_at_50%_50%,#000_35%,transparent_100%)]"
+    >
+    </div>
+  </div>
+
+  <div class="relative z-10 mx-auto w-full max-w-7xl px-6 sm:px-10">
+    <p data-reveal class="eyebrow text-white/50">{d.label}</p>
+
+    <p
+      data-reveal
+      style="--reveal-delay:90ms"
+      class="t-display mt-8 max-w-4xl font-serif font-medium text-white"
+    >
+      {lines(d.statement).map((line) => <span class="t-line">{line}</span>)}
+    </p>
+
+    <div
+      data-reveal
+      style="--reveal-delay:170ms"
+      class="mt-12 grid gap-8 border-t border-white/12 pt-8 lg:grid-cols-[0.6fr_0.4fr] lg:gap-16"
+    >
+      <p class="max-w-2xl leading-relaxed text-white/65">{d.body}</p>
+      <a
+        href={path("investor", lang)}
+        class="group inline-flex items-center gap-3 self-start text-white/70 transition-colors hover:text-white lg:justify-self-end"
+      >
+        <span class="font-serif text-lg">{d.cta}</span>
+        <HugeiconsIcon icon={ArrowRight01Icon} size={20} strokeWidth={1.8} />
+      </a>
+    </div>
+  </div>
+</section>
