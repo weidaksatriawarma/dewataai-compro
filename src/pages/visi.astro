@@ -1,0 +1,17 @@
+---
+import PageLayout from "@/layouts/page.astro"
+import VisionPage from "@/components/pages/VisionPage.astro"
+import { getVision } from "@/lib/vision"
+import { resolveLang, path } from "@/lib/i18n"
+
+const p = getVision(resolveLang(Astro.currentLocale))
+---
+
+<PageLayout
+  title={p.meta.title}
+  description={p.meta.description}
+  pathId={path("vision", "id")}
+  pathEn={path("vision", "en")}
+>
+  <VisionPage />
+</PageLayout>

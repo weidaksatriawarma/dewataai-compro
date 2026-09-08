@@ -33,4 +33,6 @@ export const images = {
   // signal to put next to the word "software" on an investor page.
   compareSoftware: U("1488590528505-98d2b5aba04b", 900, 700),
   buildBand: U("1558494949-ef010cbdcc31", 1800, 760),
+  visionHero: U("1537996194471-e657df975ab4", 1800, 1000),
+  visionBand: U("1522071820081-009f0129c71c", 1800, 760),
 } as const

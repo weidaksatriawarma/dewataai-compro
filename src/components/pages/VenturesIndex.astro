@@ -1,7 +1,7 @@
 ---
 import DewataTechWordmark from "@/components/DewataTechWordmark.astro"
 import { HugeiconsIcon } from "@hugeicons/react"
-import { ArrowUpRight01Icon, PlusSignIcon, Tick02Icon } from "@hugeicons/core-free-icons"
+import { ArrowUpRight01Icon, Shield01Icon, Tick02Icon } from "@hugeicons/core-free-icons"
 import DagangkuWordmark from "@/components/DagangkuWordmark.astro"
 import { getSite, lines } from "@/lib/site"
 import { getPages } from "@/lib/pages"
@@ -12,6 +12,7 @@ const site = getSite(lang)
 const v = site.ventures
 const p = getPages(lang).ventures
 const reg = p.register
+const third = p.third
 const legal = site.brand.legal
 ---
 
@@ -113,7 +114,7 @@ const legal = site.brand.legal
       <a
         data-reveal
         style={`--reveal-delay:${220 + v.items.length * 90}ms`}
-        href={path("contact", lang)}
+        href="#usaha-ketiga"
         class="reg-row reg-vacant group grid grid-cols-[2.75rem_1fr_auto] items-baseline gap-x-4 gap-y-2 border-b border-hairline py-5 pr-1 sm:grid-cols-[3.5rem_1fr_8rem_7rem_2rem] sm:items-center sm:gap-6 sm:pr-6"
       >
         <span class="font-mono text-sm text-ink/30 tabular-nums">{reg.vacant.no}</span>
@@ -133,7 +134,7 @@ const legal = site.brand.legal
         </span>
 
         <span class="reg-arrow hidden justify-self-end text-ink/40 sm:block">
-          <HugeiconsIcon icon={PlusSignIcon} size={17} strokeWidth={1.8} />
+          <HugeiconsIcon icon={Shield01Icon} size={17} strokeWidth={1.8} />
         </span>
       </a>
     </div>
@@ -209,6 +210,55 @@ const legal = site.brand.legal
         </article>
       ))
     }
+
+    {/* Entry 03 is a direction, not a product. The limits are listed as the
+        substance of the entry rather than as a footnote to it. */}
+    <article
+      data-reveal
+      id="usaha-ketiga"
+      class="scroll-mt-24 rounded-3xl border border-hairline bg-background p-6 sm:p-9"
+    >
+      <div class="flex flex-wrap items-center gap-3">
+        <span class="font-mono text-sm text-muted-foreground">{third.index}</span>
+        <span class="font-serif text-xl text-ink sm:text-2xl">{third.name}</span>
+        <span class="rounded-full border border-hairline px-3 py-1 text-xs text-muted-foreground">
+          {third.tag}
+        </span>
+        <span class="flex items-center gap-2 font-mono text-xs text-muted-foreground">
+          <span class="size-1.5 rounded-full border border-ink/35" />
+          {reg.statusOpen}
+        </span>
+      </div>
+
+      <p class="mt-5 max-w-2xl text-lg leading-snug text-ink">
+        {lines(third.headline).map((line) => <span class="t-line">{line}</span>)}
+      </p>
+      <p class="mt-3 max-w-2xl leading-relaxed text-muted-foreground">{third.desc}</p>
+
+      <p class="eyebrow mt-7 text-muted-foreground">{third.boundsLabel}</p>
+      <ul class="mt-4 grid gap-x-8 gap-y-2.5 sm:grid-cols-2">
+        {
+          third.bounds.map((bound) => (
+            <li class="flex items-start gap-2.5">
+              <span class="mt-0.5 grid size-5 shrink-0 place-items-center rounded-full border border-hairline text-ink">
+                <HugeiconsIcon icon={Tick02Icon} size={11} strokeWidth={2.2} />
+              </span>
+              <span class="text-sm text-muted-foreground">{bound}</span>
+            </li>
+          ))
+        }
+      </ul>
+
+      <div class="mt-8">
+        <a
+          href={path("contact", lang)}
+          class="inline-flex h-11 items-center gap-2 rounded-full border border-hairline px-5 text-sm font-medium text-ink transition-colors hover:border-ink/30"
+        >
+          {third.cta}
+          <HugeiconsIcon icon={ArrowUpRight01Icon} size={16} strokeWidth={2} />
+        </a>
+      </div>
+    </article>
   </div>
 </section>
 

@@ -23,6 +23,7 @@ export const ROUTES = {
   manifesto: { id: "/manifesto/", en: "/en/manifesto/" },
   journal: { id: "/jurnal/", en: "/en/journal/" },
   press: { id: "/pers/", en: "/en/press/" },
+  vision: { id: "/visi/", en: "/en/vision/" },
   investor: { id: "/investor/", en: "/en/investor/" },
   thesis: { id: "/tesis/", en: "/en/thesis/" },
   contact: { id: "/kontak/", en: "/en/contact/" },

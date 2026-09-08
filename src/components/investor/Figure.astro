@@ -55,8 +55,13 @@ const { index, prefix, title, unit, status, statusTitle, tableLabel, headers, ro
     </span>
   </figcaption>
 
-  <div class="px-5 py-7 sm:px-7 sm:py-9">
-    <slot />
+  {/* Charts are drawn at a fixed viewBox width. Squeezing that into a 390px
+      phone would render the axis labels at about five pixels, so below the
+      min-width the figure scrolls sideways inside its own frame instead. */}
+  <div class="overflow-x-auto px-5 py-7 sm:px-7 sm:py-9">
+    <div class="min-w-[32rem]">
+      <slot />
+    </div>
   </div>
 
   <details class="group border-t border-hairline">
