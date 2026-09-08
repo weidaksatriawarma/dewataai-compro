@@ -85,9 +85,9 @@ const content = {
               icon: "chat",
             },
             {
-              label: "Usaha ketiga",
+              label: "Keselamatan publik",
               href: ROUTES.safety.id,
-              desc: "Nyegah serangan teror di infrastruktur penting",
+              desc: "Usaha ketiga: nyegah serangan teror, masih riset",
               icon: "safety",
             },
             {
@@ -527,9 +527,9 @@ const content = {
               icon: "chat",
             },
             {
-              label: "Third venture",
+              label: "Public safety",
               href: ROUTES.safety.en,
-              desc: "Preventing terror attacks on critical infrastructure",
+              desc: "Third venture: preventing terror attacks, research stage",
               icon: "safety",
             },
             {
