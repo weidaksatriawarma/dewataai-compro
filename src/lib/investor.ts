@@ -104,14 +104,14 @@ const content = {
       eyebrow: "Investor",
       heading: "Bentuk ekonominya\nyang beda.",
       lead: "Villa dan restoran itu bisnis bagus. Yang beda bukan bagus atau enggaknya, tapi apa yang harus dibeli tiap kali mau nambah pendapatan. Halaman ini ngebuka bandingannya, lengkap sama asumsinya.",
-      meta_: "Semua angka di halaman ini model, bukan hasil survei dan bukan capaian kami.",
+      meta_: "Semua angka di sini model ya, bukan hasil survei dan bukan capaian kami.",
 
       thesis: {
         label: "Intinya",
         heading: "Aset fisik naik lewat modal.\nSoftware naik lewat distribusi.",
         body: [
-          "Villa nambah pendapatan dengan cara beli kamar lagi. Restoran nambah pendapatan dengan cara buka outlet lagi. Dua duanya butuh modal besar di depan, dan modal itu susah ditarik balik kalau ternyata salah.",
-          "Software nambah pendapatan dengan cara nemuin pelanggan berikutnya. Biayanya bisa disetop bulan depan kalau angkanya jelek. Itu bukan berarti lebih gampang, cuma bentuk risikonya beda.",
+          "Villa nambah cuan dengan cara beli kamar lagi. Restoran nambah cuan dengan cara buka outlet lagi. Dua-duanya butuh modal gede di depan, dan modal itu susah ditarik balik kalau ternyata salah langkah.",
+          "Software nambah cuan dengan cara nemu pelanggan berikutnya. Biayanya bisa disetop bulan depan kalau angkanya jelek. Bukan berarti lebih gampang ya, cuma bentuk risikonya yang beda.",
         ],
       },
 
@@ -120,22 +120,22 @@ const content = {
       record: {
         label: "01 · Cara mikir",
         heading: "Sistem pencatatan,\nbukan alat bantu.",
-        sub: "Tiga hal ini kami ambil dari cara Palantir mikirin data dan cara Anduril mikirin kepemilikan produk, lalu kami pasang di ukuran warung.",
+        sub: "Tiga hal ini kami ambil dari cara Palantir mikirin data dan cara Anduril mikirin kepemilikan produk, terus kami pasang di ukuran warung.",
         items: [
           {
             index: "I",
             title: "Yang megang catatan resminya, gak diganti",
-            body: "Alat bantu gampang dilepas. Sistem yang nyimpen kwitansi bernomor urut, stok, utang, gaji, dan laporan pajak sebuah usaha itu jadi catatan resminya. Ninggalin dia berarti ninggalin riwayat usaha sendiri.",
+            body: "Alat bantu gampang dilepas. Tapi sistem yang nyimpen kwitansi bernomor urut, stok, utang, gaji, sama laporan pajak itu udah jadi catatan resmi usahanya. Ninggalin dia berarti ninggalin riwayat usaha sendiri.",
           },
           {
             index: "II",
             title: "Satu peta buat satu usaha",
-            body: "Produk, pelanggan, supplier, harga per pelanggan, kasbon, karyawan, dan aset gak kami simpan sebagai tabel yang kepisah pisah, tapi sebagai satu peta yang nyambung. Pertanyaan kayak produk mana yang diam diam bikin rugi cuma bisa dijawab kalau petanya nyambung.",
+            body: "Produk, pelanggan, supplier, harga per pelanggan, kasbon, karyawan, dan aset gak kami simpen sebagai tabel yang kepisah-pisah, tapi sebagai satu peta yang nyambung. Pertanyaan kayak produk mana yang diam-diam bikin rugi cuma bisa dijawab kalau petanya nyambung.",
           },
           {
             index: "III",
             title: "Kami duduk bareng yang makai",
-            body: "Fitur lahir dari duduk di warung orang, lihat dia salah ngetik, lalu benerin. Bukan dari rapat. Tiap koreksi yang dia lakuin balik lagi jadi data buat ngukur model mana yang paling ngerti bahasa dia.",
+            body: "Fitur lahir dari duduk di warung orang, liat dia salah ngetik, terus dibenerin. Bukan dari rapat. Tiap koreksi yang dia lakuin balik lagi jadi data buat ngukur model mana yang paling ngerti bahasa dia.",
           },
         ],
       },
@@ -143,7 +143,7 @@ const content = {
       capital: {
         label: "02 · Modal",
         heading: "Modal buat nambah\nRp100 juta per bulan.",
-        sub: "Berapa yang harus keluar sebelum tambahan pendapatan itu ada.",
+        sub: "Berapa duit yang harus keluar duluan sebelum tambahan cuan itu ada.",
         chart: {
           title: "Modal yang dibutuhkan",
           unit: "rupiah",
@@ -161,13 +161,13 @@ const content = {
           tableHeaders: ["Usaha", "Modal", "Bentuknya"],
         },
         after:
-          "Yang gak kelihatan di grafik: dua batang pertama itu belanja aset yang nempel selamanya. Batang ketiga itu biaya akuisisi yang bisa disetop bulan depan, dan kalau disetop, pelanggan yang sudah ada tetap bayar.",
+          "Yang gak kelihatan di grafik: dua batang pertama itu belanja aset yang nempel selamanya. Batang ketiga itu biaya akuisisi yang bisa disetop bulan depan, dan kalau disetop pun, pelanggan yang udah ada tetap bayar.",
       },
 
       share: {
         label: "03 · Struktur biaya",
         heading: "Ke mana tiap sejuta\npendapatan pergi.",
-        sub: "Empat pos yang sama buat ketiganya, biar bisa ditumpuk dan dibandingkan.",
+        sub: "Empat pos yang sama buat ketiganya, biar bisa ditumpuk terus dibandingin.",
         chart: {
           title: "Alokasi tiap Rp1.000.000 pendapatan",
           unit: "persen",
@@ -185,13 +185,13 @@ const content = {
           tableHeaders: ["Pos", "Villa", "Restoran", "Software"],
         },
         after:
-          "Restoran kelihatan paling berat karena bahan baku dan tenaga kerja ikut naik tiap ada tamu tambahan. Villa jauh lebih lega, dan bakal makin lega kalau komisi OTA-nya hilang. Itu persis yang dikerjain Dewata Tech.",
+          "Restoran keliatan paling berat karena bahan baku sama gaji ikut naik tiap ada tamu tambahan. Villa jauh lebih lega, dan bakal makin lega kalau komisi OTA-nya hilang. Itu persis yang dikerjain Dewata Tech.",
       },
 
       ceiling: {
         label: "04 · Batas kapasitas",
         heading: "Yang berhenti\ndi tembok.",
-        sub: "Permintaan naik dua kali lipat. Yang satu ikut naik, yang satu berhenti di jumlah kamarnya.",
+        sub: "Permintaan naik dua kali lipat. Yang satu ikut naik, yang satu mentok di jumlah kamarnya.",
         chart: {
           title: "Pendapatan kalau permintaan naik",
           xLabel: "Permintaan (100 = kamar penuh)",
@@ -208,7 +208,7 @@ const content = {
       fair: {
         label: "05 · Yang jujur",
         heading: "Yang lebih unggul\ndi villa dan restoran.",
-        sub: "Kalau bagian ini gak ditulis, tiga bagian sebelumnya gak layak dipercaya.",
+        sub: "Kalau bagian ini gak ditulis, tiga bagian sebelumnya gak pantes dipercaya.",
         items: [
           {
             title: "Permintaannya udah ada dari hari pertama",
@@ -220,11 +220,11 @@ const content = {
           },
           {
             title: "Kasnya masuk dari bulan pertama",
-            body: "Villa buka, tamu bayar. Software langganan butuh waktu sebelum jumlah pelanggan nutup biaya tetapnya.",
+            body: "Villa buka, tamu bayar. Software langganan butuh waktu sebelum jumlah pelanggannya nutup biaya tetap.",
           },
           {
             title: "Lebih gampang dijaminkan ke bank",
-            body: "Bank ngerti agunan berupa properti. Bank belum tentu ngerti pendapatan berulang dari langganan.",
+            body: "Bank ngerti kalau jaminannya properti. Bank belum tentu ngerti duit langganan yang masuk tiap bulan.",
           },
         ],
       },
@@ -232,14 +232,14 @@ const content = {
       assumptions: {
         label: "Asumsi",
         heading: "Angkanya dari mana.",
-        sub: "Ini model ilustratif, bukan survei. Ganti asumsinya, angkanya ikut ganti.",
+        sub: "Ini model buat gambaran, bukan survei. Ganti asumsinya, angkanya ikut berubah.",
         groups: [
           {
             title: "Villa 4 kamar di Bali",
             items: [
-              "Tarif rata rata Rp1.500.000 per malam, okupansi 60 persen",
+              "Tarif rata-rata Rp1.500.000 per malam, okupansi 60 persen",
               "Pendapatan bulanan sekitar Rp108 juta",
-              "Komisi OTA rata rata 18 persen dari kamar yang dipesan lewat OTA",
+              "Komisi OTA rata-rata 18 persen dari kamar yang dipesan lewat OTA",
               "Modal satu villa baru Rp2,5 miliar termasuk tanah",
             ],
           },
@@ -247,7 +247,7 @@ const content = {
             title: "Restoran 40 kursi",
             items: [
               "Dua kali putaran meja per hari, keterisian 60 persen",
-              "Rata rata belanja per tamu Rp85.000",
+              "Rata-rata belanja per tamu Rp85.000",
               "Bahan baku 33 persen, tenaga kerja 25 persen, sewa 12 persen",
               "Modal satu outlet baru Rp800 juta termasuk sewa di depan dan alat",
             ],
@@ -262,7 +262,7 @@ const content = {
             ],
           },
         ],
-        note: "Yang gak ada di halaman ini: biaya AI per pesan, lantai margin, dan jumlah pelanggan berbayar hari ini. Itu angka internal, dan kami bawa langsung waktu ketemu.",
+        note: "Yang gak ada di halaman ini: biaya AI per pesan, lantai margin, dan jumlah pelanggan berbayar hari ini. Itu angka internal, dan kami bawa pas ketemu langsung.",
       },
 
       legal: {
@@ -276,7 +276,7 @@ const content = {
 
       cta: {
         heading: "Mau angka yang beneran, bukan model?",
-        body: "Traksi terukur, biaya akuisisi, dan retensi kami buka langsung waktu ngobrol.",
+        body: "Traksi terukur, biaya akuisisi, sama retensi kami buka langsung pas ngobrol.",
         label: "Ngobrol 15 menit",
       },
       next: { label: "Lanjut ke tesis investasi", href: "/tesis/" },
@@ -291,34 +291,34 @@ const content = {
       eyebrow: "Tesis investasi",
       heading: "Ke mana\nmodalnya pergi.",
       lead: "Dua tempat, dan urutannya gak pernah dibalik. Produk AI dulu sampai kenyang, sisa kas yang beneran nganggur baru ke Bitcoin.",
-      meta_: "Proyeksi di halaman ini model bertingkat, bukan janji.",
+      meta_: "Proyeksi di sini model bertingkat, bukan janji manis.",
 
       statement: "Produk dulu.\nSelalu.",
 
       order: {
         label: "01 · Urutan",
         heading: "Kas dibagi\nberurutan.",
-        sub: "Tiap tingkat harus penuh dulu sebelum yang bawahnya kebagian. Gak ada lompat antrean.",
+        sub: "Tiap tingkat harus penuh dulu sebelum yang bawahnya kebagian. Gak ada yang boleh nyerobot antrean.",
         steps: [
           {
             index: "01",
             title: "Operasi dan cadangan 12 bulan",
-            body: "Gaji, server, dan kewajiban selama setahun penuh disisihkan duluan. Perusahaan yang mati kehabisan kas gak sempat kebagian benar soal apa pun.",
+            body: "Gaji, server, sama tagihan setahun penuh disisihin duluan. Perusahaan yang mati gara-gara kas abis gak sempet buktiin apa-apa.",
           },
           {
             index: "02",
             title: "Bangun produk AI",
-            body: "Ini prioritas pertama buat uang yang bisa dipakai tumbuh. Aktivasi, kanal WhatsApp, dan alat evaluasi model. Semuanya diarahkan ke satu variabel: jumlah usaha aktif dikali frekuensi pencatatan.",
+            body: "Ini yang pertama dapet jatah dari duit buat tumbuh. Aktivasi, kanal WhatsApp, sama alat buat ngukur model. Semuanya diarahin ke satu angka: jumlah usaha aktif dikali seberapa sering mereka nyatet.",
           },
           {
             index: "03",
             title: "Distribusi",
-            body: "Satu kanal akuisisi yang angkanya terukur, dipompa sampai batas di mana biayanya masih masuk akal. Bukan lima kanal yang dicoba coba.",
+            body: "Satu kanal akuisisi yang angkanya terukur, dipompa sampai batas di mana biayanya masih masuk akal. Bukan lima kanal yang dicoba-coba.",
           },
           {
             index: "04",
             title: "Sisa kas ke Bitcoin",
-            body: "Cuma kas yang beneran nganggur setelah tiga tingkat di atas. Bukan modal kerja, bukan uang gaji, dan gak pernah pakai utang.",
+            body: "Cuma kas yang beneran nganggur setelah tiga tingkat di atas. Bukan modal kerja, bukan duit gaji, dan gak pernah pakai utang.",
           },
         ],
       },
@@ -327,14 +327,14 @@ const content = {
         label: "02 · Bitcoin",
         heading: "Aturannya ditulis\nsebelum harganya gerak.",
         body: [
-          "Kami pegang Bitcoin sebagai tempat parkir kas jangka panjang, bukan sebagai sumber pendapatan dan bukan sebagai bahan trading. Alasannya sederhana: pasokannya terbatas dan gak ada yang bisa nambahin sepihak, sementara rupiah yang nganggur di rekening pasti tergerus.",
+          "Kami pegang Bitcoin sebagai tempat parkir kas jangka panjang, bukan sebagai sumber pendapatan dan bukan sebagai bahan trading. Alasannya sederhana: pasokannya terbatas dan gak ada yang bisa nambahin sepihak, padahal rupiah yang nganggur di rekening pasti kegerus.",
           "Kenapa aturannya ditulis di depan: kalau aturan treasury baru dibikin pas harga lagi gerak, yang nulis bukan kebijakan, tapi emosi.",
         ],
         rules: [
-          { title: "Cuma dari surplus", body: "Setelah cadangan 12 bulan aman. Kalau cadangan kurang, alokasinya nol bulan itu." },
+          { title: "Cuma dari surplus", body: "Setelah cadangan 12 bulan aman. Kalau cadangannya kurang, bulan itu jatahnya nol." },
           { title: "Gak pernah pakai utang", body: "Gak ada margin, gak ada pinjaman buat beli, gak ada agunan kripto." },
-          { title: "Beli bertahap, bukan sekali besar", body: "Nominal tetap tiap bulan, gak ngitung waktu masuk." },
-          { title: "Bukan buat ditradingkan", body: "Gak ada target jual dan gak ada leverage. Kalau butuh kas, produk yang jadi sumbernya." },
+          { title: "Beli bertahap, bukan sekali besar", body: "Nominal tetap tiap bulan, gak sok nebak waktu masuk." },
+          { title: "Bukan buat ditradingkan", body: "Gak ada target jual, gak ada leverage. Kalau butuh kas, produknya yang jadi sumber." },
           { title: "Pajak dan pencatatan ikut aturan", body: "Kepemilikan masuk pembukuan perusahaan dan pajaknya dihitung sesuai aturan yang berlaku saat transaksi." },
           { title: "Gak pernah dijual ke pelanggan", body: "Kami gak nawarin produk kripto, gak ngasih saran beli, dan gak ada kaitannya sama Dagangku AI." },
         ],
@@ -344,7 +344,7 @@ const content = {
       projection: {
         label: "03 · Proyeksi",
         heading: "Lima tahun,\ntiga skenario.",
-        sub: "Yang digerakkan cuma satu variabel: berapa usaha yang bayar. Sisanya turunan.",
+        sub: "Yang digerakin cuma satu angka: berapa usaha yang bayar. Sisanya tinggal ngikut.",
         chart: {
           title: "Pendapatan berulang tahunan",
           units: { billion: "miliar", million: "juta" },
@@ -361,7 +361,7 @@ const content = {
           "Skenario optimis itu 8.000 usaha berbayar. Indonesia punya sekitar 65 juta UMKM, jadi angka itu 0,012 persen dari pasarnya. Yang bikin susah bukan besarnya pasar, tapi aktivasi: bikin orang yang udah daftar beneran nyatet tiap hari.",
         honest: {
           label: "Yang perlu diluruskan",
-          body: "Grafik di atas model, bukan capaian. Kami gak nampilin jumlah pelanggan berbayar hari ini di halaman publik, tapi kami buka apa adanya waktu ketemu, bareng biaya akuisisi dan retensinya.",
+          body: "Grafik di atas model, bukan capaian. Kami gak nampilin jumlah pelanggan berbayar hari ini di halaman publik, tapi kami buka apa adanya pas ketemu, bareng biaya akuisisi sama retensinya.",
         },
       },
 
@@ -371,11 +371,11 @@ const content = {
         items: [
           {
             title: "Aktivasi gak naik",
-            body: "Mayoritas yang daftar berhenti sebelum nyatet apa apa. Kalau ini gak berubah, semua aset data tumbuh pelan dan proyeksi di atas gak kejadian.",
+            body: "Kebanyakan yang daftar berhenti sebelum nyatet apa-apa. Kalau ini gak berubah, semua aset data tumbuhnya pelan dan proyeksi di atas gak bakal kejadian.",
           },
           {
             title: "Harga model AI berubah",
-            body: "Biaya per pesan ngikutin harga penyedia model. Kami desain buat bisa pindah model, tapi kalau harga naik serentak, marginnya kena.",
+            body: "Biaya per pesan ngikutin harga penyedia model. Kami bikin biar gampang pindah model, tapi kalau harganya naik barengan, marginnya kena.",
           },
           {
             title: "Aturan data berubah",
@@ -383,7 +383,7 @@ const content = {
           },
           {
             title: "Bitcoin turun dalam",
-            body: "Nilai treasury bisa turun banyak dan lama. Itu sebabnya alokasinya cuma dari surplus, biar penurunan harga gak pernah nyentuh gaji atau server.",
+            body: "Nilai treasury bisa anjlok dan lama baliknya. Makanya alokasinya cuma dari surplus, biar harga turun gak pernah nyentuh gaji atau server.",
           },
         ],
       },
@@ -401,7 +401,7 @@ const content = {
 
       cta: {
         heading: "Mau bedah angkanya bareng?",
-        body: "Kami buka asumsi, model, dan angka terukur yang gak ada di halaman ini.",
+        body: "Kami buka asumsinya, modelnya, sama angka terukur yang gak ada di halaman ini.",
         label: "Ngobrol 15 menit",
       },
       next: { label: "Balik ke bandingan leverage", href: "/investor/" },

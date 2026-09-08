@@ -1,7 +1,7 @@
 ---
 /**
- * The capital thesis. Same slab layout as the leverage page so the two read as
- * one document in two parts.
+ * The capital thesis. Same slabs and the same serif display as the leverage
+ * page, so the two read as one document in two parts.
  *
  * The order section is numbered because it genuinely is a sequence: each tier
  * has to fill before the next one is paid. The Bitcoin rules are written as
@@ -9,10 +9,28 @@
  * worth publishing.
  */
 import { HugeiconsIcon } from "@hugeicons/react"
-import { ArrowRight01Icon } from "@hugeicons/core-free-icons"
+import {
+  ArrowRight01Icon,
+  ArrowDown01Icon,
+  SafeBoxIcon,
+  AiBrain01Icon,
+  Route01Icon,
+  Bitcoin01Icon,
+  Wallet01Icon,
+  Calendar03Icon,
+  Target01Icon,
+  JusticeScale01Icon,
+  Shield01Icon,
+  Alert01Icon,
+  Analytics01Icon,
+  Database01Icon,
+  ChartDownIcon,
+} from "@hugeicons/core-free-icons"
+import PlaceholderImage from "@/components/PlaceholderImage.astro"
 import Figure from "@/components/investor/Figure.astro"
 import ProjectionChart from "@/components/investor/ProjectionChart.astro"
 import { lines } from "@/lib/site"
+import { images } from "@/lib/images"
 import { getInvestor, PROJECTION, PROJECTION_YEARS, arr, rupiahShort } from "@/lib/investor"
 import { resolveLang, path } from "@/lib/i18n"
 
@@ -20,6 +38,18 @@ const lang = resolveLang(Astro.currentLocale)
 const inv = getInvestor(lang)
 const p = inv.thesis
 const fig = inv.investor.figure
+
+/* Icon order matches the copy arrays in lib/investor.ts. */
+const ORDER_ICONS = [SafeBoxIcon, AiBrain01Icon, Route01Icon, Bitcoin01Icon]
+const RULE_ICONS = [
+  Wallet01Icon,
+  Shield01Icon,
+  Calendar03Icon,
+  Target01Icon,
+  JusticeScale01Icon,
+  Analytics01Icon,
+]
+const RISK_ICONS = [Alert01Icon, ChartDownIcon, JusticeScale01Icon, Database01Icon]
 
 const units = p.projection.chart.units
 const money = (v: number) => rupiahShort(v, lang, units)
@@ -32,25 +62,35 @@ const projectionRows = PROJECTION_YEARS.map((year, i) => [
 
 const slab = "border-b border-hairline"
 const wrap = "mx-auto w-full max-w-7xl px-6 sm:px-10"
-const display = "font-sans font-medium tracking-[-0.03em] leading-[0.95]"
+const chip = "grid size-10 shrink-0 place-items-center rounded-xl border border-hairline bg-muted text-ink"
+const chipDark = "grid size-10 shrink-0 place-items-center rounded-xl border border-white/15 bg-white/[0.06] text-white"
 ---
 
 <!-- hero -->
-<section class="ink-section relative flex min-h-[70vh] flex-col justify-between overflow-hidden">
-  <div class="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
+<section class="ink-section relative flex min-h-[72vh] flex-col justify-between overflow-hidden">
+  <div class="pointer-events-none absolute inset-0 z-0" aria-hidden="true">
+    <PlaceholderImage
+      src={images.thesisHero}
+      alt=""
+      seed="thesis-hero"
+      loading="eager"
+      class="opacity-[0.38]"
+    />
+    <div class="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(10,10,10,0.42),rgba(10,10,10,0.9))]">
+    </div>
     <div
-      class="absolute inset-0 grid-overlay opacity-25 [mask-image:linear-gradient(to_bottom,#000_10%,transparent_85%)]"
+      class="absolute inset-0 grid-overlay opacity-20 [mask-image:linear-gradient(to_bottom,#000_10%,transparent_85%)]"
     >
     </div>
   </div>
 
-  <div class={`${wrap} pt-32 sm:pt-40`}>
-    <p class="font-mono text-[0.68rem] tracking-[0.24em] text-white/45">{p.eyebrow}</p>
+  <div class={`relative z-10 ${wrap} pt-32 sm:pt-40`}>
+    <p class="eyebrow text-white/50">{p.eyebrow}</p>
   </div>
 
-  <div class={`${wrap} pb-16 sm:pb-24`}>
-    <h1 class={`${display} max-w-4xl text-[clamp(2.75rem,8vw,6.5rem)] text-white`}>
-      {lines(p.heading).map((line) => <span class="block">{line}</span>)}
+  <div class={`relative z-10 ${wrap} pb-16 sm:pb-24`}>
+    <h1 class="t-display max-w-4xl font-serif font-medium text-white">
+      {lines(p.heading).map((line) => <span class="t-line">{line}</span>)}
     </h1>
     <div class="mt-12 grid gap-8 border-t border-white/12 pt-8 lg:grid-cols-[0.55fr_0.45fr]">
       <p class="max-w-2xl leading-relaxed text-white/65">{p.lead}</p>
@@ -59,13 +99,17 @@ const display = "font-sans font-medium tracking-[-0.03em] leading-[0.95]"
       </p>
     </div>
   </div>
+
+  <span class="pointer-events-none absolute right-6 bottom-8 z-10 text-white/30 sm:right-10">
+    <HugeiconsIcon icon={ArrowDown01Icon} size={22} strokeWidth={1.5} />
+  </span>
 </section>
 
 <!-- the one sentence -->
 <section class={`bg-paper py-28 sm:py-44 ${slab}`}>
   <div class={wrap}>
-    <p class={`${display} text-center text-[clamp(2.25rem,6.5vw,5rem)] text-ink`}>
-      {lines(p.statement).map((line) => <span class="block">{line}</span>)}
+    <p class="t-display text-center font-serif font-medium text-ink">
+      {lines(p.statement).map((line) => <span class="t-line">{line}</span>)}
     </p>
   </div>
 </section>
@@ -73,22 +117,31 @@ const display = "font-sans font-medium tracking-[-0.03em] leading-[0.95]"
 <!-- 01 the order -->
 <section class={`bg-background py-24 sm:py-36 ${slab}`}>
   <div class={wrap}>
-    <p class="font-mono text-[0.68rem] tracking-[0.2em] text-muted-foreground">{p.order.label}</p>
+    <p class="eyebrow text-muted-foreground">{p.order.label}</p>
     <div class="mt-6 grid gap-6 lg:grid-cols-[0.55fr_0.45fr] lg:items-end lg:gap-16">
-      <h2 class={`${display} text-[clamp(1.85rem,4vw,3.25rem)] text-ink`}>
-        {lines(p.order.heading).map((line) => <span class="block">{line}</span>)}
+      <h2 class="t-heading font-serif font-medium text-ink">
+        {lines(p.order.heading).map((line) => <span class="t-line">{line}</span>)}
       </h2>
       <p class="leading-relaxed text-muted-foreground">{p.order.sub}</p>
     </div>
 
     <ol class="mt-16">
       {
-        p.order.steps.map((step) => (
-          <li class="grid gap-4 border-t border-hairline py-8 sm:grid-cols-[5rem_1fr] sm:gap-10 lg:grid-cols-[8rem_0.35fr_0.65fr]">
-            <span class="font-mono text-sm tracking-[0.14em] text-muted-foreground tabular-nums">
-              {step.index}
-            </span>
-            <h3 class="text-lg leading-snug font-medium text-ink">{step.title}</h3>
+        p.order.steps.map((step, i) => (
+          <li
+            data-reveal
+            style={`--reveal-delay:${i * 70}ms`}
+            class="grid gap-4 border-t border-hairline py-8 sm:grid-cols-[5rem_1fr] sm:gap-10 lg:grid-cols-[9rem_0.32fr_0.68fr]"
+          >
+            <div class="flex items-center gap-4">
+              <span class={chip}>
+                <HugeiconsIcon icon={ORDER_ICONS[i]} size={19} strokeWidth={1.7} />
+              </span>
+              <span class="font-mono text-sm tracking-[0.14em] text-muted-foreground tabular-nums">
+                {step.index}
+              </span>
+            </div>
+            <h3 class="font-serif text-xl leading-snug text-ink">{step.title}</h3>
             <p class="max-w-2xl leading-relaxed text-muted-foreground">{step.body}</p>
           </li>
         ))
@@ -97,13 +150,24 @@ const display = "font-sans font-medium tracking-[-0.03em] leading-[0.95]"
   </div>
 </section>
 
+<!-- full-bleed band: what tier two actually buys -->
+<section class="relative h-[36vh] min-h-[260px] overflow-hidden sm:h-[46vh]">
+  <PlaceholderImage src={images.buildBand} alt="" seed="thesis-band" class="opacity-70" />
+  <div class="absolute inset-0 bg-[linear-gradient(to_top,rgba(10,10,10,0.85),rgba(10,10,10,0.25))]"></div>
+  <div class={`absolute inset-x-0 bottom-0 ${wrap} pb-8`}>
+    <p class="font-mono text-[0.7rem] tracking-[0.18em] text-white/70">
+      {p.order.steps[1].title}
+    </p>
+  </div>
+</section>
+
 <!-- 02 bitcoin -->
 <section class="ink-section py-24 sm:py-36">
   <div class={wrap}>
-    <p class="font-mono text-[0.68rem] tracking-[0.2em] text-white/45">{p.btc.label}</p>
+    <p class="eyebrow text-white/50">{p.btc.label}</p>
     <div class="mt-6 grid gap-8 lg:grid-cols-[0.5fr_0.5fr] lg:gap-16">
-      <h2 class={`${display} text-[clamp(1.85rem,4vw,3.25rem)] text-white`}>
-        {lines(p.btc.heading).map((line) => <span class="block">{line}</span>)}
+      <h2 class="t-heading font-serif font-medium text-white">
+        {lines(p.btc.heading).map((line) => <span class="t-line">{line}</span>)}
       </h2>
       <div class="space-y-5 self-end">
         {p.btc.body.map((para) => <p class="leading-relaxed text-white/65">{para}</p>)}
@@ -112,9 +176,12 @@ const display = "font-sans font-medium tracking-[-0.03em] leading-[0.95]"
 
     <div class="mt-16 grid gap-x-12 gap-y-9 sm:grid-cols-2 lg:grid-cols-3">
       {
-        p.btc.rules.map((rule) => (
-          <div class="border-t border-white/25 pt-5">
-            <h3 class="text-base font-medium text-white">{rule.title}</h3>
+        p.btc.rules.map((rule, i) => (
+          <div data-reveal style={`--reveal-delay:${i * 60}ms`} class="border-t border-white/25 pt-6">
+            <span class={chipDark}>
+              <HugeiconsIcon icon={RULE_ICONS[i]} size={19} strokeWidth={1.7} />
+            </span>
+            <h3 class="mt-5 font-serif text-lg text-white">{rule.title}</h3>
             <p class="mt-2.5 leading-relaxed text-white/60">{rule.body}</p>
           </div>
         ))
@@ -130,12 +197,10 @@ const display = "font-sans font-medium tracking-[-0.03em] leading-[0.95]"
 <!-- 03 projection -->
 <section class={`bg-background py-24 sm:py-36 ${slab}`}>
   <div class={wrap}>
-    <p class="font-mono text-[0.68rem] tracking-[0.2em] text-muted-foreground">
-      {p.projection.label}
-    </p>
+    <p class="eyebrow text-muted-foreground">{p.projection.label}</p>
     <div class="mt-6 grid gap-6 lg:grid-cols-[0.55fr_0.45fr] lg:items-end lg:gap-16">
-      <h2 class={`${display} text-[clamp(1.85rem,4vw,3.25rem)] text-ink`}>
-        {lines(p.projection.heading).map((line) => <span class="block">{line}</span>)}
+      <h2 class="t-heading font-serif font-medium text-ink">
+        {lines(p.projection.heading).map((line) => <span class="t-line">{line}</span>)}
       </h2>
       <p class="leading-relaxed text-muted-foreground">{p.projection.sub}</p>
     </div>
@@ -158,9 +223,7 @@ const display = "font-sans font-medium tracking-[-0.03em] leading-[0.95]"
     <div class="mt-10 grid gap-8 lg:grid-cols-[0.55fr_0.45fr] lg:gap-16">
       <p class="leading-relaxed text-muted-foreground">{p.projection.after}</p>
       <div class="border-t border-ink pt-5">
-        <p class="font-mono text-[0.68rem] tracking-[0.18em] text-muted-foreground">
-          {p.projection.honest.label}
-        </p>
+        <p class="eyebrow text-muted-foreground">{p.projection.honest.label}</p>
         <p class="mt-3 leading-relaxed text-ink">{p.projection.honest.body}</p>
       </div>
     </div>
@@ -170,16 +233,19 @@ const display = "font-sans font-medium tracking-[-0.03em] leading-[0.95]"
 <!-- 04 risk -->
 <section class={`bg-paper py-24 sm:py-36 ${slab}`}>
   <div class={wrap}>
-    <p class="font-mono text-[0.68rem] tracking-[0.2em] text-muted-foreground">{p.risk.label}</p>
-    <h2 class={`${display} mt-6 max-w-2xl text-[clamp(1.85rem,4vw,3.25rem)] text-ink`}>
-      {lines(p.risk.heading).map((line) => <span class="block">{line}</span>)}
+    <p class="eyebrow text-muted-foreground">{p.risk.label}</p>
+    <h2 class="t-heading mt-6 max-w-2xl font-serif font-medium text-ink">
+      {lines(p.risk.heading).map((line) => <span class="t-line">{line}</span>)}
     </h2>
 
     <div class="mt-16 grid gap-x-12 gap-y-10 sm:grid-cols-2">
       {
-        p.risk.items.map((item) => (
-          <div class="border-t border-ink pt-5">
-            <h3 class="text-lg leading-snug font-medium text-ink">{item.title}</h3>
+        p.risk.items.map((item, i) => (
+          <div data-reveal style={`--reveal-delay:${i * 70}ms`} class="border-t border-ink pt-6">
+            <span class={chip}>
+              <HugeiconsIcon icon={RISK_ICONS[i]} size={19} strokeWidth={1.7} />
+            </span>
+            <h3 class="mt-5 font-serif text-xl leading-snug text-ink">{item.title}</h3>
             <p class="mt-3 max-w-xl leading-relaxed text-muted-foreground">{item.body}</p>
           </div>
         ))
@@ -191,7 +257,7 @@ const display = "font-sans font-medium tracking-[-0.03em] leading-[0.95]"
 <!-- legal -->
 <section class={`bg-background py-14 ${slab}`}>
   <div class={wrap}>
-    <p class="font-mono text-[0.66rem] tracking-[0.2em] text-muted-foreground">{p.legal.label}</p>
+    <p class="eyebrow text-muted-foreground">{p.legal.label}</p>
     <ul class="mt-4 grid gap-2.5 sm:grid-cols-2 sm:gap-x-12 lg:grid-cols-3">
       {
         p.legal.items.map((item) => (
@@ -207,9 +273,7 @@ const display = "font-sans font-medium tracking-[-0.03em] leading-[0.95]"
   <div class={wrap}>
     <div class="flex flex-wrap items-end justify-between gap-8">
       <div class="max-w-xl">
-        <h2 class={`${display} text-[clamp(1.75rem,3.4vw,2.75rem)] text-white`}>
-          {p.cta.heading}
-        </h2>
+        <h2 class="t-heading-sm font-serif font-medium text-white">{p.cta.heading}</h2>
         <p class="mt-4 leading-relaxed text-white/60">{p.cta.body}</p>
       </div>
       <a
@@ -225,7 +289,7 @@ const display = "font-sans font-medium tracking-[-0.03em] leading-[0.95]"
       href={p.next.href}
       class="mt-14 flex items-center justify-between gap-6 border-t border-white/15 pt-6 text-white/70 transition-colors hover:text-white"
     >
-      <span class="text-lg font-medium">{p.next.label}</span>
+      <span class="font-serif text-lg">{p.next.label}</span>
       <HugeiconsIcon icon={ArrowRight01Icon} size={20} strokeWidth={1.8} />
     </a>
   </div>

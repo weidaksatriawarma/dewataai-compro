@@ -1,17 +1,32 @@
 ---
 /**
- * The leverage case. Laid out as stacked full-bleed slabs rather than the
- * site's usual centred column: the reference this page was asked to follow is
- * a defence-industrial site, where each idea gets a whole band of the page and
- * a lot of air around it.
+ * The leverage case.
+ *
+ * Layout takes the defence-industrial reference the brief asked for: stacked
+ * full-bleed slabs, one idea per band, a lot of air. Type does not: headings
+ * stay on the site's serif display and the shared `t-*` scale, so the page
+ * reads as the same company as the homepage rather than a visiting brand.
  */
 import { HugeiconsIcon } from "@hugeicons/react"
-import { ArrowRight01Icon, ArrowDown01Icon } from "@hugeicons/core-free-icons"
+import {
+  ArrowRight01Icon,
+  ArrowDown01Icon,
+  Database01Icon,
+  GroupLayersIcon,
+  Store01Icon,
+  Hotel01Icon,
+  Restaurant01Icon,
+  BankIcon,
+  Cash01Icon,
+  Analytics01Icon,
+} from "@hugeicons/core-free-icons"
+import PlaceholderImage from "@/components/PlaceholderImage.astro"
 import Figure from "@/components/investor/Figure.astro"
 import CapitalBars from "@/components/investor/CapitalBars.astro"
 import CostShare from "@/components/investor/CostShare.astro"
 import CeilingChart from "@/components/investor/CeilingChart.astro"
 import { lines } from "@/lib/site"
+import { images } from "@/lib/images"
 import {
   getInvestor,
   CAPITAL_TO_SCALE,
@@ -25,6 +40,10 @@ import { resolveLang, path } from "@/lib/i18n"
 const lang = resolveLang(Astro.currentLocale)
 const p = getInvestor(lang).investor
 const fig = p.figure
+
+/* Icon order matches the copy arrays in lib/investor.ts. */
+const RECORD_ICONS = [Database01Icon, GroupLayersIcon, Store01Icon]
+const FAIR_ICONS = [Hotel01Icon, BankIcon, Cash01Icon, Analytics01Icon]
 
 /* ---- figure 01: capital ---- */
 const capitalBars = CAPITAL_TO_SCALE.map((row) => ({
@@ -60,27 +79,50 @@ const ceilingRows = CAPACITY_CURVE.filter((row) => row.x % 50 === 0).map((row) =
   String(row.software),
 ])
 
+/* The three businesses the whole page compares, shown once so the columns of
+   the cost chart have a face. */
+const compare = [
+  { src: images.compareVilla, seed: "villa", icon: Hotel01Icon, label: p.share.chart.columns.villa },
+  { src: images.compareResto, seed: "resto", icon: Restaurant01Icon, label: p.share.chart.columns.resto },
+  {
+    src: images.compareSoftware,
+    seed: "software",
+    icon: Analytics01Icon,
+    label: p.share.chart.columns.software,
+  },
+]
+
 const slab = "border-b border-hairline"
 const wrap = "mx-auto w-full max-w-7xl px-6 sm:px-10"
-const display = "font-sans font-medium tracking-[-0.03em] leading-[0.95]"
+const chip = "grid size-10 shrink-0 place-items-center rounded-xl border border-hairline bg-muted text-ink"
+const chipDark = "grid size-10 shrink-0 place-items-center rounded-xl border border-white/15 bg-white/[0.06] text-white"
 ---
 
 <!-- hero -->
 <section class="ink-section relative flex min-h-[78vh] flex-col justify-between overflow-hidden">
-  <div class="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
+  <div class="pointer-events-none absolute inset-0 z-0" aria-hidden="true">
+    <PlaceholderImage
+      src={images.investorHero}
+      alt=""
+      seed="investor-hero"
+      loading="eager"
+      class="opacity-[0.38]"
+    />
+    <div class="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(10,10,10,0.42),rgba(10,10,10,0.9))]">
+    </div>
     <div
-      class="absolute inset-0 grid-overlay opacity-25 [mask-image:linear-gradient(to_bottom,#000_10%,transparent_85%)]"
+      class="absolute inset-0 grid-overlay opacity-20 [mask-image:linear-gradient(to_bottom,#000_10%,transparent_85%)]"
     >
     </div>
   </div>
 
-  <div class={`${wrap} pt-32 sm:pt-40`}>
-    <p class="font-mono text-[0.68rem] tracking-[0.24em] text-white/45">{p.eyebrow}</p>
+  <div class={`relative z-10 ${wrap} pt-32 sm:pt-40`}>
+    <p class="eyebrow text-white/50">{p.eyebrow}</p>
   </div>
 
-  <div class={`${wrap} pb-16 sm:pb-24`}>
-    <h1 class={`${display} max-w-5xl text-[clamp(2.75rem,8vw,6.5rem)] text-white`}>
-      {lines(p.heading).map((line) => <span class="block">{line}</span>)}
+  <div class={`relative z-10 ${wrap} pb-16 sm:pb-24`}>
+    <h1 class="t-display max-w-5xl font-serif font-medium text-white">
+      {lines(p.heading).map((line) => <span class="t-line">{line}</span>)}
     </h1>
     <div class="mt-12 grid gap-8 border-t border-white/12 pt-8 lg:grid-cols-[0.55fr_0.45fr]">
       <p class="max-w-2xl leading-relaxed text-white/65">{p.lead}</p>
@@ -90,7 +132,7 @@ const display = "font-sans font-medium tracking-[-0.03em] leading-[0.95]"
     </div>
   </div>
 
-  <span class="pointer-events-none absolute right-6 bottom-8 text-white/30 sm:right-10">
+  <span class="pointer-events-none absolute right-6 bottom-8 z-10 text-white/30 sm:right-10">
     <HugeiconsIcon icon={ArrowDown01Icon} size={22} strokeWidth={1.5} />
   </span>
 </section>
@@ -98,22 +140,53 @@ const display = "font-sans font-medium tracking-[-0.03em] leading-[0.95]"
 <!-- the one sentence -->
 <section class={`bg-paper py-28 sm:py-44 ${slab}`}>
   <div class={wrap}>
-    <p class={`${display} text-center text-[clamp(2.25rem,6.5vw,5rem)] text-ink`}>
-      {lines(p.statement).map((line) => <span class="block">{line}</span>)}
+    <p class="t-display text-center font-serif font-medium text-ink">
+      {lines(p.statement).map((line) => <span class="t-line">{line}</span>)}
     </p>
   </div>
 </section>
 
+<!-- the short version, with the three businesses being compared -->
+<section class={`bg-background py-24 sm:py-32 ${slab}`}>
+  <div class={wrap}>
+    <div class="grid gap-10 lg:grid-cols-[0.45fr_0.55fr] lg:gap-16">
+      <div>
+        <p class="eyebrow text-muted-foreground">{p.thesis.label}</p>
+        <h2 class="t-heading-sm mt-6 font-serif font-medium text-ink">
+          {lines(p.thesis.heading).map((line) => <span class="t-line">{line}</span>)}
+        </h2>
+      </div>
+      <div class="space-y-5 self-end">
+        {p.thesis.body.map((para) => <p class="leading-relaxed text-muted-foreground">{para}</p>)}
+      </div>
+    </div>
+
+    <div class="mt-14 grid gap-5 sm:grid-cols-3">
+      {
+        compare.map((item, i) => (
+          <figure data-reveal style={`--reveal-delay:${i * 90}ms`}>
+            <div class="aspect-[4/3] overflow-hidden border border-hairline">
+              <PlaceholderImage src={item.src} alt={item.label} seed={item.seed} />
+            </div>
+            <figcaption class="mt-3 flex items-center gap-2.5 text-sm text-ink">
+              <HugeiconsIcon icon={item.icon} size={17} strokeWidth={1.7} />
+              {item.label}
+            </figcaption>
+          </figure>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
 <!-- how we think about data -->
-<section class={`bg-background py-24 sm:py-36 ${slab}`}>
+<section class={`bg-paper py-24 sm:py-36 ${slab}`}>
   <div class={wrap}>
     <div class="grid gap-10 lg:grid-cols-[0.34fr_0.66fr] lg:gap-16">
       <div>
-        <p class="font-mono text-[0.68rem] tracking-[0.2em] text-muted-foreground">
-          {p.record.label}
-        </p>
-        <h2 class={`${display} mt-6 text-[clamp(1.85rem,3.6vw,3rem)] text-ink`}>
-          {lines(p.record.heading).map((line) => <span class="block">{line}</span>)}
+        <p class="eyebrow text-muted-foreground">{p.record.label}</p>
+        <h2 class="t-heading mt-6 font-serif font-medium text-ink">
+          {lines(p.record.heading).map((line) => <span class="t-line">{line}</span>)}
         </h2>
       </div>
       <p class="max-w-2xl self-end leading-relaxed text-muted-foreground">{p.record.sub}</p>
@@ -121,12 +194,17 @@ const display = "font-sans font-medium tracking-[-0.03em] leading-[0.95]"
 
     <div class="mt-16 grid gap-x-12 gap-y-10 sm:grid-cols-3">
       {
-        p.record.items.map((item) => (
-          <div class="border-t border-ink pt-5">
-            <span class="font-mono text-xs tracking-[0.2em] text-muted-foreground">
-              {item.index}
-            </span>
-            <h3 class="mt-4 text-lg leading-snug font-medium text-ink">{item.title}</h3>
+        p.record.items.map((item, i) => (
+          <div data-reveal style={`--reveal-delay:${i * 80}ms`} class="border-t border-ink pt-6">
+            <div class="flex items-center gap-3">
+              <span class={chip}>
+                <HugeiconsIcon icon={RECORD_ICONS[i]} size={19} strokeWidth={1.7} />
+              </span>
+              <span class="font-mono text-xs tracking-[0.2em] text-muted-foreground">
+                {item.index}
+              </span>
+            </div>
+            <h3 class="mt-5 font-serif text-xl leading-snug text-ink">{item.title}</h3>
             <p class="mt-3 leading-relaxed text-muted-foreground">{item.body}</p>
           </div>
         ))
@@ -136,14 +214,12 @@ const display = "font-sans font-medium tracking-[-0.03em] leading-[0.95]"
 </section>
 
 <!-- 02 capital -->
-<section class={`bg-paper py-24 sm:py-36 ${slab}`}>
+<section class={`bg-background py-24 sm:py-36 ${slab}`}>
   <div class={wrap}>
-    <p class="font-mono text-[0.68rem] tracking-[0.2em] text-muted-foreground">
-      {p.capital.label}
-    </p>
+    <p class="eyebrow text-muted-foreground">{p.capital.label}</p>
     <div class="mt-6 grid gap-6 lg:grid-cols-[0.55fr_0.45fr] lg:items-end lg:gap-16">
-      <h2 class={`${display} text-[clamp(1.85rem,4vw,3.25rem)] text-ink`}>
-        {lines(p.capital.heading).map((line) => <span class="block">{line}</span>)}
+      <h2 class="t-heading font-serif font-medium text-ink">
+        {lines(p.capital.heading).map((line) => <span class="t-line">{line}</span>)}
       </h2>
       <p class="leading-relaxed text-muted-foreground">{p.capital.sub}</p>
     </div>
@@ -175,12 +251,12 @@ const display = "font-sans font-medium tracking-[-0.03em] leading-[0.95]"
 </section>
 
 <!-- 03 cost structure -->
-<section class={`bg-background py-24 sm:py-36 ${slab}`}>
+<section class={`bg-paper py-24 sm:py-36 ${slab}`}>
   <div class={wrap}>
-    <p class="font-mono text-[0.68rem] tracking-[0.2em] text-muted-foreground">{p.share.label}</p>
+    <p class="eyebrow text-muted-foreground">{p.share.label}</p>
     <div class="mt-6 grid gap-6 lg:grid-cols-[0.55fr_0.45fr] lg:items-end lg:gap-16">
-      <h2 class={`${display} text-[clamp(1.85rem,4vw,3.25rem)] text-ink`}>
-        {lines(p.share.heading).map((line) => <span class="block">{line}</span>)}
+      <h2 class="t-heading font-serif font-medium text-ink">
+        {lines(p.share.heading).map((line) => <span class="t-line">{line}</span>)}
       </h2>
       <p class="leading-relaxed text-muted-foreground">{p.share.sub}</p>
     </div>
@@ -206,14 +282,12 @@ const display = "font-sans font-medium tracking-[-0.03em] leading-[0.95]"
 </section>
 
 <!-- 04 ceiling -->
-<section class={`bg-paper py-24 sm:py-36 ${slab}`}>
+<section class={`bg-background py-24 sm:py-36 ${slab}`}>
   <div class={wrap}>
-    <p class="font-mono text-[0.68rem] tracking-[0.2em] text-muted-foreground">
-      {p.ceiling.label}
-    </p>
+    <p class="eyebrow text-muted-foreground">{p.ceiling.label}</p>
     <div class="mt-6 grid gap-6 lg:grid-cols-[0.55fr_0.45fr] lg:items-end lg:gap-16">
-      <h2 class={`${display} text-[clamp(1.85rem,4vw,3.25rem)] text-ink`}>
-        {lines(p.ceiling.heading).map((line) => <span class="block">{line}</span>)}
+      <h2 class="t-heading font-serif font-medium text-ink">
+        {lines(p.ceiling.heading).map((line) => <span class="t-line">{line}</span>)}
       </h2>
       <p class="leading-relaxed text-muted-foreground">{p.ceiling.sub}</p>
     </div>
@@ -240,19 +314,22 @@ const display = "font-sans font-medium tracking-[-0.03em] leading-[0.95]"
 <!-- 05 the fair part -->
 <section class="ink-section py-24 sm:py-36">
   <div class={wrap}>
-    <p class="font-mono text-[0.68rem] tracking-[0.2em] text-white/45">{p.fair.label}</p>
+    <p class="eyebrow text-white/50">{p.fair.label}</p>
     <div class="mt-6 grid gap-6 lg:grid-cols-[0.55fr_0.45fr] lg:items-end lg:gap-16">
-      <h2 class={`${display} text-[clamp(1.85rem,4vw,3.25rem)] text-white`}>
-        {lines(p.fair.heading).map((line) => <span class="block">{line}</span>)}
+      <h2 class="t-heading font-serif font-medium text-white">
+        {lines(p.fair.heading).map((line) => <span class="t-line">{line}</span>)}
       </h2>
       <p class="leading-relaxed text-white/60">{p.fair.sub}</p>
     </div>
 
     <div class="mt-16 grid gap-x-12 gap-y-10 sm:grid-cols-2">
       {
-        p.fair.items.map((item) => (
-          <div class="border-t border-white/25 pt-5">
-            <h3 class="text-lg leading-snug font-medium text-white">{item.title}</h3>
+        p.fair.items.map((item, i) => (
+          <div data-reveal style={`--reveal-delay:${i * 70}ms`} class="border-t border-white/25 pt-6">
+            <span class={chipDark}>
+              <HugeiconsIcon icon={FAIR_ICONS[i]} size={19} strokeWidth={1.7} />
+            </span>
+            <h3 class="mt-5 font-serif text-xl leading-snug text-white">{item.title}</h3>
             <p class="mt-3 max-w-xl leading-relaxed text-white/60">{item.body}</p>
           </div>
         ))
@@ -266,10 +343,8 @@ const display = "font-sans font-medium tracking-[-0.03em] leading-[0.95]"
   <div class={wrap}>
     <div class="grid gap-6 lg:grid-cols-[0.34fr_0.66fr] lg:gap-16">
       <div>
-        <p class="font-mono text-[0.68rem] tracking-[0.2em] text-muted-foreground">
-          {p.assumptions.label}
-        </p>
-        <h2 class="mt-6 text-2xl font-medium tracking-[-0.02em] text-ink">
+        <p class="eyebrow text-muted-foreground">{p.assumptions.label}</p>
+        <h2 class="t-heading-sm mt-6 font-serif font-medium text-ink">
           {p.assumptions.heading}
         </h2>
       </div>
@@ -302,7 +377,7 @@ const display = "font-sans font-medium tracking-[-0.03em] leading-[0.95]"
 <!-- legal -->
 <section class={`bg-paper py-14 ${slab}`}>
   <div class={wrap}>
-    <p class="font-mono text-[0.66rem] tracking-[0.2em] text-muted-foreground">{p.legal.label}</p>
+    <p class="eyebrow text-muted-foreground">{p.legal.label}</p>
     <ul class="mt-4 grid gap-2.5 sm:grid-cols-3 sm:gap-8">
       {
         p.legal.items.map((item) => (
@@ -318,9 +393,7 @@ const display = "font-sans font-medium tracking-[-0.03em] leading-[0.95]"
   <div class={wrap}>
     <div class="flex flex-wrap items-end justify-between gap-8">
       <div class="max-w-xl">
-        <h2 class={`${display} text-[clamp(1.75rem,3.4vw,2.75rem)] text-white`}>
-          {p.cta.heading}
-        </h2>
+        <h2 class="t-heading-sm font-serif font-medium text-white">{p.cta.heading}</h2>
         <p class="mt-4 leading-relaxed text-white/60">{p.cta.body}</p>
       </div>
       <a
@@ -336,7 +409,7 @@ const display = "font-sans font-medium tracking-[-0.03em] leading-[0.95]"
       href={p.next.href}
       class="mt-14 flex items-center justify-between gap-6 border-t border-white/15 pt-6 text-white/70 transition-colors hover:text-white"
     >
-      <span class="text-lg font-medium">{p.next.label}</span>
+      <span class="font-serif text-lg">{p.next.label}</span>
       <HugeiconsIcon icon={ArrowRight01Icon} size={20} strokeWidth={1.8} />
     </a>
   </div>

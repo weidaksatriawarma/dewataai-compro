@@ -23,4 +23,14 @@ export const images = {
   portfolio: U("1604999565976-8913ad2ddb7c", 1400, 900),
   // Misc texture
   texture: U("1488590528505-98d2b5aba04b", 1000, 700),
+  // Investor pages. The three compare shots are the subject of the argument,
+  // not decoration: they put a face on the columns of the cost chart.
+  investorHero: U("1571003123894-1f0594d2b5d9", 1800, 1000),
+  thesisHero: U("1590490360182-c33d57733427", 1800, 1000),
+  compareVilla: U("1582719478250-c89cae4dc85b", 900, 700),
+  compareResto: U("1517248135467-4c7edcad34c4", 900, 700),
+  // A workspace, not a market chart: a falling candlestick is the wrong
+  // signal to put next to the word "software" on an investor page.
+  compareSoftware: U("1488590528505-98d2b5aba04b", 900, 700),
+  buildBand: U("1558494949-ef010cbdcc31", 1800, 760),
 } as const
