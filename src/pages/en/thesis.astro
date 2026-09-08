@@ -1,0 +1,17 @@
+---
+import PageLayout from "@/layouts/page.astro"
+import ThesisPage from "@/components/pages/ThesisPage.astro"
+import { getInvestor } from "@/lib/investor"
+import { resolveLang, path } from "@/lib/i18n"
+
+const p = getInvestor(resolveLang(Astro.currentLocale)).thesis
+---
+
+<PageLayout
+  title={p.meta.title}
+  description={p.meta.description}
+  pathId={path("thesis", "id")}
+  pathEn={path("thesis", "en")}
+>
+  <ThesisPage />
+</PageLayout>

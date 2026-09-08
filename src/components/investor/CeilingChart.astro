@@ -1,0 +1,140 @@
+---
+/**
+ * Two lines against demand. The point of the figure is the flat section: past
+ * the room count, extra demand stops turning into revenue.
+ *
+ * Identity is never colour alone here. The physical line is grey and dashed,
+ * the software line is ink and solid, and both are labelled at the end of the
+ * line, so the chart survives greyscale printing and colour vision deficiency.
+ */
+import { CAPACITY_CURVE, CAPACITY_CEILING } from "@/lib/investor"
+
+interface Props {
+  labels: {
+    xLabel: string
+    yLabel: string
+    physical: string
+    software: string
+    ceilingLabel: string
+  }
+}
+
+const { labels } = Astro.props
+
+const W = 720
+const H = 340
+const L = 52
+const R = 190
+const T = 24
+const B = 62
+
+const xMax = 200
+const yMax = 200
+const px = (x: number) => L + (x / xMax) * (W - L - R)
+const py = (y: number) => H - B - (y / yMax) * (H - T - B)
+
+const line = (key: "physical" | "software") =>
+  CAPACITY_CURVE.map((p, i) => `${i === 0 ? "M" : "L"}${px(p.x)} ${py(p[key])}`).join(" ")
+
+const ticks = [0, 50, 100, 150, 200]
+const last = CAPACITY_CURVE[CAPACITY_CURVE.length - 1]
+---
+
+<svg
+  viewBox={`0 0 ${W} ${H}`}
+  class="h-auto w-full"
+  role="img"
+  aria-label={`${labels.software}, ${labels.physical}`}
+>
+  {/* grid */}
+  {
+    ticks.map((t) => (
+      <g>
+        <line x1={L} y1={py(t)} x2={W - R} y2={py(t)} class="grid" />
+        <text x={L - 12} y={py(t) + 4} text-anchor="end" class="tick">
+          {t}
+        </text>
+      </g>
+    ))
+  }
+  {
+    ticks.map((t) => (
+      <text x={px(t)} y={H - B + 22} text-anchor="middle" class="tick">
+        {t}
+      </text>
+    ))
+  }
+
+  {/* the wall */}
+  <line
+    x1={px(CAPACITY_CEILING)}
+    y1={T}
+    x2={px(CAPACITY_CEILING)}
+    y2={H - B}
+    class="wall"
+  />
+  <text x={px(CAPACITY_CEILING) + 8} y={T + 12} class="wall-lab">{labels.ceilingLabel}</text>
+
+  {/* series */}
+  <path d={line("physical")} class="ln-grey" />
+  <path d={line("software")} class="ln-ink" />
+
+  <text x={px(last.x) + 12} y={py(last.software) + 5} class="end-ink">{labels.software}</text>
+  <text x={px(last.x) + 12} y={py(last.physical) + 5} class="end-grey">{labels.physical}</text>
+
+  {/* axis titles */}
+  <text x={L} y={H - 8} class="axis">{labels.xLabel}</text>
+  <text x={L} y={T - 8} class="axis">{labels.yLabel}</text>
+</svg>
+
+<style>
+  .grid {
+    stroke: var(--hairline);
+    stroke-width: 1;
+  }
+  .tick,
+  .axis {
+    fill: var(--muted-foreground);
+    font-family: var(--font-mono);
+    font-size: 11px;
+  }
+  .wall {
+    stroke: var(--muted-foreground);
+    stroke-width: 1;
+    stroke-dasharray: 3 4;
+  }
+  .wall-lab {
+    fill: var(--muted-foreground);
+    font-family: var(--font-mono);
+    font-size: 11px;
+  }
+  .ln-ink {
+    fill: none;
+    stroke: var(--ink);
+    stroke-width: 2;
+  }
+  .ln-grey {
+    fill: none;
+    stroke: #8a8a8a;
+    stroke-width: 2;
+    stroke-dasharray: 7 5;
+  }
+  .end-ink {
+    fill: var(--ink);
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .end-grey {
+    fill: #7a7a7a;
+    font-size: 13px;
+    font-weight: 500;
+  }
+  :global(.dark) .ln-grey,
+  :global(.dark) .end-grey {
+    stroke: #9a9a9a;
+    fill: #9a9a9a;
+  }
+  :global(.dark) .end-grey {
+    stroke: none;
+  }
+</style>

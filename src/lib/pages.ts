@@ -70,9 +70,9 @@ const content = {
   id: {
     ventures: {
       meta: {
-        title: "Usaha kami | Dewata AI",
+        title: "Usaha kami: Dewata Tech dan Dagangku AI | Dewata AI",
         description:
-          "Dua usaha yang dimiliki dan dijalankan PT Dewata Artificial Intelligence: Dewata Tech dan Dagangku AI.",
+          "Dua usaha yang kami punya dan jalanin sendiri. Dewata Tech bikin villa dapet booking direct tanpa komisi. Dagangku AI bikin pembukuan beres modal chat.",
       },
       eyebrow: "Usaha",
       heading: "Yang kami punya\ndan jalankan.",
@@ -100,9 +100,9 @@ const content = {
     ventureDetail: {
       "dewata-tech": {
         meta: {
-          title: "Dewata Tech | Usaha Dewata AI",
+          title: "Dewata Tech: booking direct villa, komisi OTA nol | Dewata AI",
           description:
-            "Dewata Tech membangun website dan booking engine untuk villa di Bali. Tamu booking langsung, komisi OTA jadi nol.",
+            "Website plus booking engine buat villa. Live 7 hari, komisi OTA yang 15 sampai 30 persen itu langsung nol, kalender OTA tetap sinkron. Garansi 30 hari.",
         },
         eyebrow: "Usaha 01",
         headline: "Booking langsung.\nKomisi auto nol.",
@@ -155,9 +155,9 @@ const content = {
 
       "dagangku-ai": {
         meta: {
-          title: "Dagangku AI | Usaha Dewata AI",
+          title: "Dagangku AI: pembukuan modal chat, bukan wrapper | Dewata AI",
           description:
-            "Dagangku AI adalah asisten pembukuan berbasis chat untuk bisnis Indonesia. Catat transaksi secepat kirim pesan.",
+            "Catat transaksi secepat kirim chat, untung rugi kelihatan hari itu juga. Bukan wrapper ChatGPT: kami pegang pembukuannya plus korpus koreksi bahasa warung.",
         },
         eyebrow: "Usaha 02",
         headline: "Satu chat.\nPembukuan beres.",
@@ -197,6 +197,49 @@ const content = {
             },
           ],
         },
+        /* The "you are just a ChatGPT wrapper" answer, said in public instead of
+           only in the investor deck. Every claim below maps to something that
+           already runs in the Dagangku codebase, and the one that does not is
+           labelled as a design. Source of truth:
+           dagangkuai/docs/strategy/DATA-MOAT-AND-DEFENSIBILITY.md */
+        moat: {
+          label: "Kenapa gak gampang ditiru",
+          heading: "Wrapper jual chat.\nKami jual pembukuan.",
+          body: [
+            "Kotak chat gak nyimpen apa-apa. Pindah dari situ cuma butuh satu menit.",
+            "Pembukuan itu catatan resmi usaha kamu: kwitansi bernomor urut yang udah sampai ke pelanggan, stok, kasbon, gaji, laporan SAK EMKM, hitungan PPh Final. Pindah dari situ berarti ninggalin riwayat usaha sendiri.",
+          ],
+          items: [
+            {
+              title: "Korpus koreksi bahasa warung",
+              desc: "Tiap kali kamu benerin catatan yang AI-nya keliru, versi sebelum dan sesudahnya kami simpan. Data bahasa warung yang dipetakan ke jurnal akuntansi kayak gini gak dijual di mana pun.",
+              status: "Jalan",
+              live: true,
+            },
+            {
+              title: "Konteks usaha kamu sendiri",
+              desc: "Sebelum jawab, AI-nya baca dulu tren omzet, margin, dan kategori teratas usaha kamu. Makin lama kamu nyatet, makin nyambung jawabannya.",
+              status: "Jalan",
+              live: true,
+            },
+            {
+              title: "13 lapis operasi harian",
+              desc: "Kasir, kwitansi, stok, kasbon, gaji, aset, pajak, sampai antrean offline pas sinyal ilang. Yang susah ditiru bukan satu fiturnya, tapi semuanya yang saling ngunci.",
+              status: "Jalan",
+              live: true,
+            },
+            {
+              title: "Buku besar tersambung",
+              desc: "Kalau dua usaha sama-sama pakai Dagangku dan dua-duanya setuju, piutang di satu sisi ketemu utang di sisi lain. Ini masih rancangan, belum jalan.",
+              status: "Rancangan",
+              live: false,
+            },
+          ],
+          limit: {
+            label: "Batasnya",
+            body: "Data kamu gak kami sandera: ekspor penuh selalu ada. Koreksi kamu dipakai buat ngukur model mana yang paling akurat buat bahasa Indonesia, bukan buat ngelatih model dari data usaha kamu.",
+          },
+        },
         forWho: {
           label: "Cocok buat",
           items: ["Warung dan toko", "Usaha jasa dan agency", "Pekerja lepas"],
@@ -211,9 +254,9 @@ const content = {
 
     about: {
       meta: {
-        title: "Tentang | Dewata AI",
+        title: "Tentang Dewata AI: induk, bukan agensi | Dewata AI",
         description:
-          "PT Dewata Artificial Intelligence adalah perusahaan induk teknologi asal Denpasar, Bali. Kami memiliki dan menjalankan Dewata Tech dan Dagangku AI.",
+          "PT Dewata Artificial Intelligence punya dan jalanin Dewata Tech sama Dagangku AI dari Denpasar, Bali. Kami gak jualan jasa, produknya kami yang punya.",
       },
       eyebrow: "Tentang",
       heading: "Induk, bukan\nagensi.",
@@ -284,9 +327,9 @@ const content = {
 
     manifesto: {
       meta: {
-        title: "Manifesto | Dewata AI",
+        title: "Manifesto Dewata AI: yang kami bangun dan yang kami tolak",
         description:
-          "Prinsip yang menentukan apa yang kami bangun, apa yang kami tolak, dan bagaimana kami menjalankan usaha dari Bali.",
+          "Sembilan prinsip yang nentuin apa yang kami bangun dan apa yang kami tolak: masalah dulu, menang total di pasar kecil, dan yang numpuk tiap hari itu produknya.",
       },
       eyebrow: "Manifesto",
       heading: "Apa yang kami\npercaya.",
@@ -322,6 +365,21 @@ const content = {
           title: "Kelas dunia bisa lahir dari Bali.",
           body: "Kami gak perlu pindah ke Jakarta atau Singapura buat bikin software yang bagus. Timnya di sini, pelanggannya di sini, standarnya tetap global.",
         },
+        {
+          index: "07",
+          title: "Kami nyari yang belum kelihatan orang.",
+          body: "Pasar yang rame itu tandanya jawabannya udah ketemu semua orang, dan sisanya cuma rebutan harga. Kami milih masalah yang dianggap kekecilan atau keribetan, karena di situ masih ada yang bisa dimenangin.",
+        },
+        {
+          index: "08",
+          title: "Menang total di pasar kecil dulu.",
+          body: "Warung dan usaha kecil di Bali dulu, sampai bener-bener kepakai tiap hari, baru melebar. Jadi pilihan nomor sepuluh di pasar gede itu cuma kalah pelan-pelan.",
+        },
+        {
+          index: "09",
+          title: "Yang numpuk tiap hari itu produknya.",
+          body: "Fitur bisa disalin dalam sebulan. Data yang lahir dari orang benerin pembukuannya sendiri tiap hari gak bisa dibeli dan gak bisa dikarang. Itu yang kami kejar, bukan jumlah fitur.",
+        },
       ],
       closing: {
         heading: "Kalau ini kedengeran masuk akal buat kamu, kita mungkin cocok kerja bareng.",
@@ -331,9 +389,9 @@ const content = {
 
     journal: {
       meta: {
-        title: "Jurnal | Dewata AI",
+        title: "Jurnal Dewata AI: catatan dari ruang kerja",
         description:
-          "Catatan dari tim Dewata AI soal membangun dan menjalankan produk AI untuk bisnis Indonesia.",
+          "Catatan tim Dewata AI soal bangun dan jalanin produk AI buat bisnis Indonesia. Ditulis pas masih anget, bukan pas udah keburu jadi teori.",
       },
       eyebrow: "Jurnal",
       heading: "Catatan dari\nruang kerja.",
@@ -342,9 +400,9 @@ const content = {
 
     press: {
       meta: {
-        title: "Siaran Pers | Dewata AI",
+        title: "Siaran Pers Dewata AI: kabar resmi perusahaan",
         description:
-          "Siaran pers resmi dari PT Dewata Artificial Intelligence, termasuk kontak media dan data perusahaan.",
+          "Siaran pers resmi PT Dewata Artificial Intelligence, lengkap sama kontak media dan data perusahaan. Buat jurnalis, mitra, dan calon investor.",
       },
       eyebrow: "Siaran Pers",
       heading: "Pengumuman\nresmi.",
@@ -356,9 +414,9 @@ const content = {
 
     contact: {
       meta: {
-        title: "Kontak | Dewata AI",
+        title: "Kontak Dewata AI: ngobrol 15 menit, gratis",
         description:
-          "Hubungi PT Dewata Artificial Intelligence lewat WhatsApp atau email. Biasanya dibales di hari yang sama.",
+          "Ceritain masalah yang paling bikin pusing di bisnis kamu, kita bedah bareng 15 menit. Gratis, tanpa pitch, dan biasanya kebales di hari yang sama.",
       },
       eyebrow: "Kontak",
       heading: "Ngobrol dulu,\ngratis kok.",
@@ -389,7 +447,7 @@ const content = {
       meta: {
         title: "Kebijakan Privasi | Dewata AI",
         description:
-          "Bagaimana PT Dewata Artificial Intelligence mengumpulkan, memakai, dan menyimpan data yang kamu kirim lewat situs ini.",
+          "Data apa yang kami kumpulkan lewat situs ini, kenapa disimpan, berapa lama, siapa yang bisa mengaksesnya, dan cara kamu minta data itu dihapus.",
       },
       eyebrow: "Legal",
       heading: "Kebijakan\nPrivasi.",
@@ -455,9 +513,9 @@ const content = {
   en: {
     ventures: {
       meta: {
-        title: "Our ventures | Dewata AI",
+        title: "Our ventures: Dewata Tech and Dagangku AI | Dewata AI",
         description:
-          "The two companies owned and operated by PT Dewata Artificial Intelligence: Dewata Tech and Dagangku AI.",
+          "Two companies we own and run ourselves. Dewata Tech gets villas booked direct with no commission. Dagangku AI closes a business's books from a chat.",
       },
       eyebrow: "Ventures",
       heading: "What we own\nand operate.",
@@ -483,9 +541,9 @@ const content = {
     ventureDetail: {
       "dewata-tech": {
         meta: {
-          title: "Dewata Tech | A Dewata AI venture",
+          title: "Dewata Tech: direct villa bookings, zero OTA commission",
           description:
-            "Dewata Tech builds websites and booking engines for Bali villas. Guests book direct, OTA commission drops to zero.",
+            "A website and booking engine for villas. Live in 7 days, the 15 to 30 percent OTA commission goes to zero, calendars stay in sync. 30-day guarantee.",
         },
         eyebrow: "Venture 01",
         headline: "Book direct.\nZero commission.",
@@ -538,9 +596,9 @@ const content = {
 
       "dagangku-ai": {
         meta: {
-          title: "Dagangku AI | A Dewata AI venture",
+          title: "Dagangku AI: bookkeeping from a chat, not a wrapper",
           description:
-            "Dagangku AI is a chat-based bookkeeping assistant for Indonesian business. Log a sale as fast as sending a message.",
+            "Log a sale as fast as sending a message and see profit the same day. Not a ChatGPT wrapper: we hold the actual books plus a correction corpus in Indonesian.",
         },
         eyebrow: "Venture 02",
         headline: "One chat.\nBooks done.",
@@ -580,6 +638,44 @@ const content = {
             },
           ],
         },
+        moat: {
+          label: "Why it is hard to copy",
+          heading: "Wrappers sell chat.\nWe sell your books.",
+          body: [
+            "A chat box stores nothing, so walking away from one takes a minute.",
+            "A set of books is the official record of a business: numbered receipts already in your customers' hands, stock, IOUs, payroll, SAK EMKM statements, final income tax. Walking away from that means leaving your own history behind.",
+          ],
+          items: [
+            {
+              title: "A correction corpus in shop-floor Indonesian",
+              desc: "Every time you fix a line the AI got wrong, we keep the before and the after. Nobody sells a dataset that maps warung language to accounting entries.",
+              status: "Live",
+              live: true,
+            },
+            {
+              title: "The context of your own business",
+              desc: "Before it answers, the AI reads your revenue trend, margin, and top categories. The longer you record, the closer the answers sit to your business.",
+              status: "Live",
+              live: true,
+            },
+            {
+              title: "Thirteen layers of daily operations",
+              desc: "Register, receipts, stock, IOUs, payroll, assets, tax, down to an offline queue when the signal drops. The hard part to copy is not one feature, it is how they lock into each other.",
+              status: "Live",
+              live: true,
+            },
+            {
+              title: "Connected ledgers",
+              desc: "When two businesses both use Dagangku and both agree, a receivable on one side meets a payable on the other. This is a design, not a shipped feature.",
+              status: "In design",
+              live: false,
+            },
+          ],
+          limit: {
+            label: "The limits",
+            body: "We do not hold your data hostage: a full export is always there. Your corrections are used to measure which model is most accurate in Indonesian, not to train a model on your business data.",
+          },
+        },
         forWho: {
           label: "Built for",
           items: ["Shops and food stalls", "Service businesses and agencies", "Freelancers"],
@@ -594,9 +690,9 @@ const content = {
 
     about: {
       meta: {
-        title: "About | Dewata AI",
+        title: "About Dewata AI: an owner, not an agency",
         description:
-          "PT Dewata Artificial Intelligence is a technology parent company based in Denpasar, Bali. We own and operate Dewata Tech and Dagangku AI.",
+          "PT Dewata Artificial Intelligence owns and runs Dewata Tech and Dagangku AI out of Denpasar, Bali. We do not sell services, we run our own products.",
       },
       eyebrow: "About",
       heading: "Holding company,\nnot an agency.",
@@ -665,9 +761,9 @@ const content = {
 
     manifesto: {
       meta: {
-        title: "Manifesto | Dewata AI",
+        title: "Dewata AI manifesto: what we build and what we refuse",
         description:
-          "The principles that decide what we build, what we turn down, and how we run companies out of Bali.",
+          "Nine principles that decide what we build and what we turn down: problem first, win one small market completely, and what compounds daily is the product.",
       },
       eyebrow: "Manifesto",
       heading: "What we\nbelieve.",
@@ -703,6 +799,21 @@ const content = {
           title: "World class can come out of Bali.",
           body: "We do not need to move to Jakarta or Singapore to build good software. The team is here, the customers are here, and the standard stays global.",
         },
+        {
+          index: "07",
+          title: "We look where nobody else is looking.",
+          body: "A crowded market means everyone already found the answer and the rest is a fight over price. We pick the problems others call too small or too messy, because that is where something is still there to win.",
+        },
+        {
+          index: "08",
+          title: "Win one small market completely first.",
+          body: "Warungs and small businesses in Bali first, until it is genuinely used every day, and only then widen. Being the tenth option in a huge market is just losing slowly.",
+        },
+        {
+          index: "09",
+          title: "What compounds daily is the product.",
+          body: "Features can be copied in a month. Data born from people correcting their own books every day cannot be bought and cannot be faked. That is what we chase, not the feature count.",
+        },
       ],
       closing: {
         heading: "If that sounds right to you, we might be a good fit.",
@@ -712,9 +823,9 @@ const content = {
 
     journal: {
       meta: {
-        title: "Journal | Dewata AI",
+        title: "Dewata AI journal: notes from the workshop",
         description:
-          "Notes from the Dewata AI team on building and running AI products for Indonesian business.",
+          "Notes from the Dewata AI team on building and running AI products for Indonesian business. Written while it is still fresh, not once it hardened into theory.",
       },
       eyebrow: "Journal",
       heading: "Notes from\nthe workshop.",
@@ -723,9 +834,9 @@ const content = {
 
     press: {
       meta: {
-        title: "Press releases | Dewata AI",
+        title: "Dewata AI press releases: official company news",
         description:
-          "Official press releases from PT Dewata Artificial Intelligence, including media contact and company details.",
+          "Official press releases from PT Dewata Artificial Intelligence, with media contact and company details. For journalists, partners, and prospective investors.",
       },
       eyebrow: "Press",
       heading: "Official\nannouncements.",
@@ -737,9 +848,9 @@ const content = {
 
     contact: {
       meta: {
-        title: "Contact | Dewata AI",
+        title: "Contact Dewata AI: 15 free minutes, no pitch",
         description:
-          "Reach PT Dewata Artificial Intelligence by WhatsApp or email. Usually answered the same day.",
+          "Tell us the problem that hurts most in your business and we break it down with you in 15 minutes. Free, no pitch, and usually answered the same day.",
       },
       eyebrow: "Contact",
       heading: "Got 15 minutes?\nIt is free.",
@@ -770,7 +881,7 @@ const content = {
       meta: {
         title: "Privacy Policy | Dewata AI",
         description:
-          "How PT Dewata Artificial Intelligence collects, uses, and stores the data you send through this site.",
+          "What data this site collects, why we keep it, how long we keep it, who can access it, and how to ask us to delete all of it.",
       },
       eyebrow: "Legal",
       heading: "Privacy\nPolicy.",

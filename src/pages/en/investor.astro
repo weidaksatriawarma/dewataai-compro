@@ -1,0 +1,17 @@
+---
+import PageLayout from "@/layouts/page.astro"
+import InvestorPage from "@/components/pages/InvestorPage.astro"
+import { getInvestor } from "@/lib/investor"
+import { resolveLang, path } from "@/lib/i18n"
+
+const p = getInvestor(resolveLang(Astro.currentLocale)).investor
+---
+
+<PageLayout
+  title={p.meta.title}
+  description={p.meta.description}
+  pathId={path("investor", "id")}
+  pathEn={path("investor", "en")}
+>
+  <InvestorPage />
+</PageLayout>

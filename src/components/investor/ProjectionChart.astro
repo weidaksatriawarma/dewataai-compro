@@ -1,0 +1,156 @@
+---
+/**
+ * One modelled line with the range around it drawn as a band rather than three
+ * competing lines. A band says "we do not know which of these happens", which
+ * is the honest shape of a five-year projection; three equal lines would imply
+ * three equally worked-out forecasts.
+ */
+import { PROJECTION, PROJECTION_YEARS, arr, rupiahShort } from "@/lib/investor"
+import type { Lang } from "@/lib/i18n"
+
+interface Props {
+  lang: Lang
+  labels: {
+    xLabel: string
+    yLabel: string
+    axisUnit: string
+    low: string
+    base: string
+    high: string
+    units: { billion: string; million: string }
+  }
+}
+
+const { lang, labels } = Astro.props
+
+const W = 720
+const H = 340
+const L = 58
+const R = 108
+const T = 26
+const B = 60
+
+const years = [...PROJECTION_YEARS]
+const yMax = arr(Math.max(...PROJECTION.high))
+const px = (i: number) => L + (i / (years.length - 1)) * (W - L - R)
+const py = (v: number) => H - B - (v / yMax) * (H - T - B)
+
+const path = (series: readonly number[]) =>
+  series.map((c, i) => `${i === 0 ? "M" : "L"}${px(i)} ${py(arr(c))}`).join(" ")
+
+const band = [
+  ...PROJECTION.high.map((c, i) => `${i === 0 ? "M" : "L"}${px(i)} ${py(arr(c))}`),
+  ...[...PROJECTION.low].reverse().map((c, i) => `L${px(years.length - 1 - i)} ${py(arr(c))}`),
+  "Z",
+].join(" ")
+
+const money = (v: number) => rupiahShort(v, lang, labels.units)
+/* Ticks carry the number only; the scale word lives once in the axis title,
+   which keeps the labels inside the plot and off the left edge. */
+const nf = new Intl.NumberFormat(lang === "en" ? "en-US" : "id-ID", {
+  maximumFractionDigits: 0,
+})
+const yTicks = [0, 0.25, 0.5, 0.75, 1].map((f) => f * yMax)
+const tickLabel = (v: number) => nf.format(v / 1_000_000_000)
+const lastIndex = years.length - 1
+---
+
+<svg
+  viewBox={`0 0 ${W} ${H}`}
+  class="h-auto w-full"
+  role="img"
+  aria-label={`${labels.low}, ${labels.base}, ${labels.high}`}
+>
+  {
+    yTicks.map((v) => (
+      <g>
+        <line x1={L} y1={py(v)} x2={W - R} y2={py(v)} class="grid" />
+        <text x={L - 10} y={py(v) + 4} text-anchor="end" class="tick">
+          {tickLabel(v)}
+        </text>
+      </g>
+    ))
+  }
+  {
+    years.map((y, i) => (
+      <text x={px(i)} y={H - B + 22} text-anchor="middle" class="tick">
+        {y}
+      </text>
+    ))
+  }
+
+  <path d={band} class="band" />
+  <path d={path(PROJECTION.high)} class="edge" />
+  <path d={path(PROJECTION.low)} class="edge" />
+  <path d={path(PROJECTION.base)} class="base" />
+
+  {
+    PROJECTION.base.map((c, i) => (
+      <circle cx={px(i)} cy={py(arr(c))} r="4" class="dot">
+        <title>{`${labels.base} · ${years[i]}: ${money(arr(c))}`}</title>
+      </circle>
+    ))
+  }
+
+  <text x={px(lastIndex) + 12} y={py(arr(PROJECTION.high[lastIndex])) + 4} class="end-grey">
+    {labels.high}
+  </text>
+  <text x={px(lastIndex) + 12} y={py(arr(PROJECTION.base[lastIndex])) + 4} class="end-ink">
+    {labels.base}
+  </text>
+  <text x={px(lastIndex) + 12} y={py(arr(PROJECTION.low[lastIndex])) + 4} class="end-grey">
+    {labels.low}
+  </text>
+
+  <text x={L} y={H - 8} class="axis">{labels.xLabel}</text>
+  <text x={L - 10} y={T - 10} class="axis">{labels.yLabel} ({labels.axisUnit})</text>
+</svg>
+
+<style>
+  .grid {
+    stroke: var(--hairline);
+    stroke-width: 1;
+  }
+  .tick,
+  .axis {
+    fill: var(--muted-foreground);
+    font-family: var(--font-mono);
+    font-size: 11px;
+  }
+  .band {
+    fill: var(--ink);
+    opacity: 0.09;
+  }
+  .edge {
+    fill: none;
+    stroke: #8a8a8a;
+    stroke-width: 1.5;
+    stroke-dasharray: 6 5;
+  }
+  .base {
+    fill: none;
+    stroke: var(--ink);
+    stroke-width: 2.5;
+  }
+  .dot {
+    fill: var(--background);
+    stroke: var(--ink);
+    stroke-width: 2;
+  }
+  .end-ink {
+    fill: var(--ink);
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .end-grey {
+    fill: #7a7a7a;
+    font-size: 13px;
+    font-weight: 500;
+  }
+  :global(.dark) .edge {
+    stroke: #9a9a9a;
+  }
+  :global(.dark) .end-grey {
+    fill: #9a9a9a;
+  }
+</style>

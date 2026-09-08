@@ -1,0 +1,151 @@
+---
+/**
+ * Instrument panel around a chart: an identifier, the title, a status stamp,
+ * and the same numbers again as a table.
+ *
+ * The status stamp is not decoration. Every figure on the investor pages is a
+ * model rather than a measurement, and saying so on the panel itself means the
+ * claim travels with a screenshot of it.
+ *
+ * The table is mandatory, not optional: it is what makes the figure readable
+ * when colour separation fails (colour vision deficiency, print, forced
+ * colours) and what lets a reader check the arithmetic.
+ */
+interface Props {
+  index: string
+  prefix: string
+  title: string
+  unit?: string
+  status: string
+  statusTitle: string
+  tableLabel: string
+  headers: readonly string[]
+  rows: readonly (readonly string[])[]
+}
+
+const { index, prefix, title, unit, status, statusTitle, tableLabel, headers, rows } =
+  Astro.props
+---
+
+<figure class="fig relative border border-hairline bg-background">
+  <span class="tick tick-tl" aria-hidden="true"></span>
+  <span class="tick tick-tr" aria-hidden="true"></span>
+  <span class="tick tick-bl" aria-hidden="true"></span>
+  <span class="tick tick-br" aria-hidden="true"></span>
+
+  <figcaption
+    class="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2 border-b border-hairline px-5 py-4 sm:px-7"
+  >
+    <span class="flex flex-wrap items-baseline gap-x-4 gap-y-1">
+      <span class="font-mono text-[0.68rem] tracking-[0.18em] text-muted-foreground">
+        {prefix} {index}
+      </span>
+      <span class="text-sm font-medium text-ink">{title}</span>
+      {
+        unit && (
+          <span class="font-mono text-[0.68rem] text-muted-foreground">({unit})</span>
+        )
+      }
+    </span>
+    <span
+      title={statusTitle}
+      class="font-mono text-[0.62rem] tracking-[0.22em] text-muted-foreground"
+    >
+      {status}
+    </span>
+  </figcaption>
+
+  <div class="px-5 py-7 sm:px-7 sm:py-9">
+    <slot />
+  </div>
+
+  <details class="group border-t border-hairline">
+    <summary
+      class="cursor-pointer list-none px-5 py-3 font-mono text-[0.68rem] tracking-[0.14em] text-muted-foreground transition-colors hover:text-ink sm:px-7"
+    >
+      <span class="inline-block w-4">+</span>{tableLabel}
+    </summary>
+    <div class="overflow-x-auto px-5 pb-6 sm:px-7">
+      <table class="w-full min-w-[30rem] border-collapse text-left">
+        <thead>
+          <tr>
+            {
+              headers.map((h) => (
+                <th
+                  scope="col"
+                  class="border-b border-hairline py-2 pr-6 font-mono text-[0.66rem] font-normal tracking-[0.14em] text-muted-foreground"
+                >
+                  {h}
+                </th>
+              ))
+            }
+          </tr>
+        </thead>
+        <tbody>
+          {
+            rows.map((row) => (
+              <tr>
+                {row.map((cell, i) => (
+                  <td
+                    class:list={[
+                      "border-b border-hairline py-2.5 pr-6 text-sm",
+                      i === 0 ? "text-ink" : "font-mono tabular-nums text-muted-foreground",
+                    ]}
+                  >
+                    {cell}
+                  </td>
+                ))}
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+  </details>
+</figure>
+
+<style>
+  /* Corner ticks: the panel reads as an instrument rather than a card, and
+     they mark the crop without adding a second border weight. */
+  .tick {
+    position: absolute;
+    width: 9px;
+    height: 9px;
+    border-color: var(--ink);
+    opacity: 0.55;
+  }
+  .tick-tl {
+    top: -1px;
+    left: -1px;
+    border-top: 1.5px solid;
+    border-left: 1.5px solid;
+  }
+  .tick-tr {
+    top: -1px;
+    right: -1px;
+    border-top: 1.5px solid;
+    border-right: 1.5px solid;
+  }
+  .tick-bl {
+    bottom: -1px;
+    left: -1px;
+    border-bottom: 1.5px solid;
+    border-left: 1.5px solid;
+  }
+  .tick-br {
+    bottom: -1px;
+    right: -1px;
+    border-bottom: 1.5px solid;
+    border-right: 1.5px solid;
+  }
+  details[open] summary span {
+    transform: rotate(45deg);
+  }
+  summary span {
+    display: inline-block;
+    transition: transform 0.2s ease;
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+</style>

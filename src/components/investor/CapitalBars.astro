@@ -1,0 +1,108 @@
+---
+/**
+ * Horizontal bars, one measure. Length carries the magnitude; the two-tone
+ * fill carries the only distinction that matters here and is used the same way
+ * on every figure of these pages: a physical asset is grey, software is ink.
+ * Values are printed on every row, so the chart never has to be measured by eye.
+ */
+export interface Bar {
+  label: string
+  note: string
+  display: string
+  value: number
+  kind: "physical" | "software"
+}
+
+interface Props {
+  bars: readonly Bar[]
+  legend: { physical: string; software: string }
+}
+
+const { bars, legend } = Astro.props
+
+const W = 720
+const ROW = 84
+const BAR_H = 20
+const max = Math.max(...bars.map((b) => b.value))
+const H = bars.length * ROW
+---
+
+<div>
+  <svg
+    viewBox={`0 0 ${W} ${H}`}
+    class="h-auto w-full"
+    role="img"
+    aria-label={bars.map((b) => `${b.label}: ${b.display}`).join(". ")}
+  >
+    {
+      bars.map((bar, i) => {
+        const y = i * ROW
+        const width = Math.max(2, (bar.value / max) * W)
+        return (
+          <g>
+            <title>{`${bar.label}: ${bar.display}`}</title>
+            <text x="0" y={y + 14} class="lab">
+              {bar.label}
+            </text>
+            <text x={W} y={y + 14} text-anchor="end" class="val">
+              {bar.display}
+            </text>
+            <rect
+              x="0"
+              y={y + 26}
+              width={width}
+              height={BAR_H}
+              class={bar.kind === "software" ? "bar-ink" : "bar-grey"}
+            />
+            <text x="0" y={y + 68} class="note">
+              {bar.note}
+            </text>
+            <line x1="0" y1={y + ROW - 1} x2={W} y2={y + ROW - 1} class="rule" />
+          </g>
+        )
+      })
+    }
+  </svg>
+
+  <ul class="mt-6 flex flex-wrap gap-x-7 gap-y-2">
+    <li class="flex items-center gap-2.5">
+      <span class="h-2.5 w-5 shrink-0 bg-[#8a8a8a]"></span>
+      <span class="text-xs text-muted-foreground">{legend.physical}</span>
+    </li>
+    <li class="flex items-center gap-2.5">
+      <span class="h-2.5 w-5 shrink-0 bg-ink"></span>
+      <span class="text-xs text-muted-foreground">{legend.software}</span>
+    </li>
+  </ul>
+</div>
+
+<style>
+  .lab {
+    fill: var(--ink);
+    font-size: 15px;
+    font-weight: 500;
+  }
+  .val {
+    fill: var(--ink);
+    font-family: var(--font-mono);
+    font-size: 15px;
+    font-variant-numeric: tabular-nums;
+  }
+  .note {
+    fill: var(--muted-foreground);
+    font-size: 12.5px;
+  }
+  .bar-ink {
+    fill: var(--ink);
+  }
+  .bar-grey {
+    fill: #8a8a8a;
+  }
+  .rule {
+    stroke: var(--hairline);
+    stroke-width: 1;
+  }
+  :global(.dark) .bar-grey {
+    fill: #9a9a9a;
+  }
+</style>

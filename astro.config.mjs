@@ -5,6 +5,7 @@ import { defineConfig, fontProviders } from "astro/config"
 import react from "@astrojs/react"
 import sanity from "@sanity/astro"
 import cloudflare from "@astrojs/cloudflare"
+import sitemap from "@astrojs/sitemap"
 import { loadEnv } from "vite"
 import path from "node:path"
 
@@ -92,24 +93,29 @@ export default defineConfig({
     plugins: [tailwindcss(), fixSanityWindowsAliases()],
   },
 
-  integrations: [
-    // Sanity powers the journal + press release pages. The project id and
-    // dataset are committed as defaults because Astro inlines them into the
-    // browser bundle at build time regardless, so they are public either way.
-    // A host that builds from git without the env vars set then still gets a
-    // working CMS; .env overrides when pointing at a different project.
-    sanity({
-      projectId: env.PUBLIC_SANITY_PROJECT_ID || "obs57lvl",
-      dataset: env.PUBLIC_SANITY_DATASET || "production",
-      // The CDN purges on publish, so on-demand pages stay fast and still show
-      // new content within seconds.
-      useCdn: true,
-      studioBasePath: "/admin",
-      // Hash routing keeps Studio deep links working on a static host.
-      studioRouterHistory: "hash",
-    }),
-    react(),
-  ],
+  integrations: [// Sanity powers the journal + press release pages. The project id and
+  // dataset are committed as defaults because Astro inlines them into the
+  // browser bundle at build time regardless, so they are public either way.
+  // A host that builds from git without the env vars set then still gets a
+  // working CMS; .env overrides when pointing at a different project.
+  sanity({
+    projectId: env.PUBLIC_SANITY_PROJECT_ID || "obs57lvl",
+    dataset: env.PUBLIC_SANITY_DATASET || "production",
+    // The CDN purges on publish, so on-demand pages stay fast and still show
+    // new content within seconds.
+    useCdn: true,
+    studioBasePath: "/admin",
+    // Hash routing keeps Studio deep links working on a static host.
+    studioRouterHistory: "hash",
+  }), react(), sitemap({
+    // The embedded Sanity Studio (mounted at /admin) is an app, not a page
+    // anyone should land on from search.
+    filter: (page) => !page.includes("/admin"),
+    i18n: {
+      defaultLocale: "id",
+      locales: { id: "id-ID", en: "en-US" },
+    },
+  })],
 
   // Self-hosted, subsetted, preloaded fonts — no render-blocking Google request
   fonts: [

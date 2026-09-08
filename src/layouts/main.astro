@@ -69,7 +69,62 @@ const orgSchema = {
     { "@type": "Person", name: "Anak Agung Gde Weida Ksatriawarma", jobTitle: "Founder & CEO" },
     { "@type": "Person", name: "Anak Agung Gde Wijaya Ksatriawarma", jobTitle: "Co-founder" },
   ],
+  slogan: t.brand.tagline,
+  foundingDate: "2026",
+  foundingLocation: {
+    "@type": "Place",
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: legal.address.city,
+      addressRegion: legal.address.region,
+      addressCountry: legal.address.country,
+    },
+  },
+  areaServed: { "@type": "Country", name: "Indonesia" },
+  /* What the group is actually about, in the terms an answer engine matches
+     against. Kept factual and narrow rather than a keyword list. */
+  knowsAbout: [
+    "AI software for Indonesian small business",
+    "Chat-based bookkeeping",
+    "SAK EMKM financial reporting",
+    "Direct booking engines for villas",
+    "Bali hospitality technology",
+  ],
+  contactPoint: {
+    "@type": "ContactPoint",
+    contactType: "business",
+    email: t.brand.email,
+    areaServed: "ID",
+    availableLanguage: ["id", "en"],
+  },
 }
+
+/* Names the site itself, so an engine can separate the brand from the legal
+   entity when it cites us. */
+const siteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: t.brand.name,
+  alternateName: legal.legalName,
+  url: urlId,
+  inLanguage: lang,
+  publisher: { "@type": "Organization", name: t.brand.name, url: urlId },
+}
+
+/* The homepage carries a real FAQ, so it gets FAQPage markup. Every other page
+   would be claiming a section it does not have. */
+const isHome = pathId === "/"
+const faqSchema = isHome
+  ? {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: t.faq.items.map((item) => ({
+        "@type": "Question",
+        name: item.q,
+        acceptedAnswer: { "@type": "Answer", text: item.a },
+      })),
+    }
+  : null
 ---
 
 <!doctype html>
@@ -119,6 +174,18 @@ const orgSchema = {
       is:inline
       set:html={JSON.stringify(orgSchema)}
     />
+    <script
+      type="application/ld+json"
+      is:inline
+      set:html={JSON.stringify(siteSchema)}
+    />
+    {
+      faqSchema && (
+        <script type="application/ld+json" is:inline set:html={JSON.stringify(faqSchema)} />
+      )
+    }
+    {/* Plain-language brief for answer engines, kept in sync with the site. */}
+    <link rel="alternate" type="text/plain" href="/llms.txt" title="llms.txt" />
 
     {/* No-flash theme init: applies .dark before first paint */}
     <script is:inline>

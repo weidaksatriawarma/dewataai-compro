@@ -16,7 +16,7 @@ import {
 } from "@hugeicons/core-free-icons"
 import PageHero from "@/components/PageHero.astro"
 import DagangkuWordmark from "@/components/DagangkuWordmark.astro"
-import { getSite } from "@/lib/site"
+import { getSite, lines } from "@/lib/site"
 import { getPages, type VentureSlug } from "@/lib/pages"
 import { resolveLang, getUI, path } from "@/lib/i18n"
 
@@ -34,6 +34,10 @@ const indexPath = path("ventures", lang)
 
 /* Keyed off `icon` in pages.ts so both locales render the same glyph for the
    same capability. */
+/* Only the venture with a documented defensibility story carries this block,
+   so the section stays optional instead of a field every venture has to fake. */
+const moat = "moat" in d ? d.moat : null
+
 const SOLUTION_ICONS = {
   site: Cursor02Icon,
   booking: Calendar03Icon,
@@ -143,6 +147,67 @@ const SOLUTION_ICONS = {
     </div>
   </div>
 </section>
+
+<!-- moat: the answer to "this is just a chat wrapper" -->
+{
+  moat && (
+    <section class="ink-section relative overflow-hidden py-20 sm:py-28">
+      <div class="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
+        <div
+          class="absolute inset-0 grid-overlay opacity-30 [mask-image:radial-gradient(ellipse_65%_60%_at_50%_0%,#000_40%,transparent_100%)]"
+        />
+      </div>
+
+      <div class="mx-auto max-w-5xl px-5 sm:px-8">
+        <div data-reveal class="max-w-2xl">
+          <p class="eyebrow text-white/55">{moat.label}</p>
+          <h2 class="t-heading-sm mt-4 font-serif text-white">
+            {lines(moat.heading).map((line) => (
+              <span class="t-line">{line}</span>
+            ))}
+          </h2>
+          <div class="mt-6 space-y-4">
+            {moat.body.map((para) => (
+              <p class="leading-relaxed text-white/65">{para}</p>
+            ))}
+          </div>
+        </div>
+
+        {/* Each claim carries its own status, so a design never reads as shipped. */}
+        <div class="mt-12 grid gap-x-10 gap-y-8 sm:grid-cols-2">
+          {moat.items.map((item, i) => (
+            <div
+              data-reveal
+              style={`--reveal-delay:${i * 80}ms`}
+              class="border-t border-white/12 pt-5"
+            >
+              <span class="inline-flex items-center gap-2 rounded-full border border-white/12 px-3 py-1 font-mono text-[11px] text-white/55">
+                <span
+                  class:list={[
+                    "size-1.5 rounded-full",
+                    item.live ? "bg-white" : "bg-white/30",
+                  ]}
+                />
+                {item.status}
+              </span>
+              <h3 class="mt-4 font-serif text-xl text-white">{item.title}</h3>
+              <p class="mt-2 leading-relaxed text-white/60">{item.desc}</p>
+            </div>
+          ))}
+        </div>
+
+        <div
+          data-reveal
+          style="--reveal-delay:120ms"
+          class="mt-12 rounded-3xl border border-white/12 bg-white/[0.04] p-7"
+        >
+          <p class="eyebrow text-white/55">{moat.limit.label}</p>
+          <p class="mt-3 max-w-3xl leading-relaxed text-white/65">{moat.limit.body}</p>
+        </div>
+      </div>
+    </section>
+  )
+}
 
 <!-- cta -->
 <section class="bg-paper py-16 sm:py-20">

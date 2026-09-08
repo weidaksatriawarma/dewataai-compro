@@ -1,0 +1,232 @@
+---
+/**
+ * The capital thesis. Same slab layout as the leverage page so the two read as
+ * one document in two parts.
+ *
+ * The order section is numbered because it genuinely is a sequence: each tier
+ * has to fill before the next one is paid. The Bitcoin rules are written as
+ * constraints rather than opinions, which is the only form of treasury policy
+ * worth publishing.
+ */
+import { HugeiconsIcon } from "@hugeicons/react"
+import { ArrowRight01Icon } from "@hugeicons/core-free-icons"
+import Figure from "@/components/investor/Figure.astro"
+import ProjectionChart from "@/components/investor/ProjectionChart.astro"
+import { lines } from "@/lib/site"
+import { getInvestor, PROJECTION, PROJECTION_YEARS, arr, rupiahShort } from "@/lib/investor"
+import { resolveLang, path } from "@/lib/i18n"
+
+const lang = resolveLang(Astro.currentLocale)
+const inv = getInvestor(lang)
+const p = inv.thesis
+const fig = inv.investor.figure
+
+const units = p.projection.chart.units
+const money = (v: number) => rupiahShort(v, lang, units)
+const projectionRows = PROJECTION_YEARS.map((year, i) => [
+  String(year),
+  money(arr(PROJECTION.low[i])),
+  money(arr(PROJECTION.base[i])),
+  money(arr(PROJECTION.high[i])),
+])
+
+const slab = "border-b border-hairline"
+const wrap = "mx-auto w-full max-w-7xl px-6 sm:px-10"
+const display = "font-sans font-medium tracking-[-0.03em] leading-[0.95]"
+---
+
+<!-- hero -->
+<section class="ink-section relative flex min-h-[70vh] flex-col justify-between overflow-hidden">
+  <div class="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
+    <div
+      class="absolute inset-0 grid-overlay opacity-25 [mask-image:linear-gradient(to_bottom,#000_10%,transparent_85%)]"
+    >
+    </div>
+  </div>
+
+  <div class={`${wrap} pt-32 sm:pt-40`}>
+    <p class="font-mono text-[0.68rem] tracking-[0.24em] text-white/45">{p.eyebrow}</p>
+  </div>
+
+  <div class={`${wrap} pb-16 sm:pb-24`}>
+    <h1 class={`${display} max-w-4xl text-[clamp(2.75rem,8vw,6.5rem)] text-white`}>
+      {lines(p.heading).map((line) => <span class="block">{line}</span>)}
+    </h1>
+    <div class="mt-12 grid gap-8 border-t border-white/12 pt-8 lg:grid-cols-[0.55fr_0.45fr]">
+      <p class="max-w-2xl leading-relaxed text-white/65">{p.lead}</p>
+      <p class="font-mono text-[0.7rem] leading-relaxed tracking-[0.06em] text-white/40 lg:text-right">
+        {p.meta_}
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- the one sentence -->
+<section class={`bg-paper py-28 sm:py-44 ${slab}`}>
+  <div class={wrap}>
+    <p class={`${display} text-center text-[clamp(2.25rem,6.5vw,5rem)] text-ink`}>
+      {lines(p.statement).map((line) => <span class="block">{line}</span>)}
+    </p>
+  </div>
+</section>
+
+<!-- 01 the order -->
+<section class={`bg-background py-24 sm:py-36 ${slab}`}>
+  <div class={wrap}>
+    <p class="font-mono text-[0.68rem] tracking-[0.2em] text-muted-foreground">{p.order.label}</p>
+    <div class="mt-6 grid gap-6 lg:grid-cols-[0.55fr_0.45fr] lg:items-end lg:gap-16">
+      <h2 class={`${display} text-[clamp(1.85rem,4vw,3.25rem)] text-ink`}>
+        {lines(p.order.heading).map((line) => <span class="block">{line}</span>)}
+      </h2>
+      <p class="leading-relaxed text-muted-foreground">{p.order.sub}</p>
+    </div>
+
+    <ol class="mt-16">
+      {
+        p.order.steps.map((step) => (
+          <li class="grid gap-4 border-t border-hairline py-8 sm:grid-cols-[5rem_1fr] sm:gap-10 lg:grid-cols-[8rem_0.35fr_0.65fr]">
+            <span class="font-mono text-sm tracking-[0.14em] text-muted-foreground tabular-nums">
+              {step.index}
+            </span>
+            <h3 class="text-lg leading-snug font-medium text-ink">{step.title}</h3>
+            <p class="max-w-2xl leading-relaxed text-muted-foreground">{step.body}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<!-- 02 bitcoin -->
+<section class="ink-section py-24 sm:py-36">
+  <div class={wrap}>
+    <p class="font-mono text-[0.68rem] tracking-[0.2em] text-white/45">{p.btc.label}</p>
+    <div class="mt-6 grid gap-8 lg:grid-cols-[0.5fr_0.5fr] lg:gap-16">
+      <h2 class={`${display} text-[clamp(1.85rem,4vw,3.25rem)] text-white`}>
+        {lines(p.btc.heading).map((line) => <span class="block">{line}</span>)}
+      </h2>
+      <div class="space-y-5 self-end">
+        {p.btc.body.map((para) => <p class="leading-relaxed text-white/65">{para}</p>)}
+      </div>
+    </div>
+
+    <div class="mt-16 grid gap-x-12 gap-y-9 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        p.btc.rules.map((rule) => (
+          <div class="border-t border-white/25 pt-5">
+            <h3 class="text-base font-medium text-white">{rule.title}</h3>
+            <p class="mt-2.5 leading-relaxed text-white/60">{rule.body}</p>
+          </div>
+        ))
+      }
+    </div>
+
+    <p class="mt-14 max-w-3xl border-t border-white/15 pt-6 font-mono text-[0.72rem] leading-relaxed text-white/45">
+      {p.btc.note}
+    </p>
+  </div>
+</section>
+
+<!-- 03 projection -->
+<section class={`bg-background py-24 sm:py-36 ${slab}`}>
+  <div class={wrap}>
+    <p class="font-mono text-[0.68rem] tracking-[0.2em] text-muted-foreground">
+      {p.projection.label}
+    </p>
+    <div class="mt-6 grid gap-6 lg:grid-cols-[0.55fr_0.45fr] lg:items-end lg:gap-16">
+      <h2 class={`${display} text-[clamp(1.85rem,4vw,3.25rem)] text-ink`}>
+        {lines(p.projection.heading).map((line) => <span class="block">{line}</span>)}
+      </h2>
+      <p class="leading-relaxed text-muted-foreground">{p.projection.sub}</p>
+    </div>
+
+    <div class="mt-14">
+      <Figure
+        index="04"
+        prefix={fig.prefix}
+        title={p.projection.chart.title}
+        status={fig.status}
+        statusTitle={fig.statusTitle}
+        tableLabel={fig.table}
+        headers={p.projection.chart.tableHeaders}
+        rows={projectionRows}
+      >
+        <ProjectionChart lang={lang} labels={p.projection.chart} />
+      </Figure>
+    </div>
+
+    <div class="mt-10 grid gap-8 lg:grid-cols-[0.55fr_0.45fr] lg:gap-16">
+      <p class="leading-relaxed text-muted-foreground">{p.projection.after}</p>
+      <div class="border-t border-ink pt-5">
+        <p class="font-mono text-[0.68rem] tracking-[0.18em] text-muted-foreground">
+          {p.projection.honest.label}
+        </p>
+        <p class="mt-3 leading-relaxed text-ink">{p.projection.honest.body}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 risk -->
+<section class={`bg-paper py-24 sm:py-36 ${slab}`}>
+  <div class={wrap}>
+    <p class="font-mono text-[0.68rem] tracking-[0.2em] text-muted-foreground">{p.risk.label}</p>
+    <h2 class={`${display} mt-6 max-w-2xl text-[clamp(1.85rem,4vw,3.25rem)] text-ink`}>
+      {lines(p.risk.heading).map((line) => <span class="block">{line}</span>)}
+    </h2>
+
+    <div class="mt-16 grid gap-x-12 gap-y-10 sm:grid-cols-2">
+      {
+        p.risk.items.map((item) => (
+          <div class="border-t border-ink pt-5">
+            <h3 class="text-lg leading-snug font-medium text-ink">{item.title}</h3>
+            <p class="mt-3 max-w-xl leading-relaxed text-muted-foreground">{item.body}</p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<!-- legal -->
+<section class={`bg-background py-14 ${slab}`}>
+  <div class={wrap}>
+    <p class="font-mono text-[0.66rem] tracking-[0.2em] text-muted-foreground">{p.legal.label}</p>
+    <ul class="mt-4 grid gap-2.5 sm:grid-cols-2 sm:gap-x-12 lg:grid-cols-3">
+      {
+        p.legal.items.map((item) => (
+          <li class="max-w-md text-xs leading-relaxed text-muted-foreground">{item}</li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<!-- cta -->
+<section class="ink-section py-24 sm:py-32">
+  <div class={wrap}>
+    <div class="flex flex-wrap items-end justify-between gap-8">
+      <div class="max-w-xl">
+        <h2 class={`${display} text-[clamp(1.75rem,3.4vw,2.75rem)] text-white`}>
+          {p.cta.heading}
+        </h2>
+        <p class="mt-4 leading-relaxed text-white/60">{p.cta.body}</p>
+      </div>
+      <a
+        href={path("contact", lang)}
+        class="btn-glossy inline-flex h-12 items-center gap-2 rounded-full px-6 text-sm font-medium"
+      >
+        {p.cta.label}
+        <HugeiconsIcon icon={ArrowRight01Icon} size={16} strokeWidth={2} />
+      </a>
+    </div>
+
+    <a
+      href={p.next.href}
+      class="mt-14 flex items-center justify-between gap-6 border-t border-white/15 pt-6 text-white/70 transition-colors hover:text-white"
+    >
+      <span class="text-lg font-medium">{p.next.label}</span>
+      <HugeiconsIcon icon={ArrowRight01Icon} size={20} strokeWidth={1.8} />
+    </a>
+  </div>
+</section>

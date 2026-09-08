@@ -47,9 +47,9 @@ const LEGAL = {
 const content = {
   id: {
     meta: {
-      title: "Dewata AI: grup teknologi AI dari Bali",
+      title: "Dewata AI: produk AI yang bikin bisnis Indonesia untung",
       description:
-        "PT Dewata Artificial Intelligence membangun dan menjalankan produk AI untuk bisnis Indonesia. Perusahaan induk Dewata Tech dan Dagangku AI.",
+        "Villa dapet booking direct tanpa komisi OTA. Pemilik usaha dapet pembukuan beres modal chat. Produknya punya kami, bukan agensi. Ngobrol 15 menit, gratis.",
       ogLocale: "id_ID",
     },
 
@@ -64,11 +64,42 @@ const content = {
       legal: LEGAL,
     },
 
+    /* Two dropdowns plus two flat links. `desc` is what makes a dropdown worth
+       opening: the menu answers "what is this" before the click, instead of
+       being a list of nouns. */
     nav: {
+      groups: [
+        {
+          label: "Usaha",
+          items: [
+            {
+              label: "Dewata Tech",
+              href: `${ROUTES.ventures.id}dewata-tech/`,
+              desc: "Booking direct buat villa, komisi OTA nol",
+            },
+            {
+              label: "Dagangku AI",
+              href: `${ROUTES.ventures.id}dagangku-ai/`,
+              desc: "Pembukuan modal chat, plus data yang numpuk",
+            },
+            {
+              label: "Semua usaha",
+              href: ROUTES.ventures.id,
+              desc: "Dua yang jalan, satu lagi dibangun",
+            },
+          ],
+        },
+        {
+          label: "Perusahaan",
+          items: [
+            { label: "Tentang", href: ROUTES.about.id, desc: "Induk, bukan agensi" },
+            { label: "Manifesto", href: ROUTES.manifesto.id, desc: "Sembilan prinsip yang kami pakai nyaring" },
+            { label: "Investor", href: ROUTES.investor.id, desc: "Kenapa software AI, dibanding villa dan resto" },
+            { label: "Tesis investasi", href: ROUTES.thesis.id, desc: "Ke mana modalnya pergi" },
+          ],
+        },
+      ],
       links: [
-        { label: "Usaha", href: ROUTES.ventures.id },
-        { label: "Tentang", href: ROUTES.about.id },
-        { label: "Manifesto", href: ROUTES.manifesto.id },
         { label: "Jurnal", href: ROUTES.journal.id },
         { label: "Pers", href: ROUTES.press.id },
       ],
@@ -131,7 +162,7 @@ const content = {
         {
           key: "brain",
           title: "Produk AI",
-          desc: "AI yang kepake tiap hari, bukan sekadar demo.",
+          desc: "Bukan wrapper. Tiap koreksi pemakai bikin AI-nya makin akurat.",
           proof: "Dagangku AI",
         },
         {
@@ -201,6 +232,7 @@ const content = {
             "Nyatet secepat kirim chat",
             "Untung rugi kelihatan hari ini juga",
             "Laporan PDF tinggal unduh",
+            "Tiap koreksi kamu bikin AI-nya makin akurat",
           ],
           proof: [
             { value: "30 dtk", label: "Waktu setup" },
@@ -272,6 +304,7 @@ const content = {
       missionPoints: [
         "Bikin produk yang dampaknya kelihatan di rupiah, bukan di slide.",
         "Kasih bisnis kecil senjata selevel perusahaan gede.",
+        "Kuasai satu masalah sampai tuntas sebelum pindah ke berikutnya.",
         "Jaga data pelanggan kayak jaga duit sendiri.",
       ],
       offer: {
@@ -338,6 +371,10 @@ const content = {
           a: "Dua-duanya usaha milik Dewata AI. Masing-masing punya tim, produk, dan pelanggan sendiri.",
         },
         {
+          q: "Produk AI kalian beda apa sama wrapper ChatGPT?",
+          a: "Wrapper cuma kotak chat yang gak nyimpen apa-apa. Dagangku AI megang pembukuan usaha, plus korpus koreksi bahasa Indonesia yang numpuk tiap hari dari pemakainya sendiri. Rinciannya ada di halaman Dagangku AI.",
+        },
+        {
           q: "Dewata AI nerima proyek langsung?",
           a: "Proyek website dan sistem ditangani Dewata Tech. Kalau mau kerja sama tingkat grup, chat kami di sini.",
         },
@@ -369,6 +406,8 @@ const content = {
             { label: "Tentang", href: ROUTES.about.id },
             { label: "Manifesto", href: ROUTES.manifesto.id },
             { label: "Usaha", href: ROUTES.ventures.id },
+            { label: "Investor", href: ROUTES.investor.id },
+            { label: "Tesis investasi", href: ROUTES.thesis.id },
             { label: "Kontak", href: ROUTES.contact.id },
           ],
         },
@@ -410,9 +449,9 @@ const content = {
 
   en: {
     meta: {
-      title: "Dewata AI: an AI technology group from Bali",
+      title: "Dewata AI: AI products Indonesian businesses actually use",
       description:
-        "PT Dewata Artificial Intelligence builds and runs AI products for Indonesian business. Parent company of Dewata Tech and Dagangku AI.",
+        "Villas take direct bookings and pay zero OTA commission. Owners get books that close from a chat. We own what we build, not an agency. 15 free minutes.",
       ogLocale: "en_US",
     },
 
@@ -428,10 +467,38 @@ const content = {
     },
 
     nav: {
+      groups: [
+        {
+          label: "Ventures",
+          items: [
+            {
+              label: "Dewata Tech",
+              href: `${ROUTES.ventures.en}dewata-tech/`,
+              desc: "Direct villa bookings, zero OTA commission",
+            },
+            {
+              label: "Dagangku AI",
+              href: `${ROUTES.ventures.en}dagangku-ai/`,
+              desc: "Bookkeeping from a chat, and the data it leaves",
+            },
+            {
+              label: "All ventures",
+              href: ROUTES.ventures.en,
+              desc: "Two running, one being built",
+            },
+          ],
+        },
+        {
+          label: "Company",
+          items: [
+            { label: "About", href: ROUTES.about.en, desc: "An owner, not an agency" },
+            { label: "Manifesto", href: ROUTES.manifesto.en, desc: "Nine principles we filter decisions through" },
+            { label: "Investors", href: ROUTES.investor.en, desc: "Why AI software, against villas and restaurants" },
+            { label: "Capital thesis", href: ROUTES.thesis.en, desc: "Where the capital goes" },
+          ],
+        },
+      ],
       links: [
-        { label: "Ventures", href: ROUTES.ventures.en },
-        { label: "About", href: ROUTES.about.en },
-        { label: "Manifesto", href: ROUTES.manifesto.en },
         { label: "Journal", href: ROUTES.journal.en },
         { label: "Press", href: ROUTES.press.en },
       ],
@@ -492,7 +559,7 @@ const content = {
         {
           key: "brain",
           title: "AI Products",
-          desc: "AI that gets used every day, not just demoed.",
+          desc: "Not a wrapper. Every user correction makes the model sharper.",
           proof: "Dagangku AI",
         },
         {
@@ -562,6 +629,7 @@ const content = {
             "Log a sale as fast as sending a text",
             "Profit and loss visible today, not month end",
             "PDF reports ready to download",
+            "Every correction you make sharpens the AI",
           ],
           proof: [
             { value: "30 sec", label: "Setup time" },
@@ -633,6 +701,7 @@ const content = {
       missionPoints: [
         "Build products whose impact shows up in rupiah, not in slides.",
         "Give small businesses the same firepower as the big ones.",
+        "Own one problem completely before moving to the next.",
         "Guard customer data the way we would guard our own money.",
       ],
       offer: {
@@ -697,6 +766,10 @@ const content = {
           a: "Both are ventures owned by Dewata AI. Each has its own team, product, and customers.",
         },
         {
+          q: "How are your AI products different from a ChatGPT wrapper?",
+          a: "A wrapper is a chat box that stores nothing. Dagangku AI holds the actual books of a business, plus a correction corpus in Indonesian that grows every day from the people using it. The Dagangku AI page has the detail.",
+        },
+        {
           q: "Does Dewata AI take on projects directly?",
           a: "Website and system projects are handled by Dewata Tech. For group-level partnerships, contact us here.",
         },
@@ -728,6 +801,8 @@ const content = {
             { label: "About", href: ROUTES.about.en },
             { label: "Manifesto", href: ROUTES.manifesto.en },
             { label: "Ventures", href: ROUTES.ventures.en },
+            { label: "Investors", href: ROUTES.investor.en },
+            { label: "Capital thesis", href: ROUTES.thesis.en },
             { label: "Contact", href: ROUTES.contact.en },
           ],
         },

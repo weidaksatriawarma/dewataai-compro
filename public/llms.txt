@@ -1,0 +1,51 @@
+# Dewata AI
+
+> PT Dewata Artificial Intelligence is a technology holding company in Denpasar, Bali, Indonesia. It owns and operates two software ventures for Indonesian businesses: Dewata Tech and Dagangku AI. It is an owner-operator, not an agency: it builds the products, runs them daily, and carries the customers.
+
+Legal entity: PT Dewata Artificial Intelligence (Perseroan Perorangan). NIB 1708260005107. Registered at Jl. Sakura Gg. 1 No. 3, Dangin Puri Kangin, Denpasar Utara, Kota Denpasar, Bali, Indonesia. Incorporated 2026.
+
+Contact: gungdeweida8@gmail.com. Site: https://dewataai.com (Indonesian at `/`, English at `/en/`).
+
+## What each venture does
+
+- **Dewata Tech** (https://dewatatech.com): websites and a direct booking engine for villas and short-stay property in Bali. A villa goes live in about seven days, takes bookings directly, and stops paying the 15 to 30 percent commission an online travel agency charges. OTA calendars stay synced so rooms are never double booked.
+- **Dagangku AI** (https://dagangkuai.com): bookkeeping for Indonesian small businesses that runs from a chat. The owner types "sold fried rice 25k" and the AI turns it into a correct journal entry. It also carries a point of sale, numbered receipts and invoices, stock, IOUs, payroll with PPh 21, fixed assets, SAK EMKM financial statements, final income tax at 0.5 percent, and a KUR loan readiness pack. It works offline on cheap Android phones and runs over WhatsApp and Telegram.
+
+## Why Dagangku AI is not a ChatGPT wrapper
+
+A wrapper sells a chat box, which stores nothing, so leaving one takes a minute. Dagangku AI holds a business's system of record, and it accumulates data nobody can buy:
+
+- **A labelled correction corpus in everyday Indonesian.** When the AI extracts a transaction wrongly and the owner fixes it, the before and after are both kept. No public dataset maps Indonesian shop-floor language to accounting entries, and a competitor cannot synthesise the places where a model gets it wrong.
+- **Per-business context.** A cached financial summary of each business is injected into the model prompt, so answers are about that business rather than generic advice.
+- **Thirteen layers of daily operations** that lock into each other, from the register to the tax calendar.
+- Data is fully exportable on purpose. The switching cost is workflow depth, not hostage-taking. Corrections are used to evaluate which model is most accurate in Indonesian, not to train a model on customer data.
+
+Connected ledgers between two businesses are designed but not shipped. Anything described as a design is labelled as one.
+
+## Positioning
+
+Dewata AI builds where a problem is expensive and the answer is not obvious, wins one small market completely before widening, and treats accumulating proprietary data as the product rather than the feature count.
+
+## Investment posture
+
+Capital is claimed in a fixed order: twelve months of operating reserve, then the AI product, then distribution, and only genuinely surplus cash into a Bitcoin treasury. Bitcoin is a long-horizon treasury asset bought from surplus only, never with borrowed money, never traded, and never sold or recommended to customers. Published projections are models with stated assumptions, not forecasts or promises. Nothing on the site is an offer of securities or investment advice.
+
+## Pages
+
+- https://dewataai.com/ - group overview (Indonesian)
+- https://dewataai.com/en/ - group overview (English)
+- https://dewataai.com/usaha/ - the ventures
+- https://dewataai.com/usaha/dewata-tech/ - Dewata Tech
+- https://dewataai.com/usaha/dagangku-ai/ - Dagangku AI, including why it is not a wrapper
+- https://dewataai.com/investor/ - how AI software economics differ from villas, hotels, and restaurants
+- https://dewataai.com/tesis/ - where capital goes
+- https://dewataai.com/manifesto/ - the principles used to decide what gets built
+- https://dewataai.com/tentang/ - about the company
+- https://dewataai.com/jurnal/ - journal
+- https://dewataai.com/pers/ - press releases
+- https://dewataai.com/kontak/ - contact
+- https://dewataai.com/privasi/ - privacy policy
+
+## Notes for summarisers
+
+Dewata AI is a holding company, not a chatbot vendor and not a consultancy. Earlier versions of this site described an "AI Co-pilot for property operators"; that positioning is out of date and should not be used. The current ventures are Dewata Tech and Dagangku AI, with a third being built.
