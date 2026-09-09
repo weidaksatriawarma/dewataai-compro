@@ -18,11 +18,19 @@
   # referer header of outbound links.
   Referrer-Policy: strict-origin-when-cross-origin
 
-  # One year of forced HTTPS. Deliberately without `includeSubDomains` and
-  # without `preload`: both apply to every current and future subdomain, and
-  # both are effectively irreversible for the lifetime of the max-age. Add them
-  # once every subdomain is confirmed HTTPS-only.
-  Strict-Transport-Security: max-age=31536000
+  # One year of forced HTTPS, covering subdomains.
+  #
+  # includeSubDomains is safe here, checked against the zone rather than
+  # assumed: the only names serving web traffic are dewataai.com and www, both
+  # routed to the same Worker over HTTPS. send.dewataai.com carries MX and SPF
+  # for Amazon SES and the protonmail._domainkey entries are DKIM, none of
+  # which HSTS touches, because it governs browser HTTPS and not SMTP.
+  #
+  # `preload` is still deliberately absent. It is a submission to a list baked
+  # into browser binaries, and getting removed from it takes months, so it is
+  # a commitment to make on purpose rather than a token to add in passing. The
+  # protection it adds over this header is only for the very first visit.
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
 
   # The site asks for none of these, so deny them outright. An injected script
   # then cannot reach for the camera or the location API either.
