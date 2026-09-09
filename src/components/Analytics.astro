@@ -27,15 +27,22 @@ const analyticsOn = Boolean(gaId) && import.meta.env.PROD
 /* The standard GA4 bootstrap. Written as a string rather than inline template
    markup because the braces would be read as Astro expressions.
 
-   `anonymize_ip` truncates the address before it is stored, and turning off
-   Google signals keeps the data out of cross-device advertising profiles. Both
-   match what the privacy page says the site does. */
+   `allow_google_signals: false` is the one departure from Google's copy-paste
+   snippet, and it is not optional: Google Signals joins the visit to Google's
+   cross-site advertising profile of the signed-in user, which is exactly what
+   the privacy page says this site does not do. It costs the demographics and
+   remarketing reports and nothing else. Page views, sources and events are
+   unaffected.
+
+   No `anonymize_ip` here. That was a Universal Analytics setting; GA4 drops the
+   address after deriving coarse location and ignores the parameter, so passing
+   it would only imply a control that is not doing anything. */
 const gaBootstrap = `
 window.dataLayer = window.dataLayer || [];
 function gtag(){window.dataLayer.push(arguments);}
 window.gtag = gtag;
 gtag('js', new Date());
-gtag('config', '${gaId}', { anonymize_ip: true, allow_google_signals: false });
+gtag('config', '${gaId}', { allow_google_signals: false });
 `.trim()
 ---
 
