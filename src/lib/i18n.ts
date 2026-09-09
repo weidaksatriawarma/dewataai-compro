@@ -27,6 +27,7 @@ export const ROUTES = {
   safety: { id: "/keselamatan/", en: "/en/safety/" },
   investor: { id: "/investor/", en: "/en/investor/" },
   thesis: { id: "/tesis/", en: "/en/thesis/" },
+  horizon: { id: "/horizon/", en: "/en/horizon/" },
   contact: { id: "/kontak/", en: "/en/contact/" },
   privacy: { id: "/privasi/", en: "/en/privacy/" },
 } as const

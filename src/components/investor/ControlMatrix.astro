@@ -1,0 +1,105 @@
+---
+/**
+ * The qualitative half, as a scored grid rather than a chart.
+ *
+ * Seven measures across four assets is past the point where a chart helps: any
+ * encoding that fits twenty-eight values in one plot is harder to read than the
+ * table itself. So this is a table, with the score drawn as filled squares so a
+ * column can be scanned down without reading every number.
+ *
+ * A real table element, not a grid of divs, because the row headers and column
+ * headers are what make it navigable with a screen reader.
+ */
+import {
+  ASSETS,
+  CONTROL,
+  CONTROL_ROWS,
+  CONTROL_MAX,
+  strokeColor,
+  type AssetKey,
+  type ControlRow,
+} from "@/lib/horizon"
+
+interface Props {
+  assets: Record<AssetKey, string>
+  rows: Record<ControlRow, { label: string; note: string }>
+  measureHeader: string
+}
+
+const { assets, rows, measureHeader } = Astro.props
+---
+
+{
+  /* Two things about this wrapper.
+     The min-width sits here rather than on the table, matching how every other
+     figure on these pages frames a child wider than a phone.
+     `relative` is what stops the page scrolling sideways at 390px: the sr-only
+     score inside each cell is absolutely positioned, so without a positioned
+     ancestor inside the scroll container it resolves against the figure, is
+     never clipped, and drags the whole document 115px wide. */
+}
+<div class="relative min-w-[52rem]">
+  <table class="w-full border-collapse text-left">
+    <thead>
+      <tr>
+        <th
+          scope="col"
+          class="w-[26%] border-b border-ink py-3 pr-6 font-mono text-[0.66rem] font-normal tracking-[0.14em] text-muted-foreground"
+        >
+          {measureHeader}
+        </th>
+        {
+          ASSETS.map((k) => (
+            <th
+              scope="col"
+              class="border-b border-ink py-3 pr-5 text-sm font-medium text-ink"
+            >
+              {assets[k]}
+            </th>
+          ))
+        }
+      </tr>
+    </thead>
+    <tbody>
+      {
+        CONTROL_ROWS.map((row) => (
+          <tr>
+            <th
+              scope="row"
+              class="border-b border-hairline py-4 pr-6 align-top font-normal"
+            >
+              <span class="block text-sm leading-snug text-ink">
+                {rows[row].label}
+              </span>
+              <span class="mt-1 block text-xs leading-relaxed text-muted-foreground">
+                {rows[row].note}
+              </span>
+            </th>
+            {ASSETS.map((k) => (
+              <td class="border-b border-hairline py-4 pr-4 align-top">
+                <span class="flex items-center gap-1" aria-hidden="true">
+                  {Array.from({ length: CONTROL_MAX }).map((_, i) => (
+                    <span
+                      class="h-3.5 w-1.5"
+                      style={
+                        i < CONTROL[row][k]
+                          ? `background:${strokeColor(k)}`
+                          : "background:transparent;box-shadow:inset 0 0 0 1px var(--hairline)"
+                      }
+                    />
+                  ))}
+                </span>
+                <span class="sr-only">
+                  {CONTROL[row][k]} / {CONTROL_MAX}
+                </span>
+                <span class="mt-1.5 block font-mono text-[0.7rem] text-muted-foreground tabular-nums">
+                  {CONTROL[row][k]}
+                </span>
+              </td>
+            ))}
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+</div>

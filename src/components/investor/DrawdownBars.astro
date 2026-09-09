@@ -1,0 +1,159 @@
+---
+/**
+ * The underwater plot: how far each asset falls from a peak, drawn hanging
+ * below the zero line rather than standing on it.
+ *
+ * Direction is the encoding. A loss drawn as an upward bar reads as an
+ * achievement for the first half-second, and this figure exists to make the
+ * reader uncomfortable about the asset they were already sold on.
+ *
+ * Only the depth is drawn. The recovery time and the cause sit in the note
+ * block below: four sentences of explanation laid across four SVG columns
+ * collide at every width narrower than the drawing itself.
+ */
+import {
+  ASSETS,
+  MAX_DRAWDOWN,
+  RECOVERY_YEARS,
+  strokeColor,
+  dashArray,
+  type AssetKey,
+} from "@/lib/horizon"
+
+interface Props {
+  assets: Record<AssetKey, string>
+  notes: Record<AssetKey, string>
+  labels: { recoveryLabel: string; yearsUnit: string }
+}
+
+const { assets, notes, labels } = Astro.props
+
+const W = 900
+const H = 296
+const TOP = 52
+const FLOOR = H - 34
+const COL = W / ASSETS.length
+const BAR = 62
+
+const depth = (v: number) => TOP + (Math.abs(v) / 1) * (FLOOR - TOP)
+const GRID = [0, -0.25, -0.5, -0.75, -1]
+---
+
+<div>
+  <svg
+    viewBox={`0 0 ${W} ${H}`}
+    class="h-auto w-full"
+    role="img"
+    aria-label={ASSETS.map(
+      (k) => `${assets[k]}: ${Math.round(MAX_DRAWDOWN[k] * 100)}%`
+    ).join(". ")}
+  >
+    {
+      GRID.map((g) => (
+        <g>
+          <line
+            x1="0"
+            y1={depth(g)}
+            x2={W}
+            y2={depth(g)}
+            class={g === 0 ? "zero" : "grid"}
+          />
+          <text x={W} y={depth(g) - 6} text-anchor="end" class="tick">
+            {Math.round(g * 100)}%
+          </text>
+        </g>
+      ))
+    }
+
+    {
+      ASSETS.map((k, i) => {
+        const cx = i * COL + COL / 2
+        const y = depth(MAX_DRAWDOWN[k])
+        return (
+          <g>
+            <title>{`${assets[k]}: ${Math.round(MAX_DRAWDOWN[k] * 100)}%`}</title>
+            <text x={cx} y={TOP - 30} text-anchor="middle" class="lab">
+              {assets[k]}
+            </text>
+            <line
+              x1={cx - 14}
+              y1={TOP - 16}
+              x2={cx + 14}
+              y2={TOP - 16}
+              stroke={strokeColor(k)}
+              stroke-dasharray={dashArray(k)}
+              stroke-width="2.4"
+              aria-hidden="true"
+            />
+            <rect
+              x={cx - BAR / 2}
+              y={TOP}
+              width={BAR}
+              height={y - TOP}
+              fill={strokeColor(k)}
+              rx="0"
+            />
+            <rect
+              x={cx - BAR / 2}
+              y={y - 4}
+              width={BAR}
+              height="4"
+              fill={strokeColor(k)}
+              rx="2"
+            />
+            <text x={cx} y={y + 22} text-anchor="middle" class="val">
+              {Math.round(MAX_DRAWDOWN[k] * 100)}%
+            </text>
+          </g>
+        )
+      })
+    }
+  </svg>
+
+  <div
+    class="mt-7 grid gap-x-6 gap-y-5 border-t border-hairline pt-6 sm:grid-cols-2 lg:grid-cols-4"
+  >
+    {
+      ASSETS.map((k) => (
+        <div>
+          <p class="font-mono text-[0.66rem] tracking-[0.14em] text-muted-foreground">
+            {assets[k]}
+          </p>
+          <p class="mt-2 font-mono text-[0.7rem] text-ink tabular-nums">
+            {labels.recoveryLabel}: {RECOVERY_YEARS[k]} {labels.yearsUnit}
+          </p>
+          <p class="mt-2 text-xs leading-relaxed text-muted-foreground">
+            {notes[k]}
+          </p>
+        </div>
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  .grid {
+    stroke: var(--hairline);
+    stroke-width: 1;
+  }
+  .zero {
+    stroke: var(--ink);
+    stroke-width: 1.5;
+  }
+  .tick {
+    fill: var(--muted-foreground);
+    font-family: var(--font-mono);
+    font-size: 11px;
+  }
+  .lab {
+    fill: var(--ink);
+    font-size: 14.5px;
+    font-weight: 500;
+  }
+  .val {
+    fill: var(--ink);
+    font-family: var(--font-mono);
+    font-size: 15px;
+    font-variant-numeric: tabular-nums;
+  }
+</style>

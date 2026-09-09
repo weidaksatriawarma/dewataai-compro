@@ -1,0 +1,17 @@
+---
+import PageLayout from "@/layouts/page.astro"
+import HorizonPage from "@/components/pages/HorizonPage.astro"
+import { getHorizon } from "@/lib/horizon"
+import { resolveLang, path } from "@/lib/i18n"
+
+const p = getHorizon(resolveLang(Astro.currentLocale))
+---
+
+<PageLayout
+  title={p.meta.title}
+  description={p.meta.description}
+  pathId={path("horizon", "id")}
+  pathEn={path("horizon", "en")}
+>
+  <HorizonPage />
+</PageLayout>

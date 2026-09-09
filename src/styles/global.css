@@ -153,6 +153,58 @@
     --hairline: oklch(1 0 0 / 12%);
 }
 
+/* ---- Chart series steps -------------------------------------------------
+   The brand is monochrome, so identity on a multi-series chart cannot come from
+   hue. Three steps is the honest limit: spaced this far apart the worst
+   adjacent pair clears a perceptual separation of 20 in light and 17 in dark
+   (OKLab x100), which is what keeps them apart for normal and colour-deficient
+   vision alike. A fourth step would have to sit either too close to a
+   neighbour or too close to the page.
+
+   Seven assets therefore get identity from a pair, a step plus a stroke style
+   (solid, dashed, dotted), which yields nine distinct combinations. Each pair
+   belongs to its asset for the life of the page, so hiding one line never
+   repaints the others. Every series also carries its name at the end of its
+   own line and a row in the figure's table, which is what keeps the charts
+   readable in greyscale print and forced-colours mode, where steps collapse.
+
+   Slot 1 is the subject of the page and is used once. */
+:root {
+    --series-1: #262626;
+    --series-2: #5f5f5f;
+    --series-3: #9a9a9a;
+}
+.dark {
+    --series-1: #fafafa;
+    --series-2: #c0c0c0;
+    --series-3: #8a8a8a;
+}
+
+/* Chrome for the interactive forty-year chart. These live here rather than in
+   the React component so the crosshair, which updates on every pointermove,
+   never re-renders a <style> node along with itself. */
+.hz-grid,
+.hz-axis-line {
+    stroke: var(--hairline);
+    stroke-width: 1;
+}
+.hz-tick,
+.hz-axis {
+    fill: var(--muted-foreground);
+    font-family: var(--font-mono);
+    font-size: 11px;
+}
+.hz-end {
+    fill: var(--ink);
+    font-size: 13px;
+    font-weight: 500;
+}
+.hz-cross {
+    stroke: var(--ink);
+    stroke-width: 1;
+    opacity: 0.45;
+}
+
 @layer base {
     * {
         @apply border-border outline-ring/50;

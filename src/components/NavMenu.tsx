@@ -9,6 +9,7 @@ import {
   Analytics01Icon,
   Route01Icon,
   Rocket01Icon,
+  ChartLineData01Icon,
 } from "@hugeicons/core-free-icons"
 import {
   NavigationMenu,
@@ -30,6 +31,7 @@ const ICONS = {
   manifesto: BookOpen01Icon,
   investor: Analytics01Icon,
   thesis: Route01Icon,
+  horizon: ChartLineData01Icon,
 } as const
 
 type Item = { label: string; href: string; desc?: string; icon?: keyof typeof ICONS }
