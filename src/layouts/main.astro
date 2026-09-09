@@ -25,6 +25,8 @@ interface Props {
   modifiedTime?: string
   /** Page-specific structured data, on top of the site-wide graphs below. */
   jsonLd?: Record<string, unknown>[]
+  /** Keep this page out of the index, e.g. the not-found body. */
+  noindex?: boolean
 }
 
 const lang = resolveLang(Astro.currentLocale)
@@ -40,6 +42,7 @@ const {
   publishedTime,
   modifiedTime,
   jsonLd = [],
+  noindex = false,
 } = Astro.props
 
 const urlId = pathId ? new URL(pathId, Astro.site).href : null
@@ -175,6 +178,7 @@ const faqSchema = isHome
 
     <title>{title}</title>
     <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex, follow" />}
     <meta name="theme-color" content="#ffffff" id="theme-color-meta" />
 
     <link rel="canonical" href={canonical} />

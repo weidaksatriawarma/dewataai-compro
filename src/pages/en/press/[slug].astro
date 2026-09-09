@@ -5,28 +5,42 @@ export const prerender = false
 
 import PageLayout from "@/layouts/page.astro"
 import ArticleDetail from "@/components/pages/ArticleDetail.astro"
+import NotFound from "@/components/pages/NotFound.astro"
 import { getArticle, imageUrl } from "@/lib/cms"
 import { getPages } from "@/lib/pages"
 import { articlePageProps } from "@/lib/schema"
 
 const slug = Astro.params.slug!
 const article = await getArticle("pressRelease", "en", slug)
-if (!article) return Astro.rewrite("/404")
+
+// A slug that resolves to nothing is a 404, not a server error. Rewriting to
+// /404 is not an option here: that route is prerendered, and Astro refuses to
+// rewrite an on-demand route with a static one, which would make every missing
+// article a 500 and put a server error in Search Console.
+if (!article) Astro.response.status = 404
 
 // Canonical, hreflang, share card, article timestamps and structured data.
-const head = articlePageProps({
-  kind: "pressRelease",
-  lang: "en",
-  article,
-  image: imageUrl(article.coverImage, 1200),
-  sectionName: getPages("en").press.eyebrow,
-})
+const head = article
+  ? articlePageProps({
+      kind: "pressRelease",
+      lang: "en",
+      article,
+      image: imageUrl(article.coverImage, 1200),
+      sectionName: getPages("en").press.eyebrow,
+    })
+  : { pathId: null, pathEn: null, noindex: true }
 ---
 
 <PageLayout
-  title={`${article.title} | Dewata AI Press`}
-  description={article.excerpt}
+  title={article ? `${article.title} | Dewata AI Press` : "404 | Dewata AI"}
+  description={article?.excerpt}
   {...head}
 >
-  <ArticleDetail kind="pressRelease" article={article} />
+  {
+    article ? (
+      <ArticleDetail kind="pressRelease" article={article} />
+    ) : (
+      <NotFound />
+    )
+  }
 </PageLayout>
