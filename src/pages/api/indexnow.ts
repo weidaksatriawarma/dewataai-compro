@@ -59,6 +59,22 @@ function urlsFor(body: WebhookBody): string[] {
   ]
 }
 
+/**
+ * Compare two secrets without leaking their contents through timing.
+ *
+ * A plain `!==` returns as soon as two bytes differ, so the time it takes to
+ * reject a guess reveals how much of the prefix was right, and a secret can be
+ * recovered one character at a time. This always walks the full length.
+ */
+function secretsMatch(supplied: string | null, expected: string): boolean {
+  if (!supplied || supplied.length !== expected.length) return false
+  let difference = 0
+  for (let i = 0; i < expected.length; i++) {
+    difference |= supplied.charCodeAt(i) ^ expected.charCodeAt(i)
+  }
+  return difference === 0
+}
+
 export const POST: APIRoute = async ({ request }) => {
   if (!INDEXNOW_KEY || !INDEXNOW_WEBHOOK_SECRET) {
     return Response.json(
@@ -69,7 +85,12 @@ export const POST: APIRoute = async ({ request }) => {
 
   // Anyone can reach this route, and an open one would let a stranger spend
   // this host's IndexNow quota on URLs of their choosing.
-  if (request.headers.get("x-webhook-secret") !== INDEXNOW_WEBHOOK_SECRET) {
+  if (
+    !secretsMatch(
+      request.headers.get("x-webhook-secret"),
+      INDEXNOW_WEBHOOK_SECRET
+    )
+  ) {
     return Response.json({ error: "Unauthorized" }, { status: 401 })
   }
 
@@ -82,7 +103,7 @@ export const POST: APIRoute = async ({ request }) => {
 
   const urlList = urlsFor(body)
   if (!urlList.length) {
-    return Response.json({ error: "Nothing to submit", body }, { status: 400 })
+    return Response.json({ error: "Nothing to submit" }, { status: 400 })
   }
 
   const submission = await fetch(ENDPOINT, {

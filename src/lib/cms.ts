@@ -277,6 +277,39 @@ export function image(source: unknown, width = 1200) {
   }
 }
 
+/**
+ * Escape a value being dropped into an HTML attribute.
+ *
+ * The Portable Text renderer below builds HTML by string interpolation, so a
+ * value containing a quote would otherwise close the attribute and let the
+ * rest be read as markup. The content comes from our own Studio, which makes
+ * this a second line of defence rather than the first, but a CMS account is
+ * exactly the kind of thing that gets phished.
+ */
+function escapeAttr(value: string): string {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+}
+
+/**
+ * A link target that is safe to put in `href`.
+ *
+ * Anything but these four schemes is dropped, which is what stops
+ * `javascript:` and `data:` URLs from turning an editor's link into script
+ * execution on the reader's page. Relative and root-relative links are kept.
+ */
+function safeHref(href: unknown): string {
+  if (typeof href !== "string" || !href) return "#"
+  const trimmed = href.trim()
+  // Relative, root-relative and anchor links carry no scheme to abuse.
+  if (/^(?:[/#?]|\.{1,2}\/)/.test(trimmed)) return escapeAttr(trimmed)
+  return /^(?:https?|mailto|tel):/i.test(trimmed) ? escapeAttr(trimmed) : "#"
+}
+
 /** Portable Text to HTML, styled to match the site's editorial type. */
 export function renderBody(body: unknown[] | undefined): string {
   if (!body?.length) return ""
@@ -308,7 +341,7 @@ export function renderBody(body: unknown[] | undefined): string {
         strong: ({ children }) =>
           `<strong class="font-semibold text-ink">${children}</strong>`,
         link: ({ children, value }) =>
-          `<a href="${value?.href ?? "#"}" rel="noopener noreferrer" target="_blank" class="link-underline font-medium text-ink">${children}</a>`,
+          `<a href="${safeHref(value?.href)}" rel="noopener noreferrer" target="_blank" class="link-underline font-medium text-ink">${children}</a>`,
       },
       types: {
         image: ({ value }) => {
@@ -320,7 +353,7 @@ export function renderBody(body: unknown[] | undefined): string {
           const size = img.height
             ? ` width="${img.width}" height="${img.height}"`
             : ""
-          return `<img src="${img.url}" alt="${alt}"${size} loading="lazy" decoding="async" class="mt-10 h-auto w-full rounded-2xl border border-hairline" />`
+          return `<img src="${escapeAttr(img.url)}" alt="${escapeAttr(alt)}"${size} loading="lazy" decoding="async" class="mt-10 h-auto w-full rounded-2xl border border-hairline" />`
         },
       },
     },
