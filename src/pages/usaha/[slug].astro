@@ -4,7 +4,7 @@ import VentureDetail from "@/components/pages/VentureDetail.astro"
 import { getPages, VENTURE_SLUGS, type VentureSlug } from "@/lib/pages"
 import { resolveLang, detailPath, path } from "@/lib/i18n"
 import { getSite } from "@/lib/site"
-import { breadcrumbSchema } from "@/lib/schema"
+import { breadcrumbSchema, ventureSchema } from "@/lib/schema"
 
 export function getStaticPaths() {
   return VENTURE_SLUGS.map((slug) => ({ params: { slug } }))
@@ -32,7 +32,7 @@ const crumbs = breadcrumbSchema([
   description={p.meta.description}
   pathId={detailPath("ventures", "id", slug)}
   pathEn={detailPath("ventures", "en", slug)}
-  jsonLd={[crumbs]}
+  jsonLd={[ventureSchema({ slug, lang }), crumbs]}
 >
   <VentureDetail slug={slug} />
 </PageLayout>

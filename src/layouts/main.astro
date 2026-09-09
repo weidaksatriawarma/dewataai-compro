@@ -27,6 +27,8 @@ interface Props {
   jsonLd?: Record<string, unknown>[]
   /** Keep this page out of the index, e.g. the not-found body. */
   noindex?: boolean
+  /** RSS discovery link, on the journal and press pages. */
+  feed?: { href: string; title: string }
 }
 
 const lang = resolveLang(Astro.currentLocale)
@@ -43,6 +45,7 @@ const {
   modifiedTime,
   jsonLd = [],
   noindex = false,
+  feed,
 } = Astro.props
 
 const urlId = pathId ? new URL(pathId, Astro.site).href : null
@@ -247,6 +250,17 @@ const faqSchema = isHome
         />
       ))
     }
+    {
+      feed && (
+        <link
+          rel="alternate"
+          type="application/rss+xml"
+          title={feed.title}
+          href={feed.href}
+        />
+      )
+    }
+
     {/* Plain-language brief for answer engines, kept in sync with the site. */}
     <link rel="alternate" type="text/plain" href="/llms.txt" title="llms.txt" />
 

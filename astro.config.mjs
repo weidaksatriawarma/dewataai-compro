@@ -1,7 +1,7 @@
 // @ts-check
 
 import tailwindcss from "@tailwindcss/vite"
-import { defineConfig, fontProviders } from "astro/config"
+import { defineConfig, envField, fontProviders } from "astro/config"
 import react from "@astrojs/react"
 import sanity from "@sanity/astro"
 import cloudflare from "@astrojs/cloudflare"
@@ -111,6 +111,23 @@ export default defineConfig({
   // on the next request instead of waiting for a rebuild.
   output: "static",
   adapter: cloudflare({ imageService: "compile" }),
+
+  /* Server-only secrets for the IndexNow endpoints. Both optional: without them
+     the key file and the submission route answer 404, and nothing else on the
+     site changes. `Astro.locals.runtime` was removed in Astro 6, so these are
+     read through astro:env, which the Cloudflare adapter wires to the Worker's
+     own secrets. Set them with `wrangler secret put`, or in .env.production for
+     a local production build. */
+  env: {
+    schema: {
+      INDEXNOW_KEY: envField.string({ context: "server", access: "secret", optional: true }),
+      INDEXNOW_WEBHOOK_SECRET: envField.string({
+        context: "server",
+        access: "secret",
+        optional: true,
+      }),
+    },
+  },
 
   // Indonesian-first bilingual site: `id` at `/`, `en` at `/en/`.
   i18n: {

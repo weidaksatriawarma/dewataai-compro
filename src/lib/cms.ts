@@ -241,6 +241,42 @@ export function imageUrl(source: unknown, width = 1200) {
     .url()
 }
 
+/**
+ * A Sanity asset id ends in its intrinsic pixel size, as in
+ * `image-abc123-2000x1333-jpg`. Reading it costs no extra request.
+ */
+function intrinsicSize(source: unknown) {
+  const ref = (source as { asset?: { _ref?: string } } | undefined)?.asset?._ref
+  const match = ref?.match(/-(\d+)x(\d+)-[a-z0-9]+$/i)
+  if (!match) return null
+  const width = Number(match[1])
+  const height = Number(match[2])
+  return width > 0 && height > 0 ? { width, height } : null
+}
+
+/**
+ * URL plus the dimensions a browser needs to reserve the right box before the
+ * file arrives. Without `width` and `height` the page reflows when a cover
+ * loads, which is what Cumulative Layout Shift measures and one of the three
+ * Core Web Vitals Google ranks on.
+ */
+export function image(source: unknown, width = 1200) {
+  const url = imageUrl(source, width)
+  if (!url) return null
+
+  const intrinsic = intrinsicSize(source)
+  // `fit("max")` never upscales, so a small original is served at its own size
+  // and the attributes have to say so.
+  const rendered = intrinsic ? Math.min(width, intrinsic.width) : width
+  return {
+    url,
+    width: rendered,
+    height: intrinsic
+      ? Math.round(rendered * (intrinsic.height / intrinsic.width))
+      : undefined,
+  }
+}
+
 /** Portable Text to HTML, styled to match the site's editorial type. */
 export function renderBody(body: unknown[] | undefined): string {
   if (!body?.length) return ""
@@ -276,10 +312,15 @@ export function renderBody(body: unknown[] | undefined): string {
       },
       types: {
         image: ({ value }) => {
-          const url = imageUrl(value, 1400)
-          if (!url) return ""
+          const img = image(value, 1400)
+          if (!img) return ""
           const alt = (value as { alt?: string })?.alt ?? ""
-          return `<img src="${url}" alt="${alt}" loading="lazy" class="mt-10 w-full rounded-2xl border border-hairline" />`
+          // Below the fold, so lazy, but still sized to keep the text from
+          // jumping as each one arrives.
+          const size = img.height
+            ? ` width="${img.width}" height="${img.height}"`
+            : ""
+          return `<img src="${img.url}" alt="${alt}"${size} loading="lazy" decoding="async" class="mt-10 h-auto w-full rounded-2xl border border-hairline" />`
         },
       },
     },

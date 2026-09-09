@@ -18,6 +18,7 @@ interface Props {
   modifiedTime?: string
   jsonLd?: Record<string, unknown>[]
   noindex?: boolean
+  feed?: { href: string; title: string }
 }
 
 const {
@@ -31,6 +32,7 @@ const {
   modifiedTime,
   jsonLd,
   noindex,
+  feed,
 } = Astro.props
 ---
 
@@ -45,6 +47,7 @@ const {
   modifiedTime={modifiedTime}
   jsonLd={jsonLd}
   noindex={noindex}
+  feed={feed}
 >
   <Navbar pathId={pathId} pathEn={pathEn} />
   <main id="main">

@@ -7,6 +7,7 @@
  */
 import type { Article } from "@/lib/cms"
 import { getSite } from "@/lib/site"
+import { getPages, type VentureSlug } from "@/lib/pages"
 import { detailPath, path, type Lang } from "@/lib/i18n"
 
 const SITE = "https://dewataai.com"
@@ -115,6 +116,20 @@ export function articleCrumbs(opts: {
 }
 
 /**
+ * The RSS discovery link for a section, for the layout's `feed` prop.
+ *
+ * Lives here rather than in lib/feed.ts so a page can advertise the feed
+ * without importing @astrojs/rss and the XML builder along with it.
+ */
+export function feedLink(kind: "post" | "pressRelease", lang: Lang) {
+  const routeKey = kind === "post" ? "journal" : "press"
+  return {
+    href: `${path(routeKey, lang)}rss.xml`,
+    title: getPages(lang)[routeKey].meta.title,
+  }
+}
+
+/**
  * Everything the layout needs for one article page: canonical + hreflang paths,
  * the share card, the article timestamps and the structured data.
  *
@@ -138,6 +153,7 @@ export function articlePageProps(opts: {
     : null
 
   return {
+    feed: feedLink(kind, lang),
     pathId: lang === "id" ? here : there,
     pathEn: lang === "en" ? here : there,
     ogImage: image ?? undefined,
@@ -151,5 +167,58 @@ export function articlePageProps(opts: {
       },
       breadcrumbSchema(articleCrumbs({ kind, article, lang, sectionName })),
     ],
+  }
+}
+
+/**
+ * The venture itself, as an entity an answer engine can resolve.
+ *
+ * Type follows what each venture actually is: Dewata Tech sells a build and a
+ * booking setup, which is a Service; Dagangku AI is software someone installs
+ * and uses, which is a SoftwareApplication.
+ *
+ * No `offers` and no `aggregateRating`. Prices live on each venture's own site,
+ * not here, and there are no published reviews. Inventing either to chase a
+ * rich result would be a false claim in machine-readable form, which is the
+ * kind Google penalises hardest.
+ */
+export function ventureSchema(opts: { slug: VentureSlug; lang: Lang }) {
+  const { slug, lang } = opts
+  const site = getSite(lang)
+  const venture = site.ventures.items.find((item) => item.slug === slug)
+  const detail = getPages(lang).ventureDetail[slug]
+  const url = absolute(detailPath("ventures", lang, slug))
+
+  const common = {
+    "@context": "https://schema.org",
+    name: venture?.name ?? detail.eyebrow,
+    description: detail.meta.description,
+    url,
+    inLanguage: lang,
+    provider: {
+      "@type": "Organization",
+      name: site.brand.name,
+      url: absolute("/"),
+    },
+    areaServed: { "@type": "Country", name: "Indonesia" },
+    // The venture's own domain, which is the page a searcher should land on
+    // once they know what they want.
+    ...(venture?.url ? { sameAs: [venture.url] } : {}),
+  }
+
+  if (slug === "dagangku-ai") {
+    return {
+      ...common,
+      "@type": "SoftwareApplication",
+      applicationCategory: "BusinessApplication",
+      // Stated because both are true and both are what people search for.
+      operatingSystem: "Android, Web",
+    }
+  }
+
+  return {
+    ...common,
+    "@type": "Service",
+    ...(venture?.tag ? { serviceType: venture.tag } : {}),
   }
 }

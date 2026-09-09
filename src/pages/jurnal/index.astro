@@ -6,6 +6,7 @@ import PageLayout from "@/layouts/page.astro"
 import ArticleList from "@/components/pages/ArticleList.astro"
 import { getPages } from "@/lib/pages"
 import { resolveLang, path } from "@/lib/i18n"
+import { feedLink } from "@/lib/schema"
 
 const p = getPages(resolveLang(Astro.currentLocale)).journal
 ---
@@ -15,6 +16,7 @@ const p = getPages(resolveLang(Astro.currentLocale)).journal
   description={p.meta.description}
   pathId={path("journal", "id")}
   pathEn={path("journal", "en")}
+  feed={feedLink("post", "id")}
 >
   <ArticleList kind="post" />
 </PageLayout>

@@ -5,7 +5,7 @@ import { ArrowLeft01Icon } from "@hugeicons/core-free-icons"
 import { getSite } from "@/lib/site"
 import { getPages } from "@/lib/pages"
 import { resolveLang, getUI, path } from "@/lib/i18n"
-import { renderBody, formatDate, imageUrl, type Article } from "@/lib/cms"
+import { renderBody, formatDate, image, type Article } from "@/lib/cms"
 
 interface Props {
   kind: "post" | "pressRelease"
@@ -22,7 +22,7 @@ const routeKey = kind === "post" ? "journal" : "press"
 const isPress = kind === "pressRelease"
 
 const body = renderBody(article.body)
-const cover = imageUrl(article.coverImage, 1600)
+const cover = image(article.coverImage, 1600)
 ---
 
 <article class="relative bg-background pt-32 pb-16 sm:pt-40 sm:pb-24">
@@ -58,10 +58,17 @@ const cover = imageUrl(article.coverImage, 1600)
   {
     cover && (
       <div class="mx-auto mt-10 max-w-4xl px-5 sm:px-8">
+        {/* The cover is the largest thing above the fold, so it is the LCP
+            element: fetched at high priority, and sized so the text below it
+            does not jump when the file lands. */}
         <img
-          src={cover}
+          src={cover.url}
           alt={article.coverImage?.alt ?? ""}
-          class="w-full rounded-3xl border border-hairline"
+          width={cover.width}
+          height={cover.height}
+          fetchpriority="high"
+          decoding="async"
+          class="h-auto w-full rounded-3xl border border-hairline"
         />
       </div>
     )
