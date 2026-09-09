@@ -18,6 +18,7 @@ import {
   SURVIVAL,
   BASE_INDEX,
   weighted,
+  multiple,
   strokeColor,
   type AssetKey,
 } from "@/lib/horizon"
@@ -56,14 +57,9 @@ const hi = Math.log10(DOMAIN[1])
 const px = (v: number) => L + ((Math.log10(v) - lo) / (hi - lo)) * (W - L - R)
 
 const locale = lang === "en" ? "en-US" : "id-ID"
-/* Values keep a decimal under 10x so a column of them lines up: 8,6x next to a
-   bare 7x reads as two different precisions. Axis ticks stay bare. */
-const value = new Intl.NumberFormat(locale, {
-  minimumFractionDigits: 1,
-  maximumFractionDigits: 1,
-})
-const whole = new Intl.NumberFormat(locale, { maximumFractionDigits: 0 })
-const mult = (v: number) => `${(v < 10 ? value : whole).format(v)}x`
+/* Values share the page's own formatter so a row and its table cell can never
+   print the same number to different precisions. Axis ticks stay bare. */
+const mult = (v: number) => `${multiple(v * BASE_INDEX, lang)}x`
 const tick = (v: number) =>
   `${new Intl.NumberFormat(locale, { maximumFractionDigits: 1 }).format(v)}x`
 const pct = (v: number) => `${Math.round(v * 100)}%`

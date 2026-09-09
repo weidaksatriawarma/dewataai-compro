@@ -87,7 +87,7 @@ const content = {
       items: [
         "Masih riset, belum ada produk",
         "Belum ada pelanggan",
-        "Belum ada kontrak, pemerintah maupun swasta",
+        "Belum ada kontrak, dari pemerintah atau swasta",
         "Belum ada satu pun perangkat kepasang",
       ],
       note: "Kami tulis ini biar gampang dicek setahun lagi. Kalau ada yang berubah, halaman ini yang berubah duluan.",
@@ -98,7 +98,7 @@ const content = {
       items: [
         "Halaman ini menjelaskan arah riset, bukan penawaran produk atau jasa.",
         "Pemasangan apa pun nantinya tunduk pada UU 27/2022 tentang Pelindungan Data Pribadi dan aturan sektor terkait.",
-        "Kami gak bekerja sama dengan pihak mana pun untuk pemantauan warga secara massal.",
+        "Kami gak kerja bareng siapa pun buat pemantauan massal warga.",
       ],
     },
 

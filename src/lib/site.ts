@@ -60,7 +60,7 @@ const content = {
       location: "Bali, Indonesia",
       email: EMAIL,
       whatsapp: wa("id"),
-      tagline: "Kecerdasan buatan, dari Pulau Dewata.",
+      tagline: "AI dari Pulau Dewata, buat bisnis Indonesia.",
       legal: LEGAL,
     },
 
@@ -101,7 +101,12 @@ const content = {
         {
           label: "Perusahaan",
           items: [
-            { label: "Tentang", href: ROUTES.about.id, desc: "Induk, bukan agensi", icon: "about" },
+            {
+              label: "Tentang",
+              href: ROUTES.about.id,
+              desc: "Induk, bukan agensi",
+              icon: "about",
+            },
             {
               label: "Visi",
               href: ROUTES.vision.id,
@@ -167,9 +172,9 @@ const content = {
 
     marquee: [
       "Produk AI",
-      "Web & Rekayasa",
-      "Otomatisasi Bisnis",
-      "Riset Terapan",
+      "Web & Software",
+      "Otomatisasi",
+      "Riset AI",
       "Villa & Hospitality",
       "Bisnis Indonesia",
       "Bali",
@@ -185,10 +190,10 @@ const content = {
         "Tiap usaha punya tim, produk, dan pelanggan sendiri. Gak ada yang dianggurin.",
       ],
       facts: [
-        { value: "Bali", label: "Basis operasi" },
+        { value: "Bali", label: "Markas" },
         { value: "2", label: "Usaha aktif" },
         { value: "1", label: "Sedang dibangun" },
-        { value: "2026", label: "Berbadan hukum" },
+        { value: "2026", label: "Resmi berdiri" },
       ],
     },
 
@@ -208,19 +213,19 @@ const content = {
         },
         {
           key: "code",
-          title: "Web & Rekayasa",
+          title: "Web & Software",
           desc: "Website yang nutup booking, bukan cuma cakep.",
           proof: "Dewata Tech",
         },
         {
           key: "automation",
           title: "Otomatisasi",
-          desc: "Kerjaan manual pindah ke sistem. Kamu tidur, dia tetap jalan.",
+          desc: "Kerjaan manual pindah ke sistem. Kamu tidur, dia tetep jalan.",
           proof: "Dua usaha",
         },
         {
           key: "research",
-          title: "Riset Terapan",
+          title: "Riset AI",
           desc: "Model baru kami tes dulu, biar kamu gak jadi kelinci percobaan.",
           proof: "Uji internal",
         },
@@ -298,7 +303,7 @@ const content = {
         index: "03",
         mono: "+",
         name: "Usaha ketiga",
-        tag: "Dijajaki",
+        tag: "Riset",
         status: "Masih riset",
         desc: "Teknologi buat nyegah serangan teror di infrastruktur penting: bandara, pelabuhan, pembangkit, tempat ibadah. Dipasang cuma kalau operator lokasinya sendiri yang minta, pakai dasar hukum dan batas simpan data. Bukan pemantauan massal warga.",
         cta: "Lihat usaha ketiga",
@@ -309,7 +314,7 @@ const content = {
     dataThesis: {
       label: "Yang numpuk",
       statement: "Fitur bisa disalin.\nData yang numpuk tiap hari, enggak.",
-      body: "Tiap pemilik usaha yang benerin catatan salah di Dagangku ninggalin satu pasangan data yang gak dijual di mana pun: bahasa warung ke jurnal akuntansi. Itu yang kami kejar, bukan jumlah fitur.",
+      body: "Tiap pemilik usaha yang benerin catatan salah di Dagangku ninggalin satu pasangan data buat kami: bahasa warung, ketemu jurnal akuntansi. Data kayak gitu gak dijual di mana pun. Itu yang kami kejar, bukan banyaknya fitur.",
       cta: "Lihat hitungannya",
     },
 
@@ -338,7 +343,7 @@ const content = {
         {
           value: "24",
           unit: "/7",
-          label: "Sistem bekerja",
+          label: "Sistemnya jalan",
           desc: "Sistemnya tetap kerja pas kamu lagi tidur.",
         },
       ],
@@ -364,7 +369,8 @@ const content = {
           "Rencana 30 hari, tinggal eksekusi",
           "Rekomendasi jujur, walau ujungnya bukan produk kami",
         ],
-        guarantee: "Gak cocok? Kami bilang apa adanya. Gratis ya tetap gratis, gak ada jebakan.",
+        guarantee:
+          "Gak cocok? Kami bilang apa adanya. Gratis ya tetap gratis, gak ada jebakan.",
         note: "Biasanya dibales di hari yang sama.",
         cta: { label: "Gas, ambil slotnya", href: wa("id") },
       },
@@ -397,7 +403,7 @@ const content = {
         },
         {
           key: "craft",
-          title: "Rekayasa rapi",
+          title: "Kerjaan rapi",
           desc: "Cepat, aman, gampang dirawat bertahun-tahun.",
           cost: "Kami nolak tenggat yang cuma bisa dikejar pakai utang teknis.",
         },
@@ -406,7 +412,7 @@ const content = {
 
     faq: {
       eyebrow: "FAQ",
-      heading: "Sering\nditanyakan.",
+      heading: "Sering\nditanya.",
       note: "Belum ketemu jawabannya? ",
       noteLink: "Chat kami langsung.",
       items: [
@@ -446,7 +452,8 @@ const content = {
     },
 
     footer: {
-      blurb: "Grup teknologi dari Bali. Kami bikin produknya, kami juga yang jalanin.",
+      blurb:
+        "Grup teknologi dari Bali. Kami bikin produknya, kami juga yang jalanin.",
       columns: [
         {
           title: "Perusahaan",
@@ -464,8 +471,16 @@ const content = {
         {
           title: "Ekosistem",
           links: [
-            { label: "Dewata Tech", href: "https://dewatatech.com", external: true },
-            { label: "Dagangku AI", href: "https://dagangkuai.com", external: true },
+            {
+              label: "Dewata Tech",
+              href: "https://dewatatech.com",
+              external: true,
+            },
+            {
+              label: "Dagangku AI",
+              href: "https://dagangkuai.com",
+              external: true,
+            },
           ],
         },
         {
@@ -492,7 +507,7 @@ const content = {
         addressLabel: "Alamat terdaftar",
       },
       legal: [{ label: "Kebijakan Privasi", href: ROUTES.privacy.id }],
-      status: "Semua sistem beroperasi",
+      status: "Semua sistem jalan",
       copyright: "© 2026 PT Dewata Artificial Intelligence. Dibuat di Bali.",
     },
   },
@@ -550,7 +565,12 @@ const content = {
         {
           label: "Company",
           items: [
-            { label: "About", href: ROUTES.about.en, desc: "An owner, not an agency", icon: "about" },
+            {
+              label: "About",
+              href: ROUTES.about.en,
+              desc: "An owner, not an agency",
+              icon: "about",
+            },
             {
               label: "Vision",
               href: ROUTES.vision.en,
@@ -891,7 +911,8 @@ const content = {
     },
 
     footer: {
-      blurb: "A technology group from Bali. We build the products and we run them.",
+      blurb:
+        "A technology group from Bali. We build the products and we run them.",
       columns: [
         {
           title: "Company",
@@ -909,8 +930,16 @@ const content = {
         {
           title: "Ecosystem",
           links: [
-            { label: "Dewata Tech", href: "https://dewatatech.com", external: true },
-            { label: "Dagangku AI", href: "https://dagangkuai.com", external: true },
+            {
+              label: "Dewata Tech",
+              href: "https://dewatatech.com",
+              external: true,
+            },
+            {
+              label: "Dagangku AI",
+              href: "https://dagangkuai.com",
+              external: true,
+            },
           ],
         },
         {

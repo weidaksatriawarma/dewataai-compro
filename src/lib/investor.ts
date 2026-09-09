@@ -47,11 +47,13 @@ export const COST_SHARE: Record<string, Record<CostShareKey, number>> = {
  * A villa stops at its inventory. Software does not have that particular wall.
  */
 export const CAPACITY_CEILING = 100
-export const CAPACITY_CURVE = [0, 25, 50, 75, 100, 125, 150, 175, 200].map((x) => ({
-  x,
-  physical: Math.min(x, CAPACITY_CEILING),
-  software: x,
-}))
+export const CAPACITY_CURVE = [0, 25, 50, 75, 100, 125, 150, 175, 200].map(
+  (x) => ({
+    x,
+    physical: Math.min(x, CAPACITY_CEILING),
+    software: x,
+  })
+)
 
 /** Blended subscription revenue per paying customer per month, in rupiah. */
 export const BLENDED_ARPU = 250_000
@@ -75,7 +77,7 @@ export const arr = (customers: number) => customers * BLENDED_ARPU * 12
 export function rupiahShort(
   value: number,
   lang: Lang,
-  words: { billion: string; million: string },
+  words: { billion: string; million: string }
 ) {
   const locale = lang === "en" ? "en-US" : "id-ID"
   const fmt = (n: number, digits: number) =>
@@ -103,14 +105,16 @@ const content = {
       },
       eyebrow: "Investor",
       heading: "Bentuk ekonominya\nyang beda.",
-      lead: "Villa dan restoran itu bisnis bagus. Yang beda bukan bagus atau enggaknya, tapi apa yang harus dibeli tiap kali mau nambah pendapatan. Halaman ini ngebuka bandingannya, lengkap sama asumsinya.",
-      meta_: "Semua angka di sini model ya, bukan hasil survei dan bukan capaian kami.",
+      lead: "Villa dan restoran itu bisnis bagus. Yang beda bukan bagus atau enggaknya. Tapi apa yang harus dibeli tiap kali mau nambah pendapatan. Halaman ini ngebuka bandingannya, lengkap sama asumsinya.",
+      meta_:
+        "Semua angka di sini model ya, bukan hasil survei dan bukan capaian kami.",
 
       thesis: {
         label: "Intinya",
-        heading: "Aset fisik naik lewat modal.\nSoftware naik lewat distribusi.",
+        heading:
+          "Aset fisik naik lewat modal.\nSoftware naik lewat distribusi.",
         body: [
-          "Villa nambah cuan dengan cara beli kamar lagi. Restoran nambah cuan dengan cara buka outlet lagi. Dua-duanya butuh modal gede di depan, dan modal itu susah ditarik balik kalau ternyata salah langkah.",
+          "Villa nambah cuan dengan cara beli kamar lagi. Restoran, buka outlet lagi. Dua-duanya butuh modal gede di depan. Dan modal itu susah ditarik balik kalau ternyata salah langkah.",
           "Software nambah cuan dengan cara nemu pelanggan berikutnya. Biayanya bisa disetop bulan depan kalau angkanya jelek. Bukan berarti lebih gampang ya, cuma bentuk risikonya yang beda.",
         ],
       },
@@ -120,22 +124,22 @@ const content = {
       record: {
         label: "01 · Cara mikir",
         heading: "Sistem pencatatan,\nbukan alat bantu.",
-        sub: "Tiga hal ini kami ambil dari cara Palantir mikirin data dan cara Anduril mikirin kepemilikan produk, terus kami pasang di ukuran warung.",
+        sub: "Tiga hal ini kami contek. Dari Palantir, cara mikirin data. Dari Anduril, cara mikirin kepemilikan produk. Terus kami pasang di ukuran warung.",
         items: [
           {
             index: "I",
             title: "Yang megang catatan resminya, gak diganti",
-            body: "Alat bantu gampang dilepas. Tapi sistem yang nyimpen kwitansi bernomor urut, stok, utang, gaji, sama laporan pajak itu udah jadi catatan resmi usahanya. Ninggalin dia berarti ninggalin riwayat usaha sendiri.",
+            body: "Alat bantu gampang dilepas. Tapi sistem yang nyimpen kwitansi bernomor urut, stok, utang, gaji, sama laporan pajak itu udah jadi catatan resmi usahanya. Ninggalin dia sama aja ninggalin riwayat usaha sendiri.",
           },
           {
             index: "II",
             title: "Satu peta buat satu usaha",
-            body: "Produk, pelanggan, supplier, harga per pelanggan, kasbon, karyawan, dan aset gak kami simpen sebagai tabel yang kepisah-pisah, tapi sebagai satu peta yang nyambung. Pertanyaan kayak produk mana yang diam-diam bikin rugi cuma bisa dijawab kalau petanya nyambung.",
+            body: "Produk, pelanggan, supplier, harga, kasbon, karyawan, aset. Semuanya gak kami simpen jadi tabel yang kepisah-pisah, tapi jadi satu peta yang nyambung. Soalnya pertanyaan kayak produk mana yang diam-diam bikin rugi cuma bisa dijawab kalau petanya nyambung.",
           },
           {
             index: "III",
             title: "Kami duduk bareng yang makai",
-            body: "Fitur lahir dari duduk di warung orang, liat dia salah ngetik, terus dibenerin. Bukan dari rapat. Tiap koreksi yang dia lakuin balik lagi jadi data buat ngukur model mana yang paling ngerti bahasa dia.",
+            body: "Fitur lahir dari duduk di warung orang, liat dia salah ngetik, terus dibenerin. Bukan dari rapat. Dan tiap koreksi yang dia lakuin balik lagi jadi data, buat ngukur model mana yang paling ngerti bahasa dia.",
           },
         ],
       },
@@ -161,7 +165,7 @@ const content = {
           tableHeaders: ["Usaha", "Modal", "Bentuknya"],
         },
         after:
-          "Yang gak kelihatan di grafik: dua batang pertama itu belanja aset yang nempel selamanya. Batang ketiga itu biaya akuisisi yang bisa disetop bulan depan, dan kalau disetop pun, pelanggan yang udah ada tetap bayar.",
+          "Yang gak kelihatan di grafik: dua batang pertama itu belanja aset, nempel selamanya. Batang ketiga itu biaya akuisisi. Bisa disetop bulan depan. Dan kalau disetop pun, pelanggan yang udah ada tetep bayar.",
       },
 
       share: {
@@ -185,7 +189,7 @@ const content = {
           tableHeaders: ["Pos", "Villa", "Restoran", "Software"],
         },
         after:
-          "Restoran keliatan paling berat karena bahan baku sama gaji ikut naik tiap ada tamu tambahan. Villa jauh lebih lega, dan bakal makin lega kalau komisi OTA-nya hilang. Itu persis yang dikerjain Dewata Tech.",
+          "Restoran keliatan paling berat. Bahan baku sama gaji ikut naik tiap ada tamu tambahan. Villa jauh lebih lega, dan bakal makin lega kalau komisi OTA-nya hilang. Itu persis yang dikerjain Dewata Tech.",
       },
 
       ceiling: {
@@ -262,14 +266,14 @@ const content = {
             ],
           },
         ],
-        note: "Yang gak ada di halaman ini: biaya AI per pesan, lantai margin, dan jumlah pelanggan berbayar hari ini. Itu angka internal, dan kami bawa pas ketemu langsung.",
+        note: "Yang gak ada di halaman ini: biaya AI per pesan, lantai margin, sama jumlah pelanggan berbayar hari ini. Itu angka internal. Kami bawa pas ketemu langsung.",
       },
 
       legal: {
         label: "Catatan hukum",
         items: [
           "Halaman ini informasi tentang perusahaan, bukan penawaran investasi dan bukan ajakan membeli efek.",
-          "Kami gak melakukan penawaran umum efek. Penawaran umum di Indonesia diatur undang undang pasar modal dan diawasi OJK, dan kami gak terdaftar untuk itu.",
+          "Kami tidak melakukan penawaran umum efek. Penawaran umum di Indonesia diatur undang-undang pasar modal dan diawasi OJK, dan kami tidak terdaftar untuk itu.",
           "Angka di halaman ini proyeksi berbasis asumsi yang ditulis terbuka, bukan janji hasil.",
         ],
       },
@@ -308,7 +312,7 @@ const content = {
           {
             index: "02",
             title: "Bangun produk AI",
-            body: "Ini yang pertama dapet jatah dari duit buat tumbuh. Aktivasi, kanal WhatsApp, sama alat buat ngukur model. Semuanya diarahin ke satu angka: jumlah usaha aktif dikali seberapa sering mereka nyatet.",
+            body: "Ini yang pertama dapet jatah dari duit buat tumbuh. Aktivasi, kanal WhatsApp, sama alat buat ngukur model. Semuanya diarahin ke satu angka saja: jumlah usaha aktif dikali seberapa sering mereka nyatet.",
           },
           {
             index: "03",
@@ -327,16 +331,34 @@ const content = {
         label: "02 · Bitcoin",
         heading: "Aturannya ditulis\nsebelum harganya gerak.",
         body: [
-          "Kami pegang Bitcoin sebagai tempat parkir kas jangka panjang, bukan sebagai sumber pendapatan dan bukan sebagai bahan trading. Alasannya sederhana: pasokannya terbatas dan gak ada yang bisa nambahin sepihak, padahal rupiah yang nganggur di rekening pasti kegerus.",
-          "Kenapa aturannya ditulis di depan: kalau aturan treasury baru dibikin pas harga lagi gerak, yang nulis bukan kebijakan, tapi emosi.",
+          "Kami pegang Bitcoin sebagai tempat parkir kas jangka panjang. Bukan sumber pendapatan, bukan bahan trading. Alasannya sederhana: pasokannya terbatas dan gak ada yang bisa nambahin sepihak, sementara rupiah yang nganggur di rekening pasti kegerus.",
+          "Kenapa aturannya ditulis di depan? Karena kalau aturan treasury baru dibikin pas harga lagi gerak, yang nulis bukan kebijakan. Emosi.",
         ],
         rules: [
-          { title: "Cuma dari surplus", body: "Setelah cadangan 12 bulan aman. Kalau cadangannya kurang, bulan itu jatahnya nol." },
-          { title: "Gak pernah pakai utang", body: "Gak ada margin, gak ada pinjaman buat beli, gak ada agunan kripto." },
-          { title: "Beli bertahap, bukan sekali besar", body: "Nominal tetap tiap bulan, gak sok nebak waktu masuk." },
-          { title: "Bukan buat ditradingkan", body: "Gak ada target jual, gak ada leverage. Kalau butuh kas, produknya yang jadi sumber." },
-          { title: "Pajak dan pencatatan ikut aturan", body: "Kepemilikan masuk pembukuan perusahaan dan pajaknya dihitung sesuai aturan yang berlaku saat transaksi." },
-          { title: "Gak pernah dijual ke pelanggan", body: "Kami gak nawarin produk kripto, gak ngasih saran beli, dan gak ada kaitannya sama Dagangku AI." },
+          {
+            title: "Cuma dari surplus",
+            body: "Setelah cadangan 12 bulan aman. Kalau cadangannya kurang, bulan itu jatahnya nol.",
+          },
+          {
+            title: "Gak pernah pakai utang",
+            body: "Gak ada margin, gak ada pinjaman buat beli, gak ada agunan kripto.",
+          },
+          {
+            title: "Beli bertahap, bukan sekali besar",
+            body: "Nominal tetap tiap bulan, gak sok nebak waktu masuk.",
+          },
+          {
+            title: "Bukan buat ditradingkan",
+            body: "Gak ada target jual, gak ada leverage. Kalau butuh kas, produknya yang jadi sumber.",
+          },
+          {
+            title: "Pajak dan pencatatan ikut aturan",
+            body: "Kepemilikan masuk pembukuan perusahaan dan pajaknya dihitung sesuai aturan yang berlaku saat transaksi.",
+          },
+          {
+            title: "Gak pernah dijual ke pelanggan",
+            body: "Kami gak nawarin produk kripto, gak ngasih saran beli, dan gak ada kaitannya sama Dagangku AI.",
+          },
         ],
         note: "Kami sengaja gak nampilin proyeksi harga Bitcoin. Harganya gak bisa diramal, dan grafik ramalan harga cuma bikin pembaca ngira ada yang dijanjikan.",
       },
@@ -361,7 +383,7 @@ const content = {
           "Skenario optimis itu 8.000 usaha berbayar. Indonesia punya sekitar 65 juta UMKM, jadi angka itu 0,012 persen dari pasarnya. Yang bikin susah bukan besarnya pasar, tapi aktivasi: bikin orang yang udah daftar beneran nyatet tiap hari.",
         honest: {
           label: "Yang perlu diluruskan",
-          body: "Grafik di atas model, bukan capaian. Kami gak nampilin jumlah pelanggan berbayar hari ini di halaman publik, tapi kami buka apa adanya pas ketemu, bareng biaya akuisisi sama retensinya.",
+          body: "Grafik di atas model, bukan capaian. Jumlah pelanggan berbayar hari ini gak kami taruh di halaman publik. Pas ketemu langsung, kami buka apa adanya, bareng biaya akuisisi sama retensinya.",
         },
       },
 
@@ -392,8 +414,8 @@ const content = {
         label: "Catatan hukum",
         items: [
           "Halaman ini informasi tentang kebijakan modal perusahaan, bukan penawaran investasi, bukan ajakan membeli efek, dan bukan saran investasi.",
-          "Kami gak melakukan penawaran umum efek dan gak terdaftar untuk itu. Pembicaraan dengan calon investor dilakukan langsung dan tunduk pada aturan yang berlaku.",
-          "Bitcoin yang kami pegang adalah aset treasury perusahaan sendiri. Kami bukan penyelenggara perdagangan aset kripto, gak nawarin produk kripto ke siapa pun, dan gak ngasih saran beli atau jual.",
+          "Kami tidak melakukan penawaran umum efek dan tidak terdaftar untuk itu. Pembicaraan dengan calon investor dilakukan langsung dan tunduk pada aturan yang berlaku.",
+          "Bitcoin yang kami pegang adalah aset treasury perusahaan sendiri. Kami bukan penyelenggara perdagangan aset kripto, tidak menawarkan produk kripto kepada siapa pun, dan tidak memberikan saran beli atau jual.",
           "Aset kripto berisiko tinggi dan nilainya bisa turun dalam. Pengawasannya ada di OJK, dan kewajiban pajaknya kami hitung sesuai aturan yang berlaku saat transaksi.",
           "Proyeksi di halaman ini model berbasis asumsi, bukan janji hasil.",
         ],
@@ -424,11 +446,13 @@ const content = {
       eyebrow: "Investors",
       heading: "A different\nshape of economics.",
       lead: "Villas and restaurants are good businesses. The difference is not whether they are good, it is what you have to buy every time you want more revenue. This page opens that comparison, assumptions included.",
-      meta_: "Every figure on this page is a model, not survey data and not our own results.",
+      meta_:
+        "Every figure on this page is a model, not survey data and not our own results.",
 
       thesis: {
         label: "The short version",
-        heading: "Physical assets grow on capital.\nSoftware grows on distribution.",
+        heading:
+          "Physical assets grow on capital.\nSoftware grows on distribution.",
         body: [
           "A villa adds revenue by buying another room. A restaurant adds revenue by opening another outlet. Both need large capital up front, and that capital is hard to pull back if the bet was wrong.",
           "Software adds revenue by finding the next customer. That spend can be stopped next month if the numbers look bad. This does not make it easier, it makes the risk a different shape.",
@@ -651,12 +675,30 @@ const content = {
           "Why the rules are written up front: a treasury policy written while the price is moving is not policy, it is emotion.",
         ],
         rules: [
-          { title: "Surplus only", body: "After the twelve-month reserve is whole. If the reserve is short, that month's allocation is zero." },
-          { title: "Never with borrowed money", body: "No margin, no loan to buy, no crypto pledged as collateral." },
-          { title: "Bought in steps, not one lump", body: "A fixed amount each month, with no attempt to time the entry." },
-          { title: "Not a trading position", body: "No sell target and no leverage. If cash is needed, the product is the source." },
-          { title: "Taxed and booked properly", body: "Holdings sit on the company books and tax is calculated under the rules in force at the time of the transaction." },
-          { title: "Never sold to customers", body: "We offer no crypto product, give no buy advice, and none of this touches Dagangku AI." },
+          {
+            title: "Surplus only",
+            body: "After the twelve-month reserve is whole. If the reserve is short, that month's allocation is zero.",
+          },
+          {
+            title: "Never with borrowed money",
+            body: "No margin, no loan to buy, no crypto pledged as collateral.",
+          },
+          {
+            title: "Bought in steps, not one lump",
+            body: "A fixed amount each month, with no attempt to time the entry.",
+          },
+          {
+            title: "Not a trading position",
+            body: "No sell target and no leverage. If cash is needed, the product is the source.",
+          },
+          {
+            title: "Taxed and booked properly",
+            body: "Holdings sit on the company books and tax is calculated under the rules in force at the time of the transaction.",
+          },
+          {
+            title: "Never sold to customers",
+            body: "We offer no crypto product, give no buy advice, and none of this touches Dagangku AI.",
+          },
         ],
         note: "We deliberately publish no Bitcoin price projection. The price cannot be forecast, and a forecast chart only makes readers think something was promised.",
       },

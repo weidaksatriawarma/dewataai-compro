@@ -41,7 +41,9 @@ export const BALI = {
 } as const
 
 /** Roughly how many Balinese Hindu Gen Z there are. */
-export const baliGenZ = Math.round(BALI.population * BALI.hinduShare * BALI.genZShare)
+export const baliGenZ = Math.round(
+  BALI.population * BALI.hinduShare * BALI.genZShare
+)
 
 const content = {
   id: {
@@ -52,7 +54,7 @@ const content = {
     },
     eyebrow: "Visi",
     heading: "Bali gak cuma\nbuat melayani.",
-    lead: "Pariwisata ngasih kerjaan. Teknologi ngasih kepemilikan. Kami mau anak Bali dapat dua-duanya.",
+    lead: "Pariwisata ngasih kerjaan. Teknologi ngasih kepemilikan. Kami mau anak Bali pegang dua-duanya.",
     meta_: "Perusahaan bootstrap. Modal sendiri, keputusan sendiri.",
 
     statement: "Kecil sekarang.\nBukan berarti kecil terus.",
@@ -68,10 +70,9 @@ const content = {
       ],
       resultLabel: "Perkiraan Gen Z Bali Hindu",
       method:
-        "Dikali gitu aja: penduduk Bali kali persentase Hindu kali persentase Gen Z. Dua hal yang perlu kamu tahu sebelum pakai angka ini: agama itu perkiraan kasar buat etnis, bukan hal yang sama, dan persentase generasinya dari Sensus 2020 sementara jumlah penduduknya 2024. Jadi ini besaran, bukan hitungan kepala.",
+        "Dikali gitu aja: penduduk Bali kali persentase Hindu kali persentase Gen Z. Tapi ada dua hal yang perlu kamu tahu duluan. Satu, agama itu cuma perkiraan kasar buat etnis, bukan hal yang sama. Dua, persentase generasinya dari Sensus 2020, sementara jumlah penduduknya 2024. Jadi ini besaran, bukan hitungan kepala.",
       sourcesLabel: "Sumber",
     },
-
 
     now: {
       label: "01 · Posisi",
@@ -81,7 +82,10 @@ const content = {
         {
           key: "live",
           title: "Yang jalan",
-          items: ["Dewata Tech: booking direct buat villa", "Dagangku AI: pembukuan lewat chat"],
+          items: [
+            "Dewata Tech: booking direct buat villa",
+            "Dagangku AI: pembukuan lewat chat",
+          ],
         },
         {
           key: "building",
@@ -107,7 +111,7 @@ const content = {
     bootstrap: {
       label: "02 · Bootstrap",
       heading: "Modal sendiri,\nkeputusan sendiri.",
-      body: "Kami gak lagi nyari investor. Pendanaan luar bikin jam kerja kami dimiliki orang lain, dan produk kami butuh sabar yang lebih panjang dari kesabaran uang cepat.",
+      body: "Kami gak lagi nyari investor. Duit dari luar bikin jam kerja kami jadi punya orang lain. Produk kami butuh sabar yang lebih panjang dari sabarnya uang cepat.",
       points: [
         {
           title: "Pelanggan yang danai",
@@ -132,10 +136,26 @@ const content = {
         "Anak Bali gak harus jadi penonton di industri ini. Bisa jadi yang bangun, yang punya, dan yang milih arahnya.",
       ],
       ladder: [
-        { step: "01", title: "Kerja di teknologi", body: "Bukan cuma ngelayani, tapi ngebangun." },
-        { step: "02", title: "Naik jadi yang mimpin", body: "Yang mutusin produknya mau ke mana." },
-        { step: "03", title: "Bikin perusahaan sendiri", body: "Punya produknya, bukan cuma ngerjain." },
-        { step: "04", title: "Balik jadi yang danai", body: "Uangnya muter di Bali, bukan keluar." },
+        {
+          step: "01",
+          title: "Kerja di teknologi",
+          body: "Bukan cuma ngelayani, tapi ngebangun.",
+        },
+        {
+          step: "02",
+          title: "Naik jadi yang mimpin",
+          body: "Yang mutusin produknya mau ke mana.",
+        },
+        {
+          step: "03",
+          title: "Bikin perusahaan sendiri",
+          body: "Punya produknya, bukan cuma ngerjain.",
+        },
+        {
+          step: "04",
+          title: "Balik jadi yang danai",
+          body: "Uangnya muter di Bali, bukan keluar.",
+        },
       ],
       close:
         "Kami bukan siapa-siapa buat nyuruh. Kami cuma mau nunjukkin jalurnya ada, dari Denpasar, tanpa pindah ke Jakarta.",
@@ -200,7 +220,6 @@ const content = {
       sourcesLabel: "Sources",
     },
 
-
     now: {
       label: "01 · Where we are",
       heading: "Running, building,\nand next.",
@@ -209,7 +228,10 @@ const content = {
         {
           key: "live",
           title: "Running",
-          items: ["Dewata Tech: direct bookings for villas", "Dagangku AI: bookkeeping over chat"],
+          items: [
+            "Dewata Tech: direct bookings for villas",
+            "Dagangku AI: bookkeeping over chat",
+          ],
         },
         {
           key: "building",
@@ -260,10 +282,26 @@ const content = {
         "Balinese do not have to be spectators in this industry. They can be the ones who build it, own it, and choose where it goes.",
       ],
       ladder: [
-        { step: "01", title: "Work in technology", body: "Not only serving it, building it." },
-        { step: "02", title: "Move up to leading", body: "Deciding where a product goes." },
-        { step: "03", title: "Start the company", body: "Owning the product, not just the task." },
-        { step: "04", title: "Come back as the funder", body: "The money circulates in Bali instead of leaving." },
+        {
+          step: "01",
+          title: "Work in technology",
+          body: "Not only serving it, building it.",
+        },
+        {
+          step: "02",
+          title: "Move up to leading",
+          body: "Deciding where a product goes.",
+        },
+        {
+          step: "03",
+          title: "Start the company",
+          body: "Owning the product, not just the task.",
+        },
+        {
+          step: "04",
+          title: "Come back as the funder",
+          body: "The money circulates in Bali instead of leaving.",
+        },
       ],
       close:
         "We are nobody to be telling anyone what to do. We just want to show the path exists, from Denpasar, without moving to Jakarta.",

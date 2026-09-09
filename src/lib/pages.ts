@@ -31,7 +31,8 @@ const toolbar = {
     reset: "Atur ulang",
     count: (shown: number, total: number) =>
       shown === total ? `${total} tulisan` : `${shown} dari ${total} tulisan`,
-    noResults: "Nggak ada yang cocok. Coba kata lain atau atur ulang filternya.",
+    noResults:
+      "Nggak ada yang cocok. Coba kata lain atau atur ulang filternya.",
     categories: {
       produk: "Produk",
       rekayasa: "Rekayasa",
@@ -75,7 +76,7 @@ const content = {
           "Dua usaha yang kami punya dan jalanin sendiri. Dewata Tech bikin villa dapet booking direct tanpa komisi. Dagangku AI bikin pembukuan beres modal chat.",
       },
       eyebrow: "Usaha",
-      heading: "Yang kami punya\ndan jalankan.",
+      heading: "Yang kami punya\ndan jalanin.",
       lead: "Ini bukan portofolio investasi. Semua usaha di bawah ini kami bangun sendiri, kami jalanin sendiri, dan sampai sekarang masih kami pegang.",
       openLabel: "Lihat detail",
       visitLabel: "Kunjungi situs",
@@ -84,7 +85,13 @@ const content = {
       register: {
         label: "Register usaha",
         issuedBy: "Dicatat atas nama",
-        columns: { no: "No", name: "Usaha", field: "Bidang", status: "Status", domain: "Domain" },
+        columns: {
+          no: "No",
+          name: "Usaha",
+          field: "Bidang",
+          status: "Status",
+          domain: "Domain",
+        },
         statusActive: "Aktif",
         statusOpen: "Riset",
         vacant: {
@@ -117,7 +124,8 @@ const content = {
     ventureDetail: {
       "dewata-tech": {
         meta: {
-          title: "Dewata Tech: booking direct villa, komisi OTA nol | Dewata AI",
+          title:
+            "Dewata Tech: booking direct villa, komisi OTA nol | Dewata AI",
           description:
             "Website plus booking engine buat villa. Live 7 hari, komisi OTA yang 15 sampai 30 persen itu langsung nol, kalender OTA tetap sinkron. Garansi 30 hari.",
         },
@@ -161,7 +169,11 @@ const content = {
         },
         forWho: {
           label: "Cocok buat",
-          items: ["Villa dan guest house", "Properti sewa harian", "Bisnis hospitality kecil"],
+          items: [
+            "Villa dan guest house",
+            "Properti sewa harian",
+            "Bisnis hospitality kecil",
+          ],
         },
         cta: {
           heading: "Mau lihat versinya buat villa kamu?",
@@ -186,7 +198,10 @@ const content = {
             "Kebanyakan pemilik usaha gak tahu untung aslinya berapa, soalnya nyatet itu ribet dan gampang kelewat.",
             "Tanpa catatan yang rapi, gak ada dasar buat naikin harga, ajuin modal, atau tahu produk mana yang diam-diam bikin rugi.",
           ],
-          cost: { value: "0", label: "Catatan yang biasanya dipegang pemilik bisnis" },
+          cost: {
+            value: "0",
+            label: "Catatan yang biasanya dipegang pemilik bisnis",
+          },
         },
         solution: {
           label: "Yang kami bangun",
@@ -289,12 +304,12 @@ const content = {
           },
           {
             index: "02",
-            title: "Jalankan",
+            title: "Jalanin",
             desc: "Produk yang jalan butuh operator, bukan cuma developer. Tim kami yang pegang hariannya.",
           },
           {
             index: "03",
-            title: "Tumbuhkan",
+            title: "Besarin",
             desc: "Kami pegang usahanya lama. Gak dijual buru-buru, gak ditinggal setengah jalan.",
           },
         ],
@@ -314,7 +329,8 @@ const content = {
       team: {
         label: "Keluarga Ksatriawarma",
         heading: "Dua bersaudara.",
-        intro: "Dewata AI dijalankan langsung sama pendirinya: satu pegang sisi bisnis, satu pegang sisi teknis. Usaha keluarga, jadi rentang waktunya panjang, kami bukan lagi bangun sesuatu buat dijual cepat.",
+        intro:
+          "Dewata AI dijalankan langsung sama pendirinya: satu pegang sisi bisnis, satu pegang sisi teknis. Usaha keluarga, jadi rentang waktunya panjang, kami bukan lagi bangun sesuatu buat dijual cepat.",
         /* Bagian ini otomatis tersembunyi kalau array-nya kosong. */
         members: [
           {
@@ -399,7 +415,8 @@ const content = {
         },
       ],
       closing: {
-        heading: "Kalau ini kedengeran masuk akal buat kamu, kita mungkin cocok kerja bareng.",
+        heading:
+          "Kalau ini kedengeran masuk akal buat kamu, kita mungkin cocok kerja bareng.",
         cta: "Ngobrol 15 menit",
       },
     },
@@ -441,16 +458,36 @@ const content = {
       channels: {
         label: "Jalur langsung",
         items: [
-          { key: "whatsapp", title: "WhatsApp", desc: "Paling gercep. Biasanya kebales hari itu juga." },
-          { key: "email", title: "Email", desc: "Buat yang butuh lampiran atau jejak tertulis." },
-          { key: "office", title: "Kantor", desc: "Denpasar, Bali. Mau ketemu langsung juga bisa." },
+          {
+            key: "whatsapp",
+            title: "WhatsApp",
+            desc: "Paling gercep. Biasanya kebales hari itu juga.",
+          },
+          {
+            key: "email",
+            title: "Email",
+            desc: "Buat yang butuh lampiran atau jejak tertulis.",
+          },
+          {
+            key: "office",
+            title: "Kantor",
+            desc: "Denpasar, Bali. Mau ketemu langsung juga bisa.",
+          },
         ],
       },
       steps: {
         label: "Setelah kamu kirim pesan",
         items: [
-          { index: "01", title: "Kami bales hari itu juga", desc: "Bukan bot, bukan template." },
-          { index: "02", title: "Ngobrol 15 menit", desc: "Kamu cerita, kami tanya balik seperlunya." },
+          {
+            index: "01",
+            title: "Kami bales hari itu juga",
+            desc: "Bukan bot, bukan template.",
+          },
+          {
+            index: "02",
+            title: "Ngobrol 15 menit",
+            desc: "Kamu cerita, kami tanya balik seperlunya.",
+          },
           {
             index: "03",
             title: "Kamu dapat jawaban jujur",
@@ -542,7 +579,13 @@ const content = {
       register: {
         label: "Register of holdings",
         issuedBy: "Held by",
-        columns: { no: "No", name: "Venture", field: "Field", status: "Status", domain: "Domain" },
+        columns: {
+          no: "No",
+          name: "Venture",
+          field: "Field",
+          status: "Status",
+          domain: "Domain",
+        },
         statusActive: "Active",
         statusOpen: "Research",
         vacant: {
@@ -619,7 +662,11 @@ const content = {
         },
         forWho: {
           label: "Built for",
-          items: ["Villas and guest houses", "Short-stay rentals", "Small hospitality operators"],
+          items: [
+            "Villas and guest houses",
+            "Short-stay rentals",
+            "Small hospitality operators",
+          ],
         },
         cta: {
           heading: "Want to see it for your villa?",
@@ -712,7 +759,11 @@ const content = {
         },
         forWho: {
           label: "Built for",
-          items: ["Shops and food stalls", "Service businesses and agencies", "Freelancers"],
+          items: [
+            "Shops and food stalls",
+            "Service businesses and agencies",
+            "Freelancers",
+          ],
         },
         cta: {
           heading: "Want to try it?",
@@ -767,7 +818,8 @@ const content = {
       team: {
         label: "The Ksatriawarma family",
         heading: "Two brothers.",
-        intro: "Dewata AI is run by the people who founded it: one on the business side, one on the technical side. A family business, so the horizon is long, we are not building something to flip.",
+        intro:
+          "Dewata AI is run by the people who founded it: one on the business side, one on the technical side. A family business, so the horizon is long, we are not building something to flip.",
         members: [
           {
             name: "Anak Agung Gde Weida Ksatriawarma",
@@ -892,16 +944,36 @@ const content = {
       channels: {
         label: "Direct lines",
         items: [
-          { key: "whatsapp", title: "WhatsApp", desc: "Fastest route. Usually answered the same day." },
-          { key: "email", title: "Email", desc: "For anything needing attachments or a paper trail." },
-          { key: "office", title: "Office", desc: "Denpasar, Bali. Meeting in person can be arranged." },
+          {
+            key: "whatsapp",
+            title: "WhatsApp",
+            desc: "Fastest route. Usually answered the same day.",
+          },
+          {
+            key: "email",
+            title: "Email",
+            desc: "For anything needing attachments or a paper trail.",
+          },
+          {
+            key: "office",
+            title: "Office",
+            desc: "Denpasar, Bali. Meeting in person can be arranged.",
+          },
         ],
       },
       steps: {
         label: "After you send it",
         items: [
-          { index: "01", title: "We reply the same day", desc: "Not a bot, not a template." },
-          { index: "02", title: "A 15-minute call", desc: "You talk, we ask just enough back." },
+          {
+            index: "01",
+            title: "We reply the same day",
+            desc: "Not a bot, not a template.",
+          },
+          {
+            index: "02",
+            title: "A 15-minute call",
+            desc: "You talk, we ask just enough back.",
+          },
           {
             index: "03",
             title: "You get a straight answer",
@@ -974,7 +1046,8 @@ const content = {
         },
       ],
       contactHeading: "Questions about your data?",
-      contactBody: "Send them to the address below, or through our official WhatsApp.",
+      contactBody:
+        "Send them to the address below, or through our official WhatsApp.",
     },
   },
 } as const

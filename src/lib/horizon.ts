@@ -418,11 +418,18 @@ export function cagr(value: number, years: number): number {
   return Math.pow(value / BASE_INDEX, 1 / years) - 1
 }
 
-/** The multiple of the starting stake, e.g. "370" for 37,007. */
+/**
+ * The multiple of the starting stake, e.g. "370" for 37,007.
+ *
+ * One decimal below 100x, none above. The threshold is not cosmetic: mining
+ * lands on 12.3x and a villa on 12.4x, and rounding both to "12x" would print
+ * two different assets as the same number.
+ */
 export function multiple(value: number, lang: Lang): string {
   const n = value / BASE_INDEX
   return new Intl.NumberFormat(lang === "en" ? "en-US" : "id-ID", {
-    maximumFractionDigits: n < 10 ? 1 : 0,
+    minimumFractionDigits: n < 100 ? 1 : 0,
+    maximumFractionDigits: n < 100 ? 1 : 0,
   }).format(n)
 }
 
@@ -464,7 +471,7 @@ const content = {
       title:
         "40 tahun: software AI vs tanah, villa, kafe, tambang, pusat data, Bitcoin",
       description:
-        "Kenapa kami bangun software AI, bukan beli tanah, buka kafe, atau masuk tambang. Tujuh cara naruh duit di Indonesia, satu sumbu, 40 tahun, dipotong peluang gagal, lengkap sama sumber angkanya.",
+        "Kenapa kami bangun software AI, bukan beli tanah atau buka kafe. Tujuh cara naruh duit di Indonesia, 40 tahun ke depan, dipotong peluang gagal. Semua angkanya ada sumbernya.",
     },
     figure: {
       prefix: "GBR.",
@@ -485,9 +492,9 @@ const content = {
 
     eyebrow: "Horizon 40 tahun",
     heading: "Tujuh pilihan,\nempat puluh tahun.",
-    lead: "Di Bali, duit yang nganggur lari ke tanah, villa, atau kafe. Di luar Bali, ke tambang. Sekarang ada yang baru, pusat data buat AI. Kami malah bangun software AI. Halaman ini naruh tujuh pilihan itu di satu sumbu, terus motong semuanya pakai peluang gagal masing-masing.",
+    lead: "Duit nganggur di Bali larinya ke tanah, villa, atau kafe. Di luar Bali, ke tambang. Sekarang nambah satu: pusat data buat AI. Kami milih yang lain. Ini tujuh-tujuhnya di satu grafik, terus dipotong peluang gagalnya masing-masing.",
     meta_:
-      "Tiap kurva di sini model dari asumsi yang kami tulis sendiri, bukan hasil pengukuran dan bukan capaian kami. Angka jangkarnya dari lembaga resmi dan ada linknya di bawah.",
+      "Semua kurva di sini model, bukan hasil ukuran dan bukan capaian kami. Asumsinya kami tulis sendiri. Angka jangkarnya dari lembaga resmi, linknya ada di bawah.",
 
     statement: "Kurva paling curam\nbukan alasan kami milih.",
 
@@ -495,17 +502,17 @@ const content = {
       label: "01 · Pertanyaannya",
       heading: "Kenapa gak ikut\nbeli tanah aja?",
       body: [
-        "Ini pertanyaan yang paling sering masuk, dan wajar. Di Bali, cerita orang kaya itu ceritanya tanah. Beli di Canggu belasan tahun lalu, sekarang harganya berkali lipat. Semua orang di sini kenal minimal satu orang kayak gitu.",
-        "Versi lainnya juga sering: buka kafe, bangun villa, atau kalau modalnya gede, masuk tambang. Dua tahun terakhir muncul pilihan baru yang kedengeran paling nyambung sama kerjaan kami, yaitu bangun pusat data buat nampung AI orang lain.",
-        "Kami gak bilang satu pun dari itu salah. Yang mau kami tunjukin bukan mana yang paling untung, tapi apa yang sebenernya kamu beli waktu milih salah satunya, dan apa yang berubah kalau jangkanya ditarik sampai empat puluh tahun.",
-        "Empat puluh tahun dipilih bukan buat gaya-gayaan. Itu jarak yang bikin bunga berbunga kelihatan bentuk aslinya, dan cukup panjang buat nunjukin kalau yang nentuin hasil akhir bukan cuma seberapa cepet naiknya.",
+        "Pertanyaan ini paling sering masuk, dan wajar. Di Bali, cerita orang kaya itu ceritanya tanah. Beli di Canggu belasan tahun lalu, sekarang harganya berkali lipat. Semua orang di sini kenal satu.",
+        "Versi lain juga sering. Buka kafe. Bangun villa. Modal gede, masuk tambang. Dua tahun terakhir muncul yang baru. Ini yang paling nyambung sama kerjaan kami: bangun pusat data buat nampung AI orang lain.",
+        "Kami gak bilang satu pun dari itu salah. Yang mau kami tunjukin bukan mana yang paling untung. Tapi apa yang sebenernya kamu beli pas milih salah satunya. Terus apa yang berubah kalau jangkanya ditarik empat puluh tahun.",
+        "Kenapa empat puluh tahun? Bukan buat gaya-gayaan. Di jarak segitu bunga berbunga baru kelihatan bentuk aslinya. Dan cukup panjang buat nunjukin satu hal: yang nentuin hasil akhir bukan cuma seberapa cepet naiknya.",
       ],
     },
 
     curve: {
       label: "02 · Kurva mentah",
       heading: "Semua mulai\ndari angka seratus.",
-      sub: "Tujuh aset, satu indeks, sumbu tegaknya logaritmik. Jarak yang sama artinya kelipatan yang sama, bukan selisih rupiah yang sama.",
+      sub: "Tujuh aset, satu indeks, semua mulai dari seratus. Sumbunya logaritmik, jadi jarak yang sama artinya kelipatan yang sama, bukan selisih rupiah yang sama.",
       chart: {
         title: "Tujuh aset, satu sumbu, 40 tahun",
         unit: "indeks, mulai dari 100",
@@ -516,9 +523,9 @@ const content = {
         linear: "Linier",
         horizonLabel: "Sampai tahun",
         readout: "Tahun",
-        hint: "Klik namanya buat nampilin atau nyembunyiin garisnya. Geser di atas grafik buat baca angka semua aset di tahun itu.",
+        hint: "Klik namanya buat nyalain atau matiin garisnya. Geser di atas grafik buat baca angka semua aset di tahun itu.",
         capNote:
-          "Tujuh garis sekaligus itu penuh. Warnanya cuma tiga tingkat abu, jadi bedanya dipegang juga sama ikon dan bentuk garis di daftarnya, nama di ujung garisnya, dan tabel di bawah. Kalau mau lebih tenang, matiin yang gak dibutuhin, atau baca angkanya satu tahun lewat penunjuk.",
+          "Tujuh garis sekaligus emang penuh. Warnanya cuma tiga tingkat abu. Bedanya dipegang sama ikon dan bentuk garis di daftarnya, nama di ujung garis, sama tabel di bawah. Mau lebih tenang? Matiin yang gak perlu.",
         selectAll: "Pilih semua",
         clear: "Sisain software",
         srHint: "Pakai panah kiri dan kanan buat geser tahunnya.",
@@ -534,13 +541,13 @@ const content = {
         ],
       },
       after:
-        "Kalau berhenti di sini, kesimpulannya gampang: bangun software, kelar. Masalahnya kurva ini nganggep semua aset selamat sampai tahun ke-40. Buat tanah, itu asumsi yang masuk akal. Buat kafe dan buat perusahaan software yang baru mulai, itu asumsi yang salah banget.",
+        "Berhenti di sini, kesimpulannya gampang: bangun software, kelar. Tapi kurva ini nganggep semua aset selamat sampai tahun ke-40. Buat tanah, masuk akal. Buat kafe dan software yang baru mulai, itu salah besar.",
     },
 
     haircut: {
       label: "03 · Dipotong peluang gagal",
       heading: "Sekarang kali\npeluang selamatnya.",
-      sub: "Tiap kurva dikali peluang kamu masih megang versi yang hidup di tahun ke-40. Buat usaha, keakuisisi tetep diitung selamat, soalnya pemiliknya tetep dibayar.",
+      sub: "Tiap kurva dikali peluang kamu masih megang versi yang hidup di tahun ke-40. Buat usaha, keakuisisi tetep diitung selamat. Pemiliknya tetep dibayar.",
       chart: {
         title: "Nilai di tahun ke-40, sebelum dan sesudah dipotong",
         unit: "kelipatan dari modal awal",
@@ -557,18 +564,18 @@ const content = {
       },
       flip: {
         label: "Dua hal yang berubah",
-        body: "Urutannya kebalik. Bitcoin lewat di atas software, dan kafe yang tadinya nomor empat jatuh ke paling bawah, tinggal balik modal doang. Dua-duanya bukan salah ketik dan bukan basa-basi merendah. Itu hasil langsung dari asumsi yang kami tulis sendiri, dan kami tampilin justru karena bagian inilah yang bisa ngubah pikiran orang.",
+        body: "Urutannya kebalik. Bitcoin naik ke atas software. Kafe yang tadinya nomor empat jatuh ke buncit, tinggal balik modal doang. Ini bukan salah ketik dan bukan sok merendah. Ini keluar sendiri dari asumsi yang kami tulis. Kami tampilin karena bagian inilah yang bisa ngubah pikiran orang.",
       },
       cafe: {
         label: "Soal kafe",
-        body: "Angka kafe itu yang paling penting di halaman ini, dan paling gak enak dibaca. Dasarnya bukan pendapat kami, tapi tabel ketahanan usaha: cuma sekitar separuh restoran yang masih buka lewat tahun kelima, dan margin bersihnya rata-rata cuma segelintir persen dari omzet. Empat puluh tahun itu delapan kali lipat lima tahun.",
+        body: "Angka kafe paling penting di halaman ini, dan paling gak enak dibaca. Dasarnya bukan pendapat kami. Tabel ketahanan usaha bilang cuma sekitar separuh restoran yang masih buka lewat tahun kelima. Margin bersihnya cuma beberapa persen dari omzet. Dan empat puluh tahun itu delapan kali lima tahun, berturut-turut.",
       },
     },
 
     drawdown: {
       label: "04 · Tahun terburuk",
       heading: "Bukan cuma\nseberapa tinggi.",
-      sub: "Naik sekian persen rata-rata setahun itu angka yang enak dibaca. Tapi yang bikin orang jual di waktu paling salah bukan rata-ratanya, melainkan tahun terburuknya.",
+      sub: "Naik sekian persen setahun itu angka yang enak dibaca. Tapi yang bikin orang jual di waktu paling salah bukan rata-ratanya. Tahun terburuknya.",
       chart: {
         title: "Turun terdalam, dan lama baliknya",
         unit: "persen dari puncak. Harga buat yang ada harganya, omzet buat yang enggak",
@@ -596,13 +603,13 @@ const content = {
         land: "Kelihatan adem karena gak ada yang ngasih harga tiap hari. Pas kamu butuh jual cepet, baru ketahuan diskonnya.",
       },
       after:
-        "Tanah kelihatan paling aman di grafik ini justru karena gak ada yang ngasih harganya tiap hari. Diem bukan berarti stabil.",
+        "Tanah kelihatan paling aman di grafik ini justru karena gak ada yang ngasih harga tiap hari. Diem bukan berarti aman.",
     },
 
     control: {
       label: "05 · Yang bisa dikendaliin",
       heading: "Kerja kamu\nngaruh gak?",
-      sub: "Sampai sini semuanya soal angka. Yang di bawah ini yang sebenernya jadi alasan kami milih, dan dia gak nongol di kurva mana pun.",
+      sub: "Sampai sini semuanya soal angka. Yang di bawah ini alasan kami milih yang sebenernya, dan dia gak nongol di kurva mana pun.",
       chart: {
         title: "Tujuh hal yang gak keliatan di kurva",
         unit: "skala 0 sampai 4",
@@ -639,7 +646,7 @@ const content = {
         },
       },
       scaleNote:
-        "Skala 0 sampai 4, dinilai dari kacamata orang yang mulai dari Bali tanpa modal dari luar. Empat artinya paling enak buat dia, bukan paling bagus secara umum. Kafe dapet nilai jelek di hampir semua baris dan nilai penuh di lapangan kerja, dan dua-duanya bener bareng.",
+        "Skalanya 0 sampai 4, dilihat dari kacamata orang yang mulai dari Bali tanpa modal luar. Empat artinya paling enak buat dia, bukan paling bagus buat semua orang. Kafe dapet nilai jelek di hampir semua baris, tapi nilai penuh di lapangan kerja. Dua-duanya bener bareng.",
     },
 
     answer: {
@@ -648,32 +655,32 @@ const content = {
       items: [
         {
           title: "Tanah gak peduli kamu ngapain hari Senin",
-          body: "Harga tanah di Canggu naik karena ada orang lain yang mau bayar lebih mahal. Kamu gak bisa bikin dia naik lebih cepet dengan kerja lebih keras. Bitcoin sama persis, dan harga batu bara juga. Semuanya aset yang kamu tungguin, bukan yang kamu garap.",
+          body: "Tanah di Canggu naik karena ada orang lain yang mau bayar lebih mahal. Kerja lebih keras gak bikin dia naik lebih cepet. Bitcoin sama. Harga batu bara juga. Semuanya aset yang kamu tungguin, bukan yang kamu garap.",
         },
         {
           title: "Software naik karena ada yang digarap",
-          body: "Tiap fitur yang bener, tiap pelanggan yang batal berhenti, tiap harga yang dinaikin dan ternyata gak ada yang protes, itu semua langsung ngubah kemiringan garisnya. Bukan berarti lebih gampang. Berarti bisa diusahain.",
+          body: "Fitur yang bener. Pelanggan yang batal berhenti. Harga yang dinaikin dan gak ada yang protes. Semuanya langsung ngubah kemiringan garisnya. Bukan berarti lebih gampang. Berarti bisa diusahain.",
         },
         {
           title: "Pusat data itu AI, tapi tetep bangunan",
-          body: "Ini pilihan yang paling deket sama kerjaan kami, dan tetep kami lewatin. Pusat data itu nyewain rak ke orang yang bikin AI. Dia punya dinding yang sama kayak hotel, cuma namanya megawatt bukan kamar, dan data yang lewat di dalamnya bukan punya dia.",
+          body: "Ini yang paling deket sama kerjaan kami, dan tetep kami lewatin. Pusat data itu nyewain rak ke orang yang bikin AI. Dindingnya sama kayak hotel, cuma namanya megawatt bukan kamar. Dan data yang lewat di dalamnya bukan punya dia.",
         },
         {
           title: "Kafe itu kerjaan, bukan aset",
-          body: "Kafe ngasih kerjaan buat orang paling banyak dari semua pilihan di halaman ini, dan itu beneran berharga. Tapi sebagai tempat naruh duit empat puluh tahun, tabel ketahanannya bilang lain, dan kami gak mau nutupin angkanya.",
+          body: "Dari semua pilihan di halaman ini, kafe yang paling banyak ngasih kerjaan. Itu beneran berharga. Tapi sebagai tempat naruh duit empat puluh tahun, tabel ketahanannya bilang lain. Kami gak mau nutupin angkanya.",
         },
         {
           title: "Yang numpuk bukan cuma duitnya",
-          body: "Tiap koreksi yang dilakuin pemilik warung waktu makai produk kami balik lagi jadi data yang cuma kami yang punya. Aset itu gak nongol di grafik mana pun di halaman ini, dan gak ada yang jual.",
+          body: "Tiap kali pemilik warung benerin catatannya di produk kami, dia ninggalin data yang cuma kami yang punya. Aset itu gak nongol di grafik mana pun di halaman ini. Dan gak ada yang jual.",
         },
         {
           title: "Duitnya muter balik ke sini",
-          body: "Villa yang dibeli orang luar ngirim sewanya keluar Bali. Tambang ngirim hasilnya keluar pulau. Software yang dibangun di sini bayarin engineer yang tinggalnya juga di sini. Itu bukan alasan finansial, dan kami gak mau pura-pura itu alasan finansial.",
+          body: "Villa yang dibeli orang luar ngirim sewanya keluar Bali. Tambang ngirim hasilnya keluar pulau. Software yang dibangun di sini bayarin engineer yang tinggal di sini juga. Ini bukan alasan finansial, dan kami gak mau pura-pura begitu.",
         },
       ],
       close: {
         label: "Bacanya gini",
-        body: "Jadi jawabannya bukan software ngalahin Bitcoin. Liat grafik ketiga, dia enggak. Jawabannya: software itu mesin yang ngasilin duitnya, Bitcoin itu tangki tempat sisanya disimpen. Urutan siapa dibayar duluan ada di halaman ke mana modalnya.",
+        body: "Jadi jawabannya bukan software ngalahin Bitcoin. Liat grafik ketiga, dia enggak. Jawabannya begini: software itu mesinnya, Bitcoin itu tangkinya. Mesin yang ngasilin duit, tangki yang nyimpen sisanya. Siapa dibayar duluan ada di halaman ke mana modalnya.",
         link: "Ke mana modalnya",
       },
     },
@@ -681,7 +688,7 @@ const content = {
     assumptions: {
       label: "07 · Asumsi & sumber",
       heading: "Kalau gak setuju,\nbantah angkanya.",
-      sub: "Tabel pertama isinya semua input yang bikin tujuh kurva di atas. Tabel kedua isinya angka terbitan lembaga resmi yang jadi jangkarnya, lengkap sama linknya. Ganti satu input, gambarnya ikut ganti.",
+      sub: "Tabel pertama: semua input yang bikin tujuh kurva di atas. Tabel kedua: angka terbitan lembaga resmi yang jadi jangkarnya, lengkap sama linknya. Ganti satu input, gambarnya ikut ganti.",
       tableHeaders: [
         "Aset",
         "Naik per dekade (%)",
@@ -689,11 +696,11 @@ const content = {
         "Turun terdalam",
         "Per tahun, 40 th",
       ],
-      note: "Naik per dekade dibaca urut: dekade pertama, kedua, ketiga, keempat. Semuanya nominal, udah termasuk pendapatan yang diputer balik, dan belum dipotong pajak. Inflasi Indonesia sendiri masih jalan, jadi angka nyatanya lebih kecil dari yang kelihatan di sini.",
+      note: "Naik per dekade dibaca urut: dekade pertama, kedua, ketiga, keempat. Semuanya nominal, udah termasuk pendapatan yang diputer balik, belum dipotong pajak. Inflasi juga masih jalan. Jadi angka nyatanya lebih kecil dari yang kelihatan di sini.",
       sourcesLabel: "Angka jangkarnya",
       sourceHeaders: ["Angka", "Yang diukur", "Sumber"],
       sourceNote:
-        "Jangkar itu bukan ramalan. Dia cuma nentuin skala awal yang masuk akal buat tiap kurva; laju turunnya per dekade tetep asumsi kami. Satu aset di sini gak punya jangkar buat lajunya, yaitu software AI, soalnya perusahaannya belum ada. Yang berjangkar cuma peluang selamatnya.",
+        "Jangkar itu bukan ramalan. Dia cuma nentuin titik mulai yang masuk akal buat tiap kurva. Laju turunnya per dekade tetep asumsi kami. Satu aset malah gak punya jangkar sama sekali buat lajunya: software AI, soalnya perusahaannya belum ada. Yang berjangkar cuma peluang selamatnya.",
       sources: {
         rppi: "Rata-rata kenaikan indeks harga properti residensial Indonesia per tahun, 2003 sampai 2025",
         rppiLow:
@@ -726,18 +733,18 @@ const content = {
     legal: {
       label: "Catatan hukum",
       items: [
-        "Halaman ini isinya perbandingan bentuk ekonomi antar jenis aset. Ini bukan penawaran investasi, bukan ajakan beli efek, dan bukan nasihat investasi.",
-        "Semua kurva di sini hasil hitungan dari asumsi yang kami tulis sendiri di halaman ini. Angka jangkarnya terbitan lembaga resmi, tapi kurvanya bukan. Bukan hasil pengukuran, bukan data historis, dan bukan janji hasil.",
-        "Kinerja masa lalu jenis aset apa pun gak menjamin hasil ke depan. Tanah, villa, kafe, tambang, pusat data, Bitcoin, dan saham perusahaan swasta semuanya bisa turun nilainya sampai nol.",
-        "Bitcoin yang disebut di sini adalah aset kas perusahaan kami sendiri. Kami bukan pedagang kripto, gak jual produk kripto, dan gak ngasih saran beli atau jual ke siapa pun.",
+        "Halaman ini membandingkan bentuk ekonomi antar jenis aset. Ini bukan penawaran investasi, bukan ajakan membeli efek, dan bukan nasihat investasi.",
+        "Semua kurva di sini dihitung dari asumsi yang kami tulis sendiri di halaman ini. Angka jangkarnya terbitan lembaga resmi, kurvanya bukan. Bukan hasil pengukuran, bukan data historis, dan bukan janji hasil.",
+        "Kinerja masa lalu jenis aset apa pun tidak menjamin hasil ke depan. Tanah, villa, kafe, tambang, pusat data, Bitcoin, dan saham perusahaan swasta semuanya bisa turun nilainya sampai nol.",
+        "Bitcoin yang disebut di sini adalah aset kas perusahaan kami sendiri. Kami bukan pedagang aset kripto, tidak menjual produk kripto, dan tidak memberikan saran beli atau jual kepada siapa pun.",
         "Aset kripto risikonya tinggi dan bisa turun tajam. Pengawasannya ada di OJK, dan pajaknya ngikut aturan yang berlaku saat transaksi.",
-        "Angka ketahanan usaha yang kami pakai berasal dari statistik Amerika Serikat, karena seri yang setara buat Indonesia belum diterbitkan. Kami pakai apa adanya dan gak nyesuaiin diam-diam.",
+        "Angka ketahanan usaha yang kami pakai berasal dari statistik Amerika Serikat, karena seri yang setara untuk Indonesia belum diterbitkan. Kami memakainya apa adanya, tanpa penyesuaian diam-diam.",
       ],
     },
 
     cta: {
       heading: "Mau bantah angkanya?",
-      body: "Kami buka asumsinya, modelnya, dan angka terukur yang gak kami taruh di halaman ini.",
+      body: "Kami buka asumsinya, modelnya, sama angka terukur yang gak kami taruh di sini.",
       label: "Ambil 15 menit",
     },
     next: { label: "Lanjut: ke mana modalnya", href: "/tesis/" },
