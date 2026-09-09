@@ -523,9 +523,9 @@ const content = {
         linear: "Linier",
         horizonLabel: "Sampai tahun",
         readout: "Tahun",
-        hint: "Klik namanya buat nyalain atau matiin garisnya. Geser di atas grafik buat baca angka semua aset di tahun itu.",
+        hint: "Geser di atas grafik buat baca angka semua aset di tahun itu.",
         capNote:
-          "Tujuh garis sekaligus emang penuh. Warnanya cuma tiga tingkat abu. Bedanya dipegang sama ikon dan bentuk garis di daftarnya, nama di ujung garis, sama tabel di bawah. Mau lebih tenang? Matiin yang gak perlu.",
+          "Tujuh garis sekaligus emang penuh. Warnanya cuma tiga tingkat abu. Bedanya dipegang sama bentuk garis, nama di ujung tiap garis, sama tabel di bawah. Mau lebih tenang? Pilih Sisain software.",
         selectAll: "Pilih semua",
         clear: "Sisain software",
         srHint: "Pakai panah kiri dan kanan buat geser tahunnya.",
@@ -806,9 +806,9 @@ const content = {
         linear: "Linear",
         horizonLabel: "Through year",
         readout: "Year",
-        hint: "Click a name to show or hide its line. Move across the chart to read every asset at that year.",
+        hint: "Move across the chart to read every asset at that year.",
         capNote:
-          "Seven lines at once is a full plot. There are only three grey steps, so identity is carried by the icon and stroke style in the legend, the name at the end of each line, and the table below. Switch off what you do not need, or read any single year off the pointer.",
+          "Seven lines at once is a full plot. There are only three grey steps, so identity is carried by the stroke style, the name at the end of each line, and the table below. Narrow it with Software only, or read any single year off the pointer.",
         selectAll: "Show all",
         clear: "Software only",
         srHint: "Use the left and right arrow keys to move through the years.",

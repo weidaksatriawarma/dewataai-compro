@@ -275,19 +275,6 @@ export default function HorizonChart({ lang, assets, labels }: Props) {
 
   const { shown, px, py, paths, yTicks, xTicks, endLabels } = view
 
-  /* Any subset can be drawn, down to a single line. Dropping the last one
-     would leave an empty axis with no way back, so the last one stays. Adding
-     preserves ASSETS order rather than click order, which keeps the legend,
-     the readout and the end labels in the same sequence every time. */
-  const toggle = (k: AssetKey) =>
-    setVisible((prev) =>
-      prev.includes(k)
-        ? prev.length > 1
-          ? prev.filter((x) => x !== k)
-          : prev
-        : ASSETS.filter((a) => a === k || prev.includes(a))
-    )
-
   /*
    * The plot rectangle is measured once per hover rather than once per move.
    * getBoundingClientRect forces a synchronous layout, and calling it on every
@@ -519,49 +506,6 @@ export default function HorizonChart({ lang, assets, labels }: Props) {
           {labels.clear}
         </button>
       </div>
-
-      <ul className="mt-4 flex flex-wrap gap-x-7 gap-y-3">
-        {ASSETS.map((k) => {
-          const off = !visible.includes(k)
-          return (
-            <li key={k}>
-              <button
-                type="button"
-                aria-pressed={!off}
-                onClick={() => toggle(k)}
-                className={cn(
-                  "flex items-center gap-2 text-xs transition-opacity",
-                  off ? "opacity-35" : "opacity-100"
-                )}
-              >
-                <span
-                  className={cn(
-                    "grid size-6 shrink-0 place-items-center rounded-md border border-hairline",
-                    off ? "text-muted-foreground" : "text-ink"
-                  )}
-                  aria-hidden="true"
-                >
-                  <HugeiconsIcon icon={GLYPH[k]} size={13} strokeWidth={1.8} />
-                </span>
-                <span
-                  className="inline-block h-0 w-6 shrink-0 border-t-2"
-                  style={{
-                    borderColor: strokeColor(k),
-                    borderStyle: SERIES[k].stroke,
-                  }}
-                />
-                <span
-                  className={
-                    off ? "text-muted-foreground line-through" : "text-ink"
-                  }
-                >
-                  {assets[k]}
-                </span>
-              </button>
-            </li>
-          )
-        })}
-      </ul>
 
       <p className="mt-4 max-w-2xl text-xs leading-relaxed text-muted-foreground">
         {labels.hint}
