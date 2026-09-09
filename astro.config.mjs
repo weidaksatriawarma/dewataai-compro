@@ -112,6 +112,51 @@ export default defineConfig({
   output: "static",
   adapter: cloudflare({ imageService: "compile" }),
 
+  /* Content Security Policy.
+     
+     Astro hashes every inline script and style it emits and writes them into a
+     <meta http-equiv="content-security-policy">, recomputed on each build. That
+     is the only maintainable way to do this: the seven inline scripts on a page
+     change whenever the code does, so hand-written hashes in public/_headers
+     would go stale silently and take the site down with them.
+
+     The Cloudflare adapter has no `staticHeaders` option, so this is delivered
+     as a meta tag rather than a header. It therefore sits alongside the CSP in
+     public/_headers, and a browser enforces both: a resource has to satisfy
+     each one. They are split so they never contradict. This half owns
+     script-src, style-src and the fetch directives; the header half owns
+     frame-ancestors, which a meta tag is not allowed to express at all.
+
+     Every origin below is one the site actually loads from. */
+  security: {
+    csp: {
+      directives: [
+        "default-src 'self'",
+        // unsplash is hotlinked by lib/images.ts, sanity serves article covers,
+        // and the two Google origins are the analytics pixel.
+        "img-src 'self' data: blob: https://cdn.sanity.io https://images.unsplash.com https://www.googletagmanager.com https://*.google-analytics.com",
+        "font-src 'self'",
+        // The Studio talks to Sanity over both HTTPS and a websocket for live
+        // document updates.
+        "connect-src 'self' https://*.sanity.io wss://*.sanity.io https://www.googletagmanager.com https://*.google-analytics.com https://*.analytics.google.com",
+        "form-action 'self'",
+        "base-uri 'self'",
+        "object-src 'none'",
+        "manifest-src 'self'",
+        "worker-src 'self' blob:",
+        "frame-src 'self'",
+      ],
+      scriptDirective: {
+        // 'self' covers the hashed bundles under /_astro; the hashes Astro
+        // generates for the inline scripts are added to these automatically.
+        resources: ["'self'", "https://www.googletagmanager.com"],
+      },
+      styleDirective: {
+        resources: ["'self'"],
+      },
+    },
+  },
+
   /* Server-only secrets for the IndexNow endpoints. Both optional: without them
      the key file and the submission route answer 404, and nothing else on the
      site changes. `Astro.locals.runtime` was removed in Astro 6, so these are
