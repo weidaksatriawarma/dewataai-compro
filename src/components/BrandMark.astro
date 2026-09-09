@@ -11,6 +11,12 @@
  *
  * The caller sets the size. The Dewata AI mark is square; the Dewata Tech mark
  * is 722x571, so `aspect-tech` keeps it from stretching.
+ *
+ * The mask URL is set by a class rather than a `style` attribute. Under the
+ * site's CSP, style-src carries hashes, and a hash can only ever match a
+ * <style> element, never an attribute; an inline style is therefore dropped and
+ * the mark renders as an empty box. Astro hashes this component's stylesheet,
+ * so putting the URL here is both allowed and static.
  */
 interface Props {
   mark?: "ai" | "tech"
@@ -19,22 +25,26 @@ interface Props {
 }
 
 const { mark = "ai", class: className = "", title } = Astro.props
-
-const SOURCES = {
-  ai: "/brand/dewata-ai-d.webp",
-  tech: "/brand/dewata-tech-d.png",
-} as const
 ---
 
 <span
-  class:list={["brand-mark", mark === "tech" && "aspect-tech", className]}
-  style={`--brand-mask:url('${SOURCES[mark]}')`}
+  class:list={[
+    "brand-mark",
+    `mark-${mark}`,
+    mark === "tech" && "aspect-tech",
+    className,
+  ]}
   role={title ? "img" : undefined}
   aria-label={title}
-  aria-hidden={title ? undefined : "true"}
-></span>
+  aria-hidden={title ? undefined : "true"}></span>
 
 <style>
+  .mark-ai {
+    --brand-mask: url("/brand/dewata-ai-d.webp");
+  }
+  .mark-tech {
+    --brand-mask: url("/brand/dewata-tech-d.png");
+  }
   .brand-mark {
     display: block;
     background-color: currentColor;
