@@ -6,9 +6,13 @@ import { getSite } from "@/lib/site"
 import { resolveLang, getUI, localeHref } from "@/lib/i18n"
 
 interface Props {
-  /** This page's path in each locale, so the switcher stays on the same page. */
-  pathId?: string
-  pathEn?: string
+  /**
+   * This page's path in each locale, so the switcher stays on the same page.
+   * `null` where no counterpart exists, e.g. an article with no translation:
+   * the switcher then falls back to that locale's home rather than a dead link.
+   */
+  pathId?: string | null
+  pathEn?: string | null
 }
 
 const { pathId = "/", pathEn = "/en/" } = Astro.props
@@ -17,8 +21,8 @@ const t = getSite(lang)
 const ui = getUI(lang)
 
 const langs = [
-  { code: "id", label: "ID", href: pathId },
-  { code: "en", label: "EN", href: pathEn },
+  { code: "id", label: "ID", href: pathId ?? localeHref("id") },
+  { code: "en", label: "EN", href: pathEn ?? localeHref("en") },
 ] as const
 
 const homeHref = localeHref(lang)

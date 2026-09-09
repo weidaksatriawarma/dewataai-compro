@@ -1,0 +1,67 @@
+---
+/**
+ * Third-party measurement, all of it optional.
+ *
+ * Nothing renders unless the matching env var is set, so a build from git with
+ * no configuration ships no third-party script and no verification tag. Set
+ * the values in `.env.production` (see `.env.example`) when the properties
+ * exist.
+ *
+ * Verification tags have to sit in <head> on the page a verifier fetches, so
+ * they live here and are pulled into the layout head.
+ */
+const googleVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION
+const bingVerification = import.meta.env.PUBLIC_BING_SITE_VERIFICATION
+
+/* A GA4 measurement id is "G-" and an alphanumeric suffix. Checking the shape
+   keeps a stray value in the environment from being written into a script tag,
+   and catches the common paste error of copying the whole snippet. */
+const gaId = /^G-[A-Z0-9]+$/i.test(import.meta.env.PUBLIC_GA_ID ?? "")
+  ? import.meta.env.PUBLIC_GA_ID
+  : undefined
+
+// Analytics only in a production build. `astro dev` would otherwise report
+// every local page view as real traffic.
+const analyticsOn = Boolean(gaId) && import.meta.env.PROD
+
+/* The standard GA4 bootstrap. Written as a string rather than inline template
+   markup because the braces would be read as Astro expressions.
+
+   `anonymize_ip` truncates the address before it is stored, and turning off
+   Google signals keeps the data out of cross-device advertising profiles. Both
+   match what the privacy page says the site does. */
+const gaBootstrap = `
+window.dataLayer = window.dataLayer || [];
+function gtag(){window.dataLayer.push(arguments);}
+window.gtag = gtag;
+gtag('js', new Date());
+gtag('config', '${gaId}', { anonymize_ip: true, allow_google_signals: false });
+`.trim()
+---
+
+{
+  googleVerification && (
+    <meta name="google-site-verification" content={googleVerification} />
+  )
+}
+{bingVerification && <meta name="msvalidate.01" content={bingVerification} />}
+
+{
+  analyticsOn && (
+    <>
+      {/* The tag loads from a third-party origin, so warm the connection while
+          the rest of the head parses. */}
+      <link
+        rel="preconnect"
+        href="https://www.googletagmanager.com"
+        crossorigin
+      />
+      <script
+        is:inline
+        async
+        src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
+      />
+      <script is:inline set:html={gaBootstrap} />
+    </>
+  )
+}

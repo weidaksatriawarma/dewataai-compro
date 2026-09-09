@@ -12,6 +12,9 @@ declare module "sanity:client" {
 interface ImportMetaEnv {
   readonly PUBLIC_SANITY_PROJECT_ID?: string
   readonly PUBLIC_SANITY_DATASET?: string
+  readonly PUBLIC_GA_ID?: string
+  readonly PUBLIC_GOOGLE_SITE_VERIFICATION?: string
+  readonly PUBLIC_BING_SITE_VERIFICATION?: string
 }
 
 interface ImportMeta {

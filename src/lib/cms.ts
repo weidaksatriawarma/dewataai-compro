@@ -16,7 +16,8 @@ import type { Lang } from "@/lib/i18n"
 // perfectly well configured from the committed default.
 const configuredProjectId = sanityClient.config().projectId
 
-export const cmsConfigured = Boolean(configuredProjectId) && configuredProjectId !== "placeholder"
+export const cmsConfigured =
+  Boolean(configuredProjectId) && configuredProjectId !== "placeholder"
 
 export interface Article {
   _id: string
@@ -30,6 +31,10 @@ export interface Article {
   category?: string
   coverImage?: { asset?: { _ref: string }; alt?: string }
   body?: unknown[]
+  /** Last edit in Sanity, for `dateModified` and the sitemap. */
+  updatedAt?: string
+  /** Slug of the same article in the other locale, null when untranslated. */
+  translatedSlug?: string | null
   /* press release only */
   dateline?: string
   boilerplate?: string
@@ -60,12 +65,18 @@ export interface ArticleFacets {
  */
 const freshClient = sanityClient.withConfig({ useCdn: false })
 
-async function query<T>(groq: string, params: Record<string, unknown>, fallback: T): Promise<T> {
+async function query<T>(
+  groq: string,
+  params: Record<string, unknown>,
+  fallback: T
+): Promise<T> {
   if (!cmsConfigured) return fallback
   try {
     return await freshClient.fetch<T>(groq, params)
   } catch (error) {
-    console.warn(`[cms] query failed, falling back to empty: ${(error as Error).message}`)
+    console.warn(
+      `[cms] query failed, falling back to empty: ${(error as Error).message}`
+    )
     return fallback
   }
 }
@@ -84,7 +95,26 @@ const CARD_FIELDS = `
   dateline
 `
 
-const FULL_FIELDS = `${CARD_FIELDS}, body, boilerplate, contactName, contactEmail`
+/**
+ * Detail-page fields. `translatedSlug` resolves the counterpart in the other
+ * locale in the same round trip, so the page can emit hreflang that points at a
+ * URL which exists. `defined(^.translationKey)` is the guard that matters: two
+ * documents that both leave the key empty would otherwise compare equal and
+ * pair themselves as translations of each other.
+ */
+const FULL_FIELDS = `${CARD_FIELDS},
+  body,
+  boilerplate,
+  contactName,
+  contactEmail,
+  "updatedAt": _updatedAt,
+  "translatedSlug": *[
+    _type == ^._type &&
+    lang != ^.lang &&
+    defined(^.translationKey) &&
+    translationKey == ^.translationKey &&
+    defined(slug.current)
+  ][0].slug.current`
 
 /** Newest first, filtered to one locale. */
 export function listArticles(type: "post" | "pressRelease", lang: Lang) {
@@ -92,13 +122,14 @@ export function listArticles(type: "post" | "pressRelease", lang: Lang) {
     `*[_type == $type && lang == $lang && defined(slug.current)]
       | order(publishedAt desc) { ${CARD_FIELDS} }`,
     { type, lang },
-    [],
+    []
   )
 }
 
 /** Read and sanitise the toolbar state from a URL. */
 export function parseArticleQuery(url: URL): ArticleQuery {
-  const get = (key: string) => (url.searchParams.get(key) ?? "").trim().slice(0, 80)
+  const get = (key: string) =>
+    (url.searchParams.get(key) ?? "").trim().slice(0, 80)
   return {
     q: get("q"),
     category: get("kategori").toLowerCase(),
@@ -115,7 +146,7 @@ export function parseArticleQuery(url: URL): ArticleQuery {
 export async function searchArticles(
   type: "post" | "pressRelease",
   lang: Lang,
-  params: ArticleQuery,
+  params: ArticleQuery
 ): Promise<{ items: Article[]; facets: ArticleFacets }> {
   // Direction is whitelisted above, never interpolated from raw input.
   const direction = params.sort === "lama" ? "asc" : "desc"
@@ -138,7 +169,10 @@ export async function searchArticles(
     }
   }`
 
-  const empty = { items: [] as Article[], facets: { categories: [], years: [], total: 0 } }
+  const empty = {
+    items: [] as Article[],
+    facets: { categories: [], years: [], total: 0 },
+  }
 
   const result = await query<{
     items: Article[]
@@ -152,13 +186,17 @@ export async function searchArticles(
       year: params.year,
       term,
     },
-    null,
+    null
   )
 
   if (!result) return empty
 
-  const categories = [...new Set(result.facets.map((f) => f.category).filter(Boolean))] as string[]
-  const years = [...new Set(result.facets.map((f) => f.year).filter(Boolean))] as string[]
+  const categories = [
+    ...new Set(result.facets.map((f) => f.category).filter(Boolean)),
+  ] as string[]
+  const years = [
+    ...new Set(result.facets.map((f) => f.year).filter(Boolean)),
+  ] as string[]
 
   return {
     items: result.items ?? [],
@@ -170,11 +208,15 @@ export async function searchArticles(
   }
 }
 
-export function getArticle(type: "post" | "pressRelease", lang: Lang, slug: string) {
+export function getArticle(
+  type: "post" | "pressRelease",
+  lang: Lang,
+  slug: string
+) {
   return query<Article | null>(
     `*[_type == $type && lang == $lang && slug.current == $slug][0] { ${FULL_FIELDS} }`,
     { type, lang, slug },
-    null,
+    null
   )
 }
 
@@ -183,7 +225,7 @@ export function listRoutes(type: "post" | "pressRelease", lang: Lang) {
   return query<{ slug: string }[]>(
     `*[_type == $type && lang == $lang && defined(slug.current)] { "slug": slug.current }`,
     { type, lang },
-    [],
+    []
   )
 }
 
@@ -191,7 +233,12 @@ const builder = cmsConfigured ? createImageUrlBuilder(sanityClient) : null
 
 export function imageUrl(source: unknown, width = 1200) {
   if (!builder || !source) return null
-  return builder.image(source as never).width(width).fit("max").auto("format").url()
+  return builder
+    .image(source as never)
+    .width(width)
+    .fit("max")
+    .auto("format")
+    .url()
 }
 
 /** Portable Text to HTML, styled to match the site's editorial type. */
@@ -216,11 +263,14 @@ export function renderBody(body: unknown[] | undefined): string {
           `<ol class="mt-5 list-decimal space-y-2 pl-5 text-muted-foreground">${children}</ol>`,
       },
       listItem: {
-        bullet: ({ children }) => `<li class="leading-relaxed">${children}</li>`,
-        number: ({ children }) => `<li class="leading-relaxed">${children}</li>`,
+        bullet: ({ children }) =>
+          `<li class="leading-relaxed">${children}</li>`,
+        number: ({ children }) =>
+          `<li class="leading-relaxed">${children}</li>`,
       },
       marks: {
-        strong: ({ children }) => `<strong class="font-semibold text-ink">${children}</strong>`,
+        strong: ({ children }) =>
+          `<strong class="font-semibold text-ink">${children}</strong>`,
         link: ({ children, value }) =>
           `<a href="${value?.href ?? "#"}" rel="noopener noreferrer" target="_blank" class="link-underline font-medium text-ink">${children}</a>`,
       },
@@ -243,4 +293,36 @@ export function formatDate(iso: string, lang: Lang): string {
     year: "numeric",
     timeZone: "Asia/Makassar",
   }).format(new Date(iso))
+}
+
+/** One row per published article, for the on-demand articles sitemap. */
+export interface SitemapEntry {
+  type: "post" | "pressRelease"
+  slug: string
+  lang: Lang
+  translationKey?: string
+  /** Last edit in Sanity, which is what `lastmod` is supposed to report. */
+  updatedAt: string
+}
+
+/**
+ * Every published journal post and press release, both locales, in one query.
+ *
+ * The journal and press routes render on demand, so their URLs never reach the
+ * build-time sitemap. This feeds `/sitemap-articles.xml` instead, which is
+ * listed in the sitemap index via `customSitemaps` in astro.config.mjs.
+ */
+export function listSitemapEntries() {
+  return query<SitemapEntry[]>(
+    `*[_type in ["post", "pressRelease"] && defined(slug.current) && defined(publishedAt)]
+      | order(publishedAt desc) {
+        "type": _type,
+        "slug": slug.current,
+        lang,
+        translationKey,
+        "updatedAt": coalesce(_updatedAt, publishedAt)
+      }`,
+    {},
+    []
+  )
 }

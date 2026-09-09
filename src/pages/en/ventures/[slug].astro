@@ -2,14 +2,29 @@
 import PageLayout from "@/layouts/page.astro"
 import VentureDetail from "@/components/pages/VentureDetail.astro"
 import { getPages, VENTURE_SLUGS, type VentureSlug } from "@/lib/pages"
-import { resolveLang, detailPath } from "@/lib/i18n"
+import { resolveLang, detailPath, path } from "@/lib/i18n"
+import { getSite } from "@/lib/site"
+import { breadcrumbSchema } from "@/lib/schema"
 
 export function getStaticPaths() {
   return VENTURE_SLUGS.map((slug) => ({ params: { slug } }))
 }
 
 const slug = Astro.params.slug as VentureSlug
-const p = getPages(resolveLang(Astro.currentLocale)).ventureDetail[slug]
+const lang = resolveLang(Astro.currentLocale)
+const p = getPages(lang).ventureDetail[slug]
+
+// Breadcrumbs replace the bare URL under the title in a Google result. The
+// last crumb is the venture's own name, which is the term people search for.
+const venture = getSite(lang).ventures.items.find((item) => item.slug === slug)
+const crumbs = breadcrumbSchema([
+  { name: lang === "en" ? "Home" : "Beranda", path: path("home", lang) },
+  { name: getPages(lang).ventures.eyebrow, path: path("ventures", lang) },
+  {
+    name: venture?.name ?? p.eyebrow,
+    path: detailPath("ventures", lang, slug),
+  },
+])
 ---
 
 <PageLayout
@@ -17,6 +32,7 @@ const p = getPages(resolveLang(Astro.currentLocale)).ventureDetail[slug]
   description={p.meta.description}
   pathId={detailPath("ventures", "id", slug)}
   pathEn={detailPath("ventures", "en", slug)}
+  jsonLd={[crumbs]}
 >
   <VentureDetail slug={slug} />
 </PageLayout>

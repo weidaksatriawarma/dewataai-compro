@@ -1,21 +1,32 @@
 ---
+// Rendered on demand: a post published in Sanity is live on the next request,
+// no rebuild required.
 export const prerender = false
 
 import PageLayout from "@/layouts/page.astro"
 import ArticleDetail from "@/components/pages/ArticleDetail.astro"
-import { getArticle } from "@/lib/cms"
-import { detailPath } from "@/lib/i18n"
+import { getArticle, imageUrl } from "@/lib/cms"
+import { getPages } from "@/lib/pages"
+import { articlePageProps } from "@/lib/schema"
 
 const slug = Astro.params.slug!
 const article = await getArticle("post", "en", slug)
 if (!article) return Astro.rewrite("/404")
+
+// Canonical, hreflang, share card, article timestamps and structured data.
+const head = articlePageProps({
+  kind: "post",
+  lang: "en",
+  article,
+  image: imageUrl(article.coverImage, 1200),
+  sectionName: getPages("en").journal.eyebrow,
+})
 ---
 
 <PageLayout
   title={`${article.title} | Dewata AI Journal`}
   description={article.excerpt}
-  pathId={detailPath("journal", "id", slug)}
-  pathEn={detailPath("journal", "en", slug)}
+  {...head}
 >
   <ArticleDetail kind="post" article={article} />
 </PageLayout>

@@ -5,19 +5,28 @@ export const prerender = false
 
 import PageLayout from "@/layouts/page.astro"
 import ArticleDetail from "@/components/pages/ArticleDetail.astro"
-import { getArticle } from "@/lib/cms"
-import { detailPath } from "@/lib/i18n"
+import { getArticle, imageUrl } from "@/lib/cms"
+import { getPages } from "@/lib/pages"
+import { articlePageProps } from "@/lib/schema"
 
 const slug = Astro.params.slug!
 const article = await getArticle("post", "id", slug)
 if (!article) return Astro.rewrite("/404")
+
+// Canonical, hreflang, share card, article timestamps and structured data.
+const head = articlePageProps({
+  kind: "post",
+  lang: "id",
+  article,
+  image: imageUrl(article.coverImage, 1200),
+  sectionName: getPages("id").journal.eyebrow,
+})
 ---
 
 <PageLayout
   title={`${article.title} | Jurnal Dewata AI`}
   description={article.excerpt}
-  pathId={detailPath("journal", "id", slug)}
-  pathEn={detailPath("journal", "en", slug)}
+  {...head}
 >
   <ArticleDetail kind="post" article={article} />
 </PageLayout>

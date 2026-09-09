@@ -8,6 +8,7 @@ import cloudflare from "@astrojs/cloudflare"
 import sitemap from "@astrojs/sitemap"
 import { loadEnv } from "vite"
 import path from "node:path"
+import { ROUTES } from "./src/lib/i18n.ts"
 
 // Host platforms inject env vars into process.env; local development uses .env
 // files, which loadEnv reads. Check both so either source works.
@@ -70,6 +71,37 @@ function fixSanityWindowsAliases() {
   return plugin
 }
 
+// Indonesian and English slugs differ per route (`/tentang/` pairs with
+// `/en/about/`), so the sitemap integration's `i18n` option cannot find the
+// pairs: it matches locales by URL structure alone and only ever links routes
+// whose paths are otherwise identical. Without this, every localised-slug page
+// ships hreflang in its <head> but none in the sitemap.
+//
+// Longest route first, so `/en/ventures/` is claimed by the ventures pair
+// before the home pair (`/` and `/en/`) can match it as a prefix.
+const LOCALE_PAIRS = Object.values(ROUTES).sort((a, b) => b.id.length - a.id.length)
+
+/**
+ * The id/en paths for one URL, following it into detail routes: a venture at
+ * `/usaha/dewata-tech/` pairs with `/en/ventures/dewata-tech/`.
+ * @param {string} pathname
+ */
+function localePaths(pathname) {
+  for (const { id, en } of LOCALE_PAIRS) {
+    if (pathname === id || pathname === en) return { id, en }
+    // Home is a prefix of every path, so it only ever matches exactly.
+    if (id !== "/" && pathname.startsWith(id)) {
+      const rest = pathname.slice(id.length)
+      return { id: id + rest, en: en + rest }
+    }
+    if (pathname.startsWith(en)) {
+      const rest = pathname.slice(en.length)
+      return { id: id + rest, en: en + rest }
+    }
+  }
+  return null
+}
+
 // https://astro.build/config
 export default defineConfig({
   site: "https://dewataai.com",
@@ -114,6 +146,24 @@ export default defineConfig({
     i18n: {
       defaultLocale: "id",
       locales: { id: "id-ID", en: "en-US" },
+    },
+    // The journal and press routes render on demand, so their URLs never reach
+    // this integration. That sitemap is generated per request instead and
+    // listed here so the index points at it.
+    customSitemaps: ["https://dewataai.com/sitemap-articles.xml"],
+    serialize(item) {
+      const paths = localePaths(new URL(item.url).pathname)
+      if (!paths) return item
+      const idUrl = new URL(paths.id, "https://dewataai.com").href
+      const enUrl = new URL(paths.en, "https://dewataai.com").href
+      item.links = [
+        { lang: "id-ID", url: idUrl },
+        { lang: "en-US", url: enUrl },
+        // Indonesian is the default locale, so it is what an unmatched
+        // language should be sent to.
+        { lang: "x-default", url: idUrl },
+      ]
+      return item
     },
   })],
 
