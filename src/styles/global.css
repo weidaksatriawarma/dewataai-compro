@@ -161,14 +161,17 @@
    vision alike. A fourth step would have to sit either too close to a
    neighbour or too close to the page.
 
-   Seven assets therefore get identity from a pair, a step plus a stroke style
-   (solid, dashed, dotted), which yields nine distinct combinations. Each pair
-   belongs to its asset for the life of the page, so hiding one line never
-   repaints the others. Every series also carries its name at the end of its
-   own line and a row in the figure's table, which is what keeps the charts
-   readable in greyscale print and forced-colours mode, where steps collapse.
+   Ten assets therefore get identity from a pair, a step plus a stroke style
+   (solid, dashed, dotted, dash-dot), which yields twelve distinct combinations
+   and leaves no step carrying more than four lines. Each pair belongs to its
+   asset for the life of the page, so hiding one line never repaints the others.
+   Every series also carries its name at the end of its own line and a row in
+   the figure's table, which is what keeps the charts readable in greyscale
+   print and forced-colours mode, where the steps collapse.
 
-   Slot 1 is the subject of the page and is used once. */
+   Slot 1 is the ink line: the subject of the page, plus the one measured series
+   a reader here is most likely to already own. SERIES in lib/horizon.ts holds
+   the full assignment and the reason behind each pair. */
 :root {
     --series-1: #262626;
     --series-2: #5f5f5f;

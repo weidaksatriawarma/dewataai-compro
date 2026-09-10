@@ -1,9 +1,10 @@
 /**
  * The forty-year comparison (`/horizon`).
  *
- * Seven ways to put money to work in Indonesia, on one axis, for forty years.
+ * Ten ways to put money to work in Indonesia, on one axis, for forty years,
+ * preceded by twenty years that actually happened.
  *
- * Three rules govern this file, and they are the reason anyone would believe it.
+ * Four rules govern this file, and they are the reason anyone would believe it.
  *
  * 1. NUMBERS LIVE HERE ONCE, so the Indonesian and English pages can never
  *    quote different figures. Only labels are translated.
@@ -14,10 +15,15 @@
  * 3. AN ANCHOR IS NOT A FORECAST. Every rate here is a decayed forward
  *    assumption we chose; the anchor only fixes the order of magnitude it
  *    starts from. Nothing on the page is a measurement of our own results.
+ * 4. MEASURED AND MODELLED NEVER SHARE A PANEL. The HISTORY block below is
+ *    real year-end closes, and its figure is stamped DATA. Everything derived
+ *    from RATES is stamped MODEL. A reader must never have to work out which
+ *    of the two they are looking at.
  *
  * The shape of the argument matters more than any single rate. Raw, the
  * software curve is the steepest. Weighted by the odds of still owning a
- * working version of the thing in forty years, Bitcoin passes it and a cafe
+ * working version of the thing in forty years, Bitcoin passes it, two stock
+ * indices that ask for no work at all come third and fourth, and a cafe
  * collapses to roughly the money you put in. We publish the second chart
  * because it is the one that would change a reader's mind, and a comparison
  * that shows only the flattering half is an advertisement.
@@ -139,6 +145,48 @@ export const SOURCES = [
     unit: "percent",
     url: "https://www.bls.gov/bdm/entrepreneurship/entrepreneurship.htm",
   },
+  {
+    id: "ihsg20",
+    org: "IDX · Trading Economics",
+    value: 10.55,
+    unit: "percent",
+    url: "https://tradingeconomics.com/indonesia/stock-market",
+  },
+  {
+    id: "ihsgDrawdown",
+    org: "IDX · Trading Economics",
+    value: -60.7,
+    unit: "percent",
+    url: "https://tradingeconomics.com/indonesia/stock-market",
+  },
+  {
+    id: "sp50020",
+    org: "S&P Dow Jones Indices",
+    value: 8.88,
+    unit: "percent",
+    url: "https://www.spglobal.com/spdji/en/indices/equity/sp-500/",
+  },
+  {
+    id: "gold20",
+    org: "World Gold Council",
+    value: 11.2,
+    unit: "percent",
+    url: "https://www.gold.org/goldhub/data/gold-prices",
+  },
+  {
+    id: "goldDrawdown",
+    org: "World Gold Council",
+    value: -44.4,
+    unit: "percent",
+    url: "https://www.gold.org/goldhub/data/gold-prices",
+  },
+  {
+    id: "idrUsd20",
+    org: "Bank Indonesia · JISDOR",
+    value: 2.7,
+    unit: "percent",
+    url: "https://www.bi.go.id/en/statistik/informasi-kurs/jisdor/default.aspx",
+  },
 ] as const
 
 export type SourceId = (typeof SOURCES)[number]["id"]
@@ -150,11 +198,16 @@ export const BASE_INDEX = 100
 
 /**
  * Fixed paint order, most-arguable first. Software leads because it is the
- * subject of the page, not because it wins.
+ * subject of the page, not because it wins. The three paper assets sit
+ * together behind Bitcoin because they are the same kind of thing: bought from
+ * a phone, held without staff, and impossible to work on.
  */
 export const ASSETS = [
   "software",
   "bitcoin",
+  "stocks",
+  "sp500",
+  "gold",
   "datacenter",
   "cafe",
   "mining",
@@ -166,26 +219,37 @@ export type AssetKey = (typeof ASSETS)[number]
 /**
  * Identity per asset, fixed for the life of the page.
  *
- * Seven series will not fit in seven greys. Only three steps stay reliably
- * tellable apart under colour vision deficiency and in print, so identity is a
- * pair: a step plus a stroke style. Three steps times three styles gives nine
- * distinct combinations for seven assets. Because the pair belongs to the asset
- * and never to its rank, hiding a line never repaints the others.
+ * Ten series will not fit in ten greys. Only three steps stay reliably tellable
+ * apart under colour vision deficiency and in print, so identity is a pair: a
+ * step plus a stroke style. Four styles across three steps gives twelve
+ * distinct combinations for ten assets, and no grey band carries more than
+ * four lines. Because the pair belongs to the asset and never to its rank,
+ * hiding a line never repaints the others.
  *
- * All seven can be drawn at once, and the overlay chart opens that way. Seven
- * lines is a busy plot, which is why the stroke styles, the name at the end of
- * each line, the readout under the pointer and the table exist; the
- * small-multiples figure above it is the calmer way to read the same data.
+ * All ten can be drawn at once, and the overlay chart opens that way. Ten lines
+ * is a busy plot, which is why the stroke styles, the name at the end of each
+ * line, the readout under the pointer and the table exist; the Software only
+ * button is the calmer way back to a single curve.
+ *
+ * One constraint comes from the other direction. The measured figure in section
+ * 02 draws only three of these ten, so those three have to be separable on
+ * stroke alone, without the grey step doing any work. That is why gold is
+ * dotted and land carries the dash-dot: on that figure the Indonesian index,
+ * the American one and gold then read as three different lines even in
+ * greyscale print.
  */
-export type Stroke = "solid" | "dashed" | "dotted"
+export type Stroke = "solid" | "dashed" | "dotted" | "dashdot"
 export const SERIES: Record<AssetKey, { step: 1 | 2 | 3; stroke: Stroke }> = {
   software: { step: 1, stroke: "solid" },
+  stocks: { step: 1, stroke: "dashed" },
   bitcoin: { step: 2, stroke: "solid" },
   datacenter: { step: 2, stroke: "dashed" },
   hotel: { step: 2, stroke: "dotted" },
+  sp500: { step: 2, stroke: "dashdot" },
   cafe: { step: 3, stroke: "solid" },
   mining: { step: 3, stroke: "dashed" },
-  land: { step: 3, stroke: "dotted" },
+  land: { step: 3, stroke: "dashdot" },
+  gold: { step: 3, stroke: "dotted" },
 }
 
 /** SVG stroke-dasharray per style. Empty string means an unbroken line. */
@@ -193,6 +257,19 @@ export const DASH: Record<Stroke, string> = {
   solid: "",
   dashed: "9 5",
   dotted: "2 5",
+  dashdot: "10 4 2 4",
+}
+
+/**
+ * CSS `border-style` per stroke, for the small swatches in the pointer
+ * readout. CSS has no dash-dot, so that style borrows the dashed border and
+ * leans on the grey step and the name beside it to stay separable.
+ */
+export const BORDER_STYLE: Record<Stroke, string> = {
+  solid: "solid",
+  dashed: "dashed",
+  dotted: "dotted",
+  dashdot: "dashed",
 }
 
 export const strokeColor = (k: AssetKey) => `var(--series-${SERIES[k].step})`
@@ -237,6 +314,22 @@ export const DEFAULT_VISIBLE: readonly AssetKey[] = ASSETS
  *              opening decade here is less than half of it, and it keeps
  *              decaying, because an asset cannot stay a monetary experiment and
  *              a mature store of value at the same time.
+ * stocks       `ihsg20` is what the IDX Composite actually did over the twenty
+ *              years in HISTORY, before dividends. The opening decade sits at
+ *              eleven, roughly the measured price return plus a dividend yield
+ *              that has run near three percent, and decays toward nominal GDP.
+ * sp500        `sp50020` is the measured dollar price return over the same
+ *              twenty years and `idrUsd20` the rupiah's average annual fall
+ *              against the dollar; together they made fourteen percent a year
+ *              in rupiah with dividends reinvested. The opening decade is set
+ *              at ten, well under that, because the American market entered
+ *              this period cheap and does not now.
+ * gold         the widest gap on this page between what happened and what we
+ *              assume. Gold returned `gold20` a year in dollars over the same
+ *              twenty years, and more than fourteen in rupiah. The opening
+ *              decade here is eight, because gold produces nothing: over a long
+ *              enough run its return is the currency losing value, not the
+ *              metal gaining any.
  * software     no published series exists for a company that does not exist
  *              yet. This is the one curve with no anchor on its rate, only on
  *              its odds of survival, and the page says so.
@@ -249,8 +342,11 @@ export const RATES: Record<
   bitcoin: [0.26, 0.15, 0.09, 0.06],
   datacenter: [0.14, 0.09, 0.06, 0.05],
   cafe: [0.12, 0.08, 0.06, 0.05],
+  stocks: [0.11, 0.09, 0.075, 0.06],
+  sp500: [0.1, 0.085, 0.07, 0.06],
   mining: [0.1, 0.07, 0.05, 0.04],
   hotel: [0.09, 0.07, 0.055, 0.045],
+  gold: [0.08, 0.065, 0.055, 0.05],
   land: [0.07, 0.055, 0.045, 0.04],
 }
 
@@ -267,10 +363,20 @@ export const RATES: Record<
  * and protocol risk together, never a price view. These are the most arguable
  * numbers here, which is exactly why they are printed rather than buried in
  * the curve.
+ *
+ * The three paper assets score high for a reason worth stating plainly: an
+ * index cannot go out of business, because a company that fails is replaced in
+ * it by one that has not. What is left is entirely the holder's own risk, which
+ * is selling at the bottom, a broker or custodian failing, or needing the money
+ * in the wrong year. Gold adds theft and storage to that list and scores a
+ * little lower.
  */
 export const SURVIVAL: Record<AssetKey, number> = {
   software: 0.15,
   bitcoin: 0.6,
+  stocks: 0.85,
+  sp500: 0.9,
+  gold: 0.85,
   datacenter: 0.55,
   cafe: 0.05,
   mining: 0.45,
@@ -286,10 +392,20 @@ export const SURVIVAL: Record<AssetKey, number> = {
  * coal are prices (`btcDrawdown`, `coalFall`). A Bali hotel and a Bali cafe are
  * revenue, anchored on `baliCollapse`, the fall in foreign arrivals in 2020.
  * Land has no daily price at all, which is the point of its row.
+ *
+ * The three paper assets are measured off the same daily closes as HISTORY, so
+ * their falls and their recovery times are observations rather than estimates:
+ * `ihsgDrawdown` in 2008 and back inside two years, the S&P 500 down 56.8
+ * percent between October 2007 and March 2009 and back after five and a half,
+ * and `goldDrawdown` from August 2011 with nine years to par. Gold has the
+ * shallowest fall on this page and by far the longest wait.
  */
 export const MAX_DRAWDOWN: Record<AssetKey, number> = {
   software: -0.55,
   bitcoin: -0.853,
+  stocks: -0.607,
+  sp500: -0.568,
+  gold: -0.444,
   datacenter: -0.45,
   cafe: -0.83,
   mining: -0.65,
@@ -299,6 +415,9 @@ export const MAX_DRAWDOWN: Record<AssetKey, number> = {
 export const RECOVERY_YEARS: Record<AssetKey, number> = {
   software: 4,
   bitcoin: 3,
+  stocks: 2,
+  sp500: 6,
+  gold: 9,
   datacenter: 3,
   cafe: 5,
   mining: 5,
@@ -327,6 +446,9 @@ export const CONTROL: Record<ControlRow, Record<AssetKey, number>> = {
   capital: {
     software: 3,
     bitcoin: 4,
+    stocks: 4,
+    sp500: 4,
+    gold: 4,
     datacenter: 0,
     cafe: 1,
     mining: 0,
@@ -336,6 +458,9 @@ export const CONTROL: Record<ControlRow, Record<AssetKey, number>> = {
   liquidity: {
     software: 1,
     bitcoin: 4,
+    stocks: 4,
+    sp500: 4,
+    gold: 3,
     datacenter: 1,
     cafe: 1,
     mining: 2,
@@ -345,6 +470,9 @@ export const CONTROL: Record<ControlRow, Record<AssetKey, number>> = {
   effort: {
     software: 4,
     bitcoin: 0,
+    stocks: 0,
+    sp500: 0,
+    gold: 0,
     datacenter: 1,
     cafe: 3,
     mining: 1,
@@ -354,6 +482,9 @@ export const CONTROL: Record<ControlRow, Record<AssetKey, number>> = {
   ceiling: {
     software: 4,
     bitcoin: 4,
+    stocks: 4,
+    sp500: 4,
+    gold: 3,
     datacenter: 1,
     cafe: 1,
     mining: 0,
@@ -363,6 +494,9 @@ export const CONTROL: Record<ControlRow, Record<AssetKey, number>> = {
   marginal: {
     software: 3,
     bitcoin: 4,
+    stocks: 4,
+    sp500: 4,
+    gold: 3,
     datacenter: 1,
     cafe: 1,
     mining: 0,
@@ -372,6 +506,9 @@ export const CONTROL: Record<ControlRow, Record<AssetKey, number>> = {
   data: {
     software: 4,
     bitcoin: 0,
+    stocks: 0,
+    sp500: 0,
+    gold: 0,
     datacenter: 1,
     cafe: 1,
     mining: 0,
@@ -381,6 +518,9 @@ export const CONTROL: Record<ControlRow, Record<AssetKey, number>> = {
   jobs: {
     software: 4,
     bitcoin: 0,
+    stocks: 1,
+    sp500: 0,
+    gold: 0,
     datacenter: 2,
     cafe: 4,
     mining: 1,
@@ -463,26 +603,158 @@ export function sourceFigure(id: SourceId, lang: Lang): string {
   return src.unit === "usd" ? `US$${n}` : `${n}%`
 }
 
+/* ============================== the past =============================== */
+
+/**
+ * Twenty years that actually happened: 2005 through 2025, in rupiah.
+ *
+ * Everything else on this page is a curve we built out of assumptions we wrote
+ * ourselves. This block is the opposite, and it exists because a forty-year
+ * model with nothing measured behind it is a drawing. These are year-end
+ * closing prices: the IDX Composite in rupiah, the S&P 500 price index in
+ * dollars, gold in dollars per troy ounce, and the dollar against the rupiah.
+ * Every one of them can be looked up.
+ *
+ * THREE RULES FOR THIS BLOCK.
+ *
+ * Rupiah, not dollars. The reader spends rupiah, so a foreign asset is
+ * converted at each year's own rate. That is not a rounding detail: the rupiah
+ * went from 9,806 to 16,709 over the window, and roughly a fifth of what the
+ * two foreign lines gained is the currency falling rather than the asset
+ * rising. The fall is printed on the page instead of being smuggled into the
+ * lines.
+ *
+ * No dividends, on either stock line. The IDX Composite and the S&P 500 are
+ * both price indices here, so both are understated by the same kind of amount
+ * and neither gets an advantage the other is denied. The page says so and
+ * gives the size of it.
+ *
+ * The window is fixed and closed. Twenty whole years ending 31 December 2025,
+ * never a trailing window that quietly reframes itself on every deploy. Where
+ * the three stood after it closed is in HISTORY_AS_OF, with its own date on it.
+ */
+export const HISTORY_START = 2005
+export const HISTORY_END = 2025
+export const HISTORY_SPAN = HISTORY_END - HISTORY_START
+
+export const HISTORY_KEYS = ["stocks", "sp500", "gold"] as const
+export type HistoryKey = (typeof HISTORY_KEYS)[number]
+
+export const HISTORY_YEARS: number[] = Array.from(
+  { length: HISTORY_SPAN + 1 },
+  (_, i) => HISTORY_START + i
+)
+
+/** Year-end closes, 2005 first, 2025 last. */
+export const HISTORY_CLOSE: Record<HistoryKey, readonly number[]> = {
+  stocks: [
+    1162.64, 1805.52, 2745.83, 1355.41, 2534.36, 3703.51, 3821.99, 4316.69,
+    4274.18, 5226.95, 4593.01, 5296.71, 6355.65, 6194.5, 6299.54, 5979.07,
+    6581.48, 6850.62, 7272.8, 7079.9, 8646.94,
+  ],
+  sp500: [
+    1248.29, 1418.3, 1468.36, 903.25, 1115.1, 1257.64, 1257.6, 1426.19, 1848.36,
+    2058.9, 2043.94, 2238.83, 2673.61, 2506.85, 3230.78, 3756.07, 4766.18,
+    3839.5, 4769.83, 5881.63, 6845.5,
+  ],
+  gold: [
+    517.1, 635.2, 834.9, 883.6, 1095.2, 1421.1, 1565.8, 1674.8, 1201.9, 1183.9,
+    1060.3, 1150.0, 1306.3, 1278.3, 1519.5, 1893.1, 1827.5, 1819.7, 2062.4,
+    2629.2, 4325.6,
+  ],
+}
+
+/** Rupiah per dollar at each of those year-ends. */
+export const HISTORY_FX: readonly number[] = [
+  9806, 8981, 9460, 11160, 9427, 8886, 8855, 9612, 12217, 12420, 13845, 13466,
+  13558, 14553, 13919, 13833, 14285, 15620, 15425, 16086, 16709,
+]
+
+/** Only the Indonesian index is already quoted in the currency we read it in. */
+export const HISTORY_IN_RUPIAH: Record<HistoryKey, boolean> = {
+  stocks: true,
+  sp500: false,
+  gold: false,
+}
+
+const rupiah = (k: HistoryKey, i: number) =>
+  HISTORY_CLOSE[k][i] * (HISTORY_IN_RUPIAH[k] ? 1 : HISTORY_FX[i])
+
+/** Each series in rupiah, rebased so year-end 2005 is 100. */
+export const HISTORY_INDEX = Object.fromEntries(
+  HISTORY_KEYS.map((k) => [
+    k,
+    HISTORY_YEARS.map((_, i) => (rupiah(k, i) / rupiah(k, 0)) * BASE_INDEX),
+  ])
+) as Record<HistoryKey, number[]>
+
+/** What one rupiah of it turned into over the window, in rupiah. */
+export const historyMultiple = (k: HistoryKey) =>
+  HISTORY_INDEX[k][HISTORY_SPAN] / BASE_INDEX
+
+export const historyCagr = (k: HistoryKey) =>
+  cagr(HISTORY_INDEX[k][HISTORY_SPAN], HISTORY_SPAN)
+
+/** The same, in the currency the asset is actually quoted in. */
+export const historyNativeMultiple = (k: HistoryKey) =>
+  HISTORY_CLOSE[k][HISTORY_SPAN] / HISTORY_CLOSE[k][0]
+
+export const historyNativeCagr = (k: HistoryKey) =>
+  Math.pow(historyNativeMultiple(k), 1 / HISTORY_SPAN) - 1
+
+/** The currency itself, which is a third of the story on two of the lines. */
+export const HISTORY_FX_MULTIPLE = HISTORY_FX[HISTORY_SPAN] / HISTORY_FX[0]
+export const HISTORY_FX_CAGR =
+  Math.pow(HISTORY_FX_MULTIPLE, 1 / HISTORY_SPAN) - 1
+
+/**
+ * Where the three stood after the window closed, with the date attached.
+ *
+ * The chart stops at the end of 2025 so that twenty years means twenty years.
+ * This is the honest footnote to that decision, and the reason it is worth
+ * printing is the Indonesian line: the IDX Composite peaked at 9,134.70 on
+ * 20 January 2026 and was 41.5 percent lower by 8 June. A page that showed
+ * only the closed window would have hidden the most recent thing that happened
+ * to the asset a reader in Indonesia is most likely to hold.
+ */
+export const HISTORY_AS_OF = {
+  date: "2026-09-08",
+  close: { stocks: 6686.44, sp500: 7673.52, gold: 4393.9 } as Record<
+    HistoryKey,
+    number
+  >,
+  fx: 17664,
+  peak: 9134.7,
+  peakDate: "2026-01-20",
+  troughFall: -0.415,
+}
+
 /* ================================ content ================================ */
 
 const content = {
   id: {
     meta: {
       title:
-        "40 tahun: software AI vs tanah, villa, kafe, tambang, pusat data, Bitcoin",
+        "40 tahun: software AI vs tanah, villa, IHSG, S&P 500, emas, Bitcoin",
       description:
-        "Kenapa kami bangun software AI, bukan beli tanah atau buka kafe. Tujuh cara naruh duit di Indonesia, 40 tahun ke depan, dipotong peluang gagal. Semua angkanya ada sumbernya.",
+        "Kenapa kami bangun software AI, bukan beli tanah, indeks saham, atau emas. Sepuluh cara naruh duit di Indonesia, 40 tahun ke depan, dipotong peluang gagal, dibuka sama 20 tahun data asli IHSG, S&P 500, dan emas dalam rupiah.",
     },
     figure: {
       prefix: "GBR.",
       status: "MODEL",
       statusTitle:
         "Angka model dari asumsi yang tertulis, bukan hasil pengukuran",
+      dataStatus: "DATA",
+      dataStatusTitle:
+        "Harga tutup tahun yang benar-benar terjadi, bukan model",
       table: "Lihat angkanya",
     },
     assets: {
       software: "Software AI",
       bitcoin: "Bitcoin",
+      stocks: "IHSG",
+      sp500: "S&P 500",
+      gold: "Emas",
       datacenter: "Pusat data",
       cafe: "Kafe & resto",
       mining: "Tambang",
@@ -491,8 +763,8 @@ const content = {
     },
 
     eyebrow: "Horizon 40 tahun",
-    heading: "Tujuh pilihan,\nempat puluh tahun.",
-    lead: "Duit nganggur di Bali larinya ke tanah, villa, atau kafe. Di luar Bali, ke tambang. Sekarang nambah satu: pusat data buat AI. Kami milih yang lain. Ini tujuh-tujuhnya di satu grafik, terus dipotong peluang gagalnya masing-masing.",
+    heading: "Sepuluh pilihan,\nempat puluh tahun.",
+    lead: "Duit nganggur di Bali larinya ke tanah, villa, atau kafe. Di luar Bali, ke tambang. Sekarang nambah satu: pusat data buat AI. Yang paling gampang justru paling jarang disebut, yaitu indeks saham dan emas, tinggal beli dari HP. Kami milih yang lain. Ini sepuluh-sepuluhnya di satu grafik, dibuka sama dua puluh tahun yang beneran kejadian, terus dipotong peluang gagalnya masing-masing.",
     meta_:
       "Semua kurva di sini model, bukan hasil ukuran dan bukan capaian kami. Asumsinya kami tulis sendiri. Angka jangkarnya dari lembaga resmi, linknya ada di bawah.",
 
@@ -509,12 +781,63 @@ const content = {
       ],
     },
 
-    curve: {
-      label: "02 · Kurva mentah",
-      heading: "Semua mulai\ndari angka seratus.",
-      sub: "Tujuh aset, satu indeks, semua mulai dari seratus. Sumbunya logaritmik, jadi jarak yang sama artinya kelipatan yang sama, bukan selisih rupiah yang sama.",
+    history: {
+      label: "02 · Yang beneran kejadian",
+      heading: "Sebelum ngeramal\nempat puluh tahun.",
+      sub: "Semua kurva lain di halaman ini model. Yang satu ini enggak. Ini harga tutup tahun beneran, 2005 sampai 2025, semuanya dihitung dalam rupiah, semuanya mulai dari seratus.",
       chart: {
-        title: "Tujuh aset, satu sumbu, 40 tahun",
+        title: "IHSG, S&P 500, dan emas, dua puluh tahun, dalam rupiah",
+        unit: "indeks, tutup tahun 2005 = 100",
+        xLabel: "Tahun",
+        yLabel: "Indeks",
+        perYear: "per tahun",
+        tableHeaders: [
+          "Tahun",
+          "IHSG",
+          "S&P 500",
+          "Emas (US$)",
+          "Kurs (Rp/US$)",
+        ],
+        summaryHeaders: [
+          "Aset",
+          "Tutup 2005",
+          "Tutup 2025",
+          "Kelipatan, rupiah",
+          "Per tahun, rupiah",
+          "Per tahun, mata uang asal",
+        ],
+        sameCurrency: "sama",
+      },
+      lead: [
+        "Tiga aset ini bisa dibeli siapa aja dari HP, hari ini juga, tanpa izin dan tanpa karyawan. Dua puluh tahun terakhir IHSG jadi 7,4 kali. S&P 500 jadi 9,3 kali. Emas jadi 14,3 kali. Semuanya dihitung dalam rupiah, karena rupiah yang kamu belanjain.",
+        "Yang paling gampang dibeli malah ngasih angka paling gede. Itu bukan grafiknya yang salah. Itu emang hasilnya, dan halaman ini bakal jauh lebih enak ditulis kalau angkanya lain.",
+      ],
+      rupiah: {
+        label: "Sebagian dari itu bukan asetnya",
+        body: "Akhir 2005 satu dolar Rp9.806. Akhir 2025 Rp16.709. Rata-rata rupiah melemah 2,7 persen setahun, dua puluh tahun berturut-turut. Buat orang Indonesia yang megang aset dolar, dua koma tujuh persen itu numpang naik gratis tiap tahun, tanpa asetnya ngelakuin apa-apa. Buat yang cuma megang rupiah, angka yang sama jalan ke arah sebaliknya.",
+      },
+      dividend: {
+        label: "Dua garis saham belum termasuk dividen",
+        body: "IHSG sama S&P 500 di sini dua-duanya indeks harga, jadi dua-duanya sama-sama dikecilin dan gak ada yang dikasih keuntungan yang satunya gak dapet. Kalau dividennya diputer balik, S&P 500 di periode ini bukan 8,9 persen setahun dalam dolar tapi 11,0 persen. Yield dividen IHSG selama periode ini rata-rata di atas S&P 500, jadi garis Indonesianya juga ikut naik, bukan turun. Emas gak bayar apa-apa, jadi garisnya udah apa adanya.",
+      },
+      land: {
+        label: "Yang selama ini dikejar orang",
+        body: "Di dua puluh tahun yang persis sama, indeks harga properti residensial Bank Indonesia naik rata-rata 3,57 persen setahun. Itu angka nasional, dan tanah zona turis di Bali jalannya emang lebih kencang dari itu. Tapi angka nasional yang diterbitin, dan angka nasionalnya ada di bawah ketiga garis di atas.",
+      },
+      asOf: {
+        label: "Setelah jendelanya nutup",
+        body: "Grafiknya berhenti di tutup tahun 2025 biar dua puluh tahun beneran dua puluh tahun. Per 8 September 2026, IHSG di 6.686. Turun 22,7 persen dari tutup 2025 dan 26,8 persen di bawah puncaknya di 9.134 tanggal 20 Januari 2026. Di titik terendahnya tanggal 8 Juni, jaraknya 41,5 persen dari puncak itu. S&P 500 di 7.674 dan emas di US$4.394. Jadi garis Indonesianya lagi ngalamin turun terdalam sejak 2008, persis sambil kamu baca ini.",
+      },
+      after:
+        "Bagian ini yang paling gak enak ditulis, dan justru itu alasannya ada di sini. Tiga garis di atas gak minta apa-apa dari kamu. Gak ada karyawan, gak ada izin, gak ada Senin pagi. Dan hasil dua puluh tahunnya ngalahin hampir semua yang bisa kamu bangun sendiri di Bali. Sisa halaman ini bukan buat mbantah itu. Isinya apa yang gak keliatan di tiga garis itu.",
+    },
+
+    curve: {
+      label: "03 · Kurva mentah",
+      heading: "Sekarang empat\npuluh tahun ke depan.",
+      sub: "Sepuluh aset, satu indeks, semua mulai dari seratus. Sumbunya logaritmik, jadi jarak yang sama artinya kelipatan yang sama, bukan selisih rupiah yang sama. Mulai dari sini semuanya model, bukan pengukuran.",
+      chart: {
+        title: "Sepuluh aset, satu sumbu, 40 tahun",
         unit: "indeks, mulai dari 100",
         xLabel: "Tahun",
         yLabel: "Indeks",
@@ -525,7 +848,7 @@ const content = {
         readout: "Tahun",
         hint: "Geser di atas grafik buat baca angka semua aset di tahun itu.",
         capNote:
-          "Tujuh garis sekaligus emang penuh. Warnanya cuma tiga tingkat abu. Bedanya dipegang sama bentuk garis, nama di ujung tiap garis, sama tabel di bawah. Mau lebih tenang? Pilih Sisain software.",
+          "Sepuluh garis sekaligus emang penuh. Warnanya cuma tiga tingkat abu. Bedanya dipegang sama bentuk garis, nama di ujung tiap garis, sama tabel di bawah. Mau lebih tenang? Pilih Sisain software.",
         selectAll: "Pilih semua",
         clear: "Sisain software",
         srHint: "Pakai panah kiri dan kanan buat geser tahunnya.",
@@ -533,6 +856,9 @@ const content = {
           "Tahun",
           "Software AI",
           "Bitcoin",
+          "IHSG",
+          "S&P 500",
+          "Emas",
           "Pusat data",
           "Kafe & resto",
           "Tambang",
@@ -545,7 +871,7 @@ const content = {
     },
 
     haircut: {
-      label: "03 · Dipotong peluang gagal",
+      label: "04 · Dipotong peluang gagal",
       heading: "Sekarang kali\npeluang selamatnya.",
       sub: "Tiap kurva dikali peluang kamu masih megang versi yang hidup di tahun ke-40. Buat usaha, keakuisisi tetep diitung selamat. Pemiliknya tetep dibayar.",
       chart: {
@@ -564,7 +890,7 @@ const content = {
       },
       flip: {
         label: "Dua hal yang berubah",
-        body: "Urutannya kebalik. Bitcoin naik ke atas software. Kafe yang tadinya nomor empat jatuh ke buncit, tinggal balik modal doang. Ini bukan salah ketik dan bukan sok merendah. Ini keluar sendiri dari asumsi yang kami tulis. Kami tampilin karena bagian inilah yang bisa ngubah pikiran orang.",
+        body: "Urutannya kebalik. Bitcoin naik ke atas software. Kafe yang tadinya nomor enam jatuh ke buncit, tinggal balik modal doang. Dan dua indeks saham, yang gak minta kerjaan sama sekali, nangkring di nomor tiga dan empat, di atas pusat data, villa, tanah, dan tambang. Gak ada yang salah ketik dan gak ada yang sok merendah. Semuanya keluar sendiri dari asumsi yang kami tulis. Kami tampilin karena bagian inilah yang bisa ngubah pikiran orang.",
       },
       cafe: {
         label: "Soal kafe",
@@ -573,9 +899,9 @@ const content = {
     },
 
     drawdown: {
-      label: "04 · Tahun terburuk",
+      label: "05 · Tahun terburuk",
       heading: "Bukan cuma\nseberapa tinggi.",
-      sub: "Naik sekian persen setahun itu angka yang enak dibaca. Tapi yang bikin orang jual di waktu paling salah bukan rata-ratanya. Tahun terburuknya.",
+      sub: "Naik sekian persen setahun itu angka yang enak dibaca. Tapi yang bikin orang jual di waktu paling salah bukan rata-ratanya. Tahun terburuknya. Tiga baris di sini angka terukur, bukan model: IHSG, S&P 500, dan emas.",
       chart: {
         title: "Turun terdalam, dan lama baliknya",
         unit: "persen dari puncak. Harga buat yang ada harganya, omzet buat yang enggak",
@@ -593,6 +919,11 @@ const content = {
           "Pelanggan berhenti barengan, biasanya pas ekonominya lagi jelek dan warung mereka tutup duluan.",
         bitcoin:
           "Turun delapan puluh lima persen dari puncak udah pernah kejadian, dan tiap kali kelihatannya kayak beneran selesai.",
+        stocks:
+          "Turun 61 persen di 2008, terus balik cuma dalam dua tahun, paling cepet di halaman ini. Tahun ini turun lagi 41,5 persen dari puncak Januari, dan yang itu belum kelar.",
+        sp500:
+          "Turun 57 persen antara Oktober 2007 dan Maret 2009. Butuh lima setengah tahun cuma buat ketemu angka yang sama lagi.",
+        gold: "Turunnya paling dangkal di halaman ini. Baliknya paling lama: puncak Agustus 2011 baru kesamain lagi Juli 2020, dan selama sembilan tahun nunggu itu dia gak bayar sepeser pun.",
         datacenter:
           "Rak kosong pas kontrak gede pindah, plus mesinnya tetep tua walau gak kepakai.",
         cafe: "Angka yang sama kayak villa, karena bulannya sama. Bedanya kafe gak punya aset yang bisa dijual pas tutup.",
@@ -607,7 +938,7 @@ const content = {
     },
 
     control: {
-      label: "05 · Yang bisa dikendaliin",
+      label: "06 · Yang bisa dikendaliin",
       heading: "Kerja kamu\nngaruh gak?",
       sub: "Sampai sini semuanya soal angka. Yang di bawah ini alasan kami milih yang sebenernya, dan dia gak nongol di kurva mana pun.",
       chart: {
@@ -650,7 +981,7 @@ const content = {
     },
 
     answer: {
-      label: "06 · Jawabannya",
+      label: "07 · Jawabannya",
       heading: "Cuma satu garis\nyang nurut sama kerja.",
       items: [
         {
@@ -664,6 +995,10 @@ const content = {
         {
           title: "Pusat data itu AI, tapi tetep bangunan",
           body: "Ini yang paling deket sama kerjaan kami, dan tetep kami lewatin. Pusat data itu nyewain rak ke orang yang bikin AI. Dindingnya sama kayak hotel, cuma namanya megawatt bukan kamar. Dan data yang lewat di dalamnya bukan punya dia.",
+        },
+        {
+          title: "Indeks itu pembanding yang jujur, bukan musuh",
+          body: "Kalau yang kamu mau cuma duit naik tanpa kamu ngapa-ngapain, beli indeks. Beneran, itu saran kami. Dua puluh tahun terakhir IHSG jadi 7,4 kali dan emas jadi 14,3 kali, tanpa karyawan dan tanpa izin. Kami gak bikin perusahaan buat ngalahin angka itu. Kami bikin perusahaan karena indeks gak bisa digarap, dan apa pun yang kami kerjain hari Senin gak ngubah satu angka pun di dalemnya.",
         },
         {
           title: "Kafe itu kerjaan, bukan aset",
@@ -686,9 +1021,9 @@ const content = {
     },
 
     assumptions: {
-      label: "07 · Asumsi & sumber",
+      label: "08 · Asumsi & sumber",
       heading: "Kalau gak setuju,\nbantah angkanya.",
-      sub: "Tabel pertama: semua input yang bikin tujuh kurva di atas. Tabel kedua: angka terbitan lembaga resmi yang jadi jangkarnya, lengkap sama linknya. Ganti satu input, gambarnya ikut ganti.",
+      sub: "Tabel pertama: semua input yang bikin sepuluh kurva di atas. Tabel kedua: angka terbitan lembaga resmi yang jadi jangkarnya, lengkap sama linknya. Ganti satu input, gambarnya ikut ganti.",
       tableHeaders: [
         "Aset",
         "Naik per dekade (%)",
@@ -700,7 +1035,7 @@ const content = {
       sourcesLabel: "Angka jangkarnya",
       sourceHeaders: ["Angka", "Yang diukur", "Sumber"],
       sourceNote:
-        "Jangkar itu bukan ramalan. Dia cuma nentuin titik mulai yang masuk akal buat tiap kurva. Laju turunnya per dekade tetep asumsi kami. Satu aset malah gak punya jangkar sama sekali buat lajunya: software AI, soalnya perusahaannya belum ada. Yang berjangkar cuma peluang selamatnya.",
+        "Jangkar itu bukan ramalan. Dia cuma nentuin titik mulai yang masuk akal buat tiap kurva. Laju turunnya per dekade tetep asumsi kami. Satu aset malah gak punya jangkar sama sekali buat lajunya: software AI, soalnya perusahaannya belum ada. Yang berjangkar cuma peluang selamatnya. Enam baris terakhir di tabel ini beda jenisnya: itu hasil pengukuran dua puluh tahun di bagian 02, bukan asumsi.",
       sources: {
         rppi: "Rata-rata kenaikan indeks harga properti residensial Indonesia per tahun, 2003 sampai 2025",
         rppiLow:
@@ -727,6 +1062,18 @@ const content = {
         blsInfo:
           "Usaha di sektor informasi yang masih jalan setelah lima tahun",
         bls10: "Semua usaha swasta yang masih jalan setelah sepuluh tahun",
+        ihsg20:
+          "Imbal hasil IHSG per tahun selama dua puluh tahun, tutup 2005 sampai tutup 2025, belum termasuk dividen",
+        ihsgDrawdown:
+          "Turun terdalam IHSG, dari puncak Januari 2008 ke dasar Oktober 2008. Balik ke puncaknya April 2010",
+        sp50020:
+          "Imbal hasil indeks harga S&P 500 per tahun di periode yang sama, dalam dolar, belum termasuk dividen. Kalau dividennya diputer balik, angkanya 11,0 persen",
+        gold20:
+          "Kenaikan harga emas per tahun di periode yang sama, dalam dolar per troy ounce",
+        goldDrawdown:
+          "Turun terdalam emas, dari puncak Agustus 2011 ke dasar Desember 2015. Baru balik ke harga puncaknya Juli 2020",
+        idrUsd20:
+          "Rata-rata pelemahan rupiah terhadap dolar per tahun di periode yang sama, dari Rp9.806 jadi Rp16.709",
       },
     },
 
@@ -735,7 +1082,9 @@ const content = {
       items: [
         "Halaman ini membandingkan bentuk ekonomi antar jenis aset. Ini bukan penawaran investasi, bukan ajakan membeli efek, dan bukan nasihat investasi.",
         "Semua kurva di sini dihitung dari asumsi yang kami tulis sendiri di halaman ini. Angka jangkarnya terbitan lembaga resmi, kurvanya bukan. Bukan hasil pengukuran, bukan data historis, dan bukan janji hasil.",
-        "Kinerja masa lalu jenis aset apa pun tidak menjamin hasil ke depan. Tanah, villa, kafe, tambang, pusat data, Bitcoin, dan saham perusahaan swasta semuanya bisa turun nilainya sampai nol.",
+        "Kinerja masa lalu jenis aset apa pun tidak menjamin hasil ke depan. Tanah, villa, kafe, tambang, pusat data, Bitcoin, emas, indeks saham, dan saham perusahaan swasta semuanya bisa turun tajam, dan sebagian di antaranya bisa turun sampai nol.",
+        "Angka dua puluh tahun di bagian 02 adalah harga tutup tahun yang benar-benar terjadi, bukan model. Sumbernya data pasar publik: IHSG, indeks harga S&P 500, harga emas dolar per troy ounce, dan kurs dolar terhadap rupiah. Dua indeks saham di situ belum termasuk dividen, dan halaman ini menyebutkan berapa besar selisihnya.",
+        "Halaman ini menyebut indeks saham dan emas sebagai pembanding, bukan sebagai produk yang kami jual. Kami bukan manajer investasi, bukan perantara pedagang efek, dan bukan pedagang emas.",
         "Bitcoin yang disebut di sini adalah aset kas perusahaan kami sendiri. Kami bukan pedagang aset kripto, tidak menjual produk kripto, dan tidak memberikan saran beli atau jual kepada siapa pun.",
         "Aset kripto risikonya tinggi dan bisa turun tajam. Pengawasannya ada di OJK, dan pajaknya ngikut aturan yang berlaku saat transaksi.",
         "Angka ketahanan usaha yang kami pakai berasal dari statistik Amerika Serikat, karena seri yang setara untuk Indonesia belum diterbitkan. Kami memakainya apa adanya, tanpa penyesuaian diam-diam.",
@@ -753,19 +1102,24 @@ const content = {
   en: {
     meta: {
       title:
-        "Forty years: AI software against land, villas, cafes, mining, data centres, Bitcoin",
+        "Forty years: AI software against land, villas, the IDX Composite, the S&P 500, gold, Bitcoin",
       description:
-        "Why we build AI software instead of buying land, opening a cafe, or going into mining. Seven ways to put money to work in Indonesia on one axis for forty years, each cut by its own odds of failure, with every source linked.",
+        "Why we build AI software instead of buying land, a stock index, or gold. Ten ways to put money to work in Indonesia on one axis for forty years, each cut by its own odds of failure, opening with twenty measured years of the IDX Composite, the S&P 500 and gold in rupiah.",
     },
     figure: {
       prefix: "FIG.",
       status: "MODEL",
       statusTitle: "Modelled from stated assumptions, not measured",
+      dataStatus: "DATA",
+      dataStatusTitle: "Real year-end closing prices, not a model",
       table: "Show the numbers",
     },
     assets: {
       software: "AI software",
       bitcoin: "Bitcoin",
+      stocks: "IDX Composite",
+      sp500: "S&P 500",
+      gold: "Gold",
       datacenter: "Data centres",
       cafe: "Cafes & restaurants",
       mining: "Mining",
@@ -774,8 +1128,8 @@ const content = {
     },
 
     eyebrow: "Forty-year horizon",
-    heading: "Seven choices,\nforty years.",
-    lead: "In Bali, spare capital goes into land, a villa, or a cafe. Outside Bali it goes into mining. Now there is a new option, a data centre for someone else's AI. We build AI software instead. This page puts those seven choices on one axis and then cuts each of them by its own odds of failure.",
+    heading: "Ten choices,\nforty years.",
+    lead: "In Bali, spare capital goes into land, a villa, or a cafe. Outside Bali it goes into mining. Lately there is a new option, a data centre for someone else's AI. The easiest option is the one nobody brings up: a stock index or gold, bought from a phone. We build AI software instead. This page opens with twenty years that actually happened, then puts all ten choices on one axis and cuts each of them by its own odds of failure.",
     meta_:
       "Every curve here is modelled from assumptions we wrote ourselves, not measured and not our own results. The figures they are anchored to come from official sources and are linked below.",
 
@@ -792,12 +1146,64 @@ const content = {
       ],
     },
 
-    curve: {
-      label: "02 · The raw curves",
-      heading: "Everything starts\nat one hundred.",
-      sub: "Seven assets, one index, a logarithmic vertical scale. Equal distance means equal multiple rather than equal rupiah.",
+    history: {
+      label: "02 · What actually happened",
+      heading: "Twenty measured years\nbefore forty modelled ones.",
+      sub: "Every other curve on this page is a model. This one is not. These are real year-end closing prices from 2005 to 2025, converted to rupiah, all starting at one hundred.",
       chart: {
-        title: "Seven assets, one axis, forty years",
+        title:
+          "The IDX Composite, the S&P 500 and gold, twenty years, in rupiah",
+        unit: "index, year-end 2005 = 100",
+        xLabel: "Year",
+        yLabel: "Index",
+        perYear: "a year",
+        tableHeaders: [
+          "Year",
+          "IDX Composite",
+          "S&P 500",
+          "Gold (US$)",
+          "Rate (Rp/US$)",
+        ],
+        summaryHeaders: [
+          "Asset",
+          "Close 2005",
+          "Close 2025",
+          "Multiple, rupiah",
+          "A year, rupiah",
+          "A year, own currency",
+        ],
+        sameCurrency: "same",
+      },
+      lead: [
+        "All three of these can be bought from a phone today, with no permit and no staff. Over the last twenty years the IDX Composite returned 7.4 times, the S&P 500 9.3 times and gold 14.3 times, each measured in the rupiah a reader here actually spends.",
+        "The easiest thing to buy produced the largest number. That is not a fault in the chart. It is the result, and this page would be considerably easier to write if it said something else.",
+      ],
+      rupiah: {
+        label: "Part of that is not the asset",
+        body: "A dollar cost Rp9,806 at the end of 2005 and Rp16,709 at the end of 2025. The rupiah lost an average of 2.7 percent a year for twenty consecutive years. For an Indonesian holding a dollar asset, that 2.7 percent is a free lift every year that the asset did nothing to earn. For anyone holding only rupiah, the same number runs the other way.",
+      },
+      dividend: {
+        label: "Neither stock line includes dividends",
+        body: "Both are price indices here, so both are understated by the same kind of amount and neither is handed an advantage the other is denied. With dividends reinvested the S&P 500 made 11.0 percent a year in dollars over this window rather than 8.9. The IDX Composite has generally yielded more than the S&P 500 across the period, so the Indonesian line moves up on that adjustment too, not down. Gold pays nothing, so its line needs no adjustment at all.",
+      },
+      land: {
+        label: "The thing everyone was buying instead",
+        body: "Over exactly the same twenty years, Bank Indonesia's residential property price index rose an average of 3.57 percent a year. That is the national index, and tourist-zone land in Bali has run hotter than it. But the national figure is the one that gets published, and the national figure sits below all three lines above.",
+      },
+      asOf: {
+        label: "After the window closed",
+        body: "The chart stops at year-end 2025 so that twenty years means twenty years. As of 8 September 2026 the IDX Composite stood at 6,686, down 22.7 percent from that close and 26.8 percent below its peak of 9,134 on 20 January 2026. At its low on 8 June it was 41.5 percent below that peak. The S&P 500 was at 7,674 and gold at US$4,394. The Indonesian line is in its deepest fall since 2008 while you read this.",
+      },
+      after:
+        "This is the hardest part of the page to write, and that is precisely why it is here. The three lines above ask nothing of you. No staff, no permits, no Monday mornings. Over twenty measured years they beat almost anything you could have built yourself in Bali. What follows is not an argument against that. It is what those three lines do not show.",
+    },
+
+    curve: {
+      label: "03 · The raw curves",
+      heading: "Now the forty\nyears ahead.",
+      sub: "Ten assets, one index, a logarithmic vertical scale. Equal distance means equal multiple rather than equal rupiah. From here on everything is modelled rather than measured.",
+      chart: {
+        title: "Ten assets, one axis, forty years",
         unit: "index, starting at 100",
         xLabel: "Year",
         yLabel: "Index",
@@ -808,7 +1214,7 @@ const content = {
         readout: "Year",
         hint: "Move across the chart to read every asset at that year.",
         capNote:
-          "Seven lines at once is a full plot. There are only three grey steps, so identity is carried by the stroke style, the name at the end of each line, and the table below. Narrow it with Software only, or read any single year off the pointer.",
+          "Ten lines at once is a full plot. There are only three grey steps, so identity is carried by the stroke style, the name at the end of each line, and the table below. Narrow it with Software only, or read any single year off the pointer.",
         selectAll: "Show all",
         clear: "Software only",
         srHint: "Use the left and right arrow keys to move through the years.",
@@ -816,6 +1222,9 @@ const content = {
           "Year",
           "AI software",
           "Bitcoin",
+          "IDX Composite",
+          "S&P 500",
+          "Gold",
           "Data centres",
           "Cafes & restaurants",
           "Mining",
@@ -828,7 +1237,7 @@ const content = {
     },
 
     haircut: {
-      label: "03 · Cut by the odds of failure",
+      label: "04 · Cut by the odds of failure",
       heading: "Now multiply by\nthe odds of surviving.",
       sub: "Each curve is multiplied by the chance you still hold a working version of it at year forty. For a business an acquisition counts as surviving, because the owner still got paid.",
       chart: {
@@ -847,7 +1256,7 @@ const content = {
       },
       flip: {
         label: "Two things change",
-        body: "The order flips. Bitcoin passes software, and the cafe drops from fourth to last, worth roughly the money that went in. Neither is a typo and neither is false modesty. Both fall straight out of the assumptions we wrote ourselves, and we show them because this is the half that would change a reader's mind.",
+        body: "The order flips. Bitcoin passes software, the cafe drops from sixth to last and is worth roughly the money that went in, and the two stock indices, which ask for no work at all, come third and fourth, above data centres, villas, land and mining. None of it is a typo and none of it is false modesty. All of it falls straight out of the assumptions we wrote ourselves, and we show it because this is the half that would change a reader's mind.",
       },
       cafe: {
         label: "About the cafe",
@@ -856,9 +1265,9 @@ const content = {
     },
 
     drawdown: {
-      label: "04 · The worst year",
+      label: "05 · The worst year",
       heading: "Not only\nhow high.",
-      sub: "An average annual rate is a comfortable number to read. What makes people sell at the worst possible moment is not the average, it is the worst year.",
+      sub: "An average annual rate is a comfortable number to read. What makes people sell at the worst possible moment is not the average, it is the worst year. Three rows here are measured rather than modelled: the IDX Composite, the S&P 500 and gold.",
       chart: {
         title: "Deepest fall, and how long it takes to get back",
         unit: "percent from peak. Price where a price exists, revenue where it does not",
@@ -876,6 +1285,11 @@ const content = {
           "Customers leave together, usually in the same bad economy that closed their shops first.",
         bitcoin:
           "An eighty-five percent fall from a peak has already happened, and each time it looked like the end.",
+        stocks:
+          "Down 61 percent in 2008 and back inside two years, the fastest recovery on this page. It is down 41.5 percent again from its January 2026 peak, and that one is not finished.",
+        sp500:
+          "Down 57 percent between October 2007 and March 2009. It took five and a half years just to see the same number again.",
+        gold: "The shallowest fall on this page and the slowest recovery. The August 2011 peak was not matched until July 2020, and nothing was paid out across those nine years of waiting.",
         datacenter:
           "Empty racks when a large contract moves out, and hardware that ages whether or not it is being used.",
         cafe: "The same number as the villa, because it was the same month. The difference is that a cafe has nothing to sell when it closes.",
@@ -890,7 +1304,7 @@ const content = {
     },
 
     control: {
-      label: "05 · What you can steer",
+      label: "06 · What you can steer",
       heading: "Does your work\nchange it?",
       sub: "Everything above this point is arithmetic. What follows is the part that actually decided it for us, and it does not appear on any of the curves.",
       chart: {
@@ -933,7 +1347,7 @@ const content = {
     },
 
     answer: {
-      label: "06 · The answer",
+      label: "07 · The answer",
       heading: "Only one line\nanswers to work.",
       items: [
         {
@@ -947,6 +1361,10 @@ const content = {
         {
           title: "A data centre is AI, and still a building",
           body: "This is the option closest to what we do, and we still passed on it. A data centre rents racks to the people building the AI. It has the same wall a hotel has, only measured in megawatts instead of rooms, and the data moving through it belongs to somebody else.",
+        },
+        {
+          title: "The index is the honest benchmark, not the enemy",
+          body: "If all you want is for money to grow while you do nothing, buy the index. We mean that as advice. Over the last twenty years the IDX Composite returned 7.4 times and gold 14.3 times, with no staff and no permits. We did not start a company to beat those numbers. We started one because an index cannot be worked on, and nothing we do on a Monday changes a single figure inside it.",
         },
         {
           title: "A cafe is a job, not an asset",
@@ -969,9 +1387,9 @@ const content = {
     },
 
     assumptions: {
-      label: "07 · Assumptions & sources",
+      label: "08 · Assumptions & sources",
       heading: "Disagree with\nthe inputs, not the picture.",
-      sub: "The first table holds every input behind the seven curves above. The second holds the published figures they are anchored to, with links. Change one input and the picture changes.",
+      sub: "The first table holds every input behind the ten curves above. The second holds the published figures they are anchored to, with links. Change one input and the picture changes.",
       tableHeaders: [
         "Asset",
         "Rate per decade (%)",
@@ -983,7 +1401,7 @@ const content = {
       sourcesLabel: "The figures they are anchored to",
       sourceHeaders: ["Figure", "What it measures", "Source"],
       sourceNote:
-        "An anchor is not a forecast. It fixes a defensible starting scale for each curve; the rate at which each one decays per decade is still our assumption. One asset here has no anchor for its rate at all, AI software, because the company does not exist yet. Only its odds of surviving are anchored.",
+        "An anchor is not a forecast. It fixes a defensible starting scale for each curve; the rate at which each one decays per decade is still our assumption. One asset here has no anchor for its rate at all, AI software, because the company does not exist yet. Only its odds of surviving are anchored. The last six rows are a different kind of thing: they are measurements taken from the twenty-year window in section 02, not assumptions.",
       sources: {
         rppi: "Average annual rise in Indonesia's residential property price index, 2003 to 2025",
         rppiLow:
@@ -1008,6 +1426,18 @@ const content = {
           "Forecast growth in installed data centre power capacity to 2030",
         blsInfo: "Information-sector businesses still trading after five years",
         bls10: "All private-sector businesses still trading after ten years",
+        ihsg20:
+          "The IDX Composite annualised over twenty years, year-end 2005 to year-end 2025, before dividends",
+        ihsgDrawdown:
+          "The IDX Composite's deepest fall, from its January 2008 peak to its October 2008 low. It regained the peak in April 2010",
+        sp50020:
+          "The S&P 500 price index annualised over the same twenty years, in dollars, before dividends. With dividends reinvested the figure is 11.0 percent",
+        gold20:
+          "Gold annualised over the same twenty years, in dollars per troy ounce",
+        goldDrawdown:
+          "Gold's deepest fall, from its August 2011 peak to its December 2015 low. It did not regain that peak until July 2020",
+        idrUsd20:
+          "Average annual fall in the rupiah against the dollar over the same twenty years, from Rp9,806 to Rp16,709",
       },
     },
 
@@ -1016,7 +1446,9 @@ const content = {
       items: [
         "This page compares the economic shape of different asset classes. It is not an investment offer, not a solicitation to buy securities, and not investment advice.",
         "Every curve here is computed from assumptions we wrote on this page. The figures they are anchored to are published by official sources; the curves are not. They are not measurements, not historical data, and not a promise of results.",
-        "Past performance of any asset class does not guarantee future results. Land, villas, cafes, mines, data centres, Bitcoin, and shares in a private company can all fall to zero.",
+        "Past performance of any asset class does not guarantee future results. Land, villas, cafes, mines, data centres, Bitcoin, gold, stock indices, and shares in a private company can all fall sharply, and several of them can fall to zero.",
+        "The twenty-year figures in section 02 are real year-end closing prices, not a model. They come from public market data: the IDX Composite, the S&P 500 price index, the dollar gold price per troy ounce, and the dollar to rupiah rate. Neither stock index there includes dividends, and the page states the size of that gap.",
+        "Stock indices and gold appear here as a benchmark, not as a product we sell. We are not an investment manager, not a broker, and not a gold dealer.",
         "The Bitcoin referred to here is our own company treasury asset. We are not a crypto trading operator, we sell no crypto product, and we give no buy or sell advice to anyone.",
         "Crypto assets carry high risk and can fall sharply. Supervision sits with OJK, and tax is calculated under the rules in force at the time of the transaction.",
         "The business survival figures used here come from United States statistics, because no equivalent published series exists for Indonesia. We use them as they are rather than quietly adjusting them.",

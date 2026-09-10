@@ -19,10 +19,12 @@ import {
   AiBrain01Icon,
   CloudServerIcon,
   CafeIcon,
+  BalanceScaleIcon,
   Database01Icon,
   HandshakeIcon,
 } from "@hugeicons/core-free-icons"
 import Figure from "@/components/investor/Figure.astro"
+import HistoryChart from "@/components/investor/HistoryChart.astro"
 import HorizonChart from "@/components/investor/HorizonChart.tsx"
 import SurvivalDumbbell from "@/components/investor/SurvivalDumbbell.astro"
 import DrawdownBars from "@/components/investor/DrawdownBars.astro"
@@ -38,6 +40,15 @@ import {
   MAX_DRAWDOWN,
   RECOVERY_YEARS,
   SOURCES,
+  HISTORY_KEYS,
+  HISTORY_YEARS,
+  HISTORY_CLOSE,
+  HISTORY_FX,
+  HISTORY_SPAN,
+  HISTORY_IN_RUPIAH,
+  historyMultiple,
+  historyCagr,
+  historyNativeCagr,
   weighted,
   cagr,
   multiple,
@@ -48,24 +59,54 @@ import {
 } from "@/lib/horizon"
 
 const lang = resolveLang(Astro.currentLocale)
+const locale = lang === "en" ? "en-US" : "id-ID"
 const p = getHorizon(lang)
 const fig = p.figure
 const A = p.assets
+const h = p.history
 
 /* One per item in p.answer.items, in the same order. */
 const ANSWER_ICONS = [
   LandPlotIcon,
   AiBrain01Icon,
   CloudServerIcon,
+  BalanceScaleIcon,
   CafeIcon,
   Database01Icon,
   HandshakeIcon,
 ]
 
-const nf = new Intl.NumberFormat(lang === "en" ? "en-US" : "id-ID", {
-  maximumFractionDigits: 0,
+const nf = new Intl.NumberFormat(locale, { maximumFractionDigits: 0 })
+const nf2 = new Intl.NumberFormat(locale, {
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
 })
 const times = (v: number) => `${multiple(v, lang)}x`
+
+/* A close carries its own currency mark, because two of the three series are
+   quoted in dollars and a bare number in that column would read as rupiah. */
+const close = (k: (typeof HISTORY_KEYS)[number], v: number) =>
+  HISTORY_IN_RUPIAH[k] ? nf2.format(v) : `US$${nf2.format(v)}`
+
+/* The measured table prints the closes rather than the rebased index: the
+   index is what the chart draws, the close is what a reader can verify against
+   a source that is not this page. */
+const historyRows = HISTORY_YEARS.map((year, i) => [
+  String(year),
+  ...HISTORY_KEYS.map((k) => close(k, HISTORY_CLOSE[k][i])),
+  `Rp${nf.format(HISTORY_FX[i])}`,
+])
+
+const historySummary = HISTORY_KEYS.map((k) => [
+  A[k],
+  close(k, HISTORY_CLOSE[k][0]),
+  close(k, HISTORY_CLOSE[k][HISTORY_SPAN]),
+  times(historyMultiple(k) * BASE_INDEX),
+  `${percent(historyCagr(k), lang)}%`,
+  HISTORY_IN_RUPIAH[k]
+    ? h.chart.sameCurrency
+    : `${percent(historyNativeCagr(k), lang)}%`,
+])
 
 /* Every table below is derived from the same constants the charts read, so a
    figure and its table can never disagree. */
@@ -113,6 +154,9 @@ const heroPath = (k: (typeof ASSETS)[number]) =>
 const HERO_DASH: Record<string, string> = {
   software: "",
   bitcoin: "14 8",
+  stocks: "6 6",
+  sp500: "20 8 3 8",
+  gold: "10 5 2 5",
   hotel: "3 8",
   land: "22 6 4 6",
 }
@@ -142,7 +186,7 @@ const chipDark =
             d={heroPath(k)}
             fill="none"
             stroke="#ffffff"
-            stroke-opacity={0.42 - i * 0.08}
+            stroke-opacity={Math.max(0.1, 0.42 - i * 0.035)}
             stroke-width={i === 0 ? 2.25 : 1.5}
             stroke-dasharray={HERO_DASH[k] || undefined}
             vector-effect="non-scaling-stroke"
@@ -222,7 +266,112 @@ const chipDark =
   </div>
 </section>
 
-<!-- 02 the raw curves -->
+<!-- 02 twenty measured years -->
+<section class={`bg-paper py-24 sm:py-36 ${slab}`}>
+  <div class={wrap}>
+    <p class="eyebrow text-muted-foreground">{h.label}</p>
+    <div
+      class="mt-6 grid gap-6 lg:grid-cols-[0.55fr_0.45fr] lg:items-end lg:gap-16"
+    >
+      <h2 class="t-heading font-serif font-medium text-ink">
+        {lines(h.heading).map((line) => <span class="t-line">{line}</span>)}
+      </h2>
+      <p class="leading-relaxed text-muted-foreground">{h.sub}</p>
+    </div>
+
+    {
+      /* The one figure on these pages stamped DATA rather than MODEL. Its table
+        prints the raw closes rather than the rebased index on purpose: the
+        index is what the chart shows, but the close is what a reader can look
+        up somewhere that is not this website. */
+    }
+    <div class="mt-14">
+      <Figure
+        index="05"
+        prefix={fig.prefix}
+        title={h.chart.title}
+        unit={h.chart.unit}
+        status={fig.dataStatus}
+        statusTitle={fig.dataStatusTitle}
+        tableLabel={fig.table}
+        headers={h.chart.tableHeaders}
+        rows={historyRows}
+      >
+        <HistoryChart assets={A} labels={h.chart} lang={lang} />
+      </Figure>
+    </div>
+
+    <div class="mt-12 grid gap-10 lg:grid-cols-[0.55fr_0.45fr] lg:gap-16">
+      <div class="max-w-2xl space-y-5">
+        {
+          h.lead.map((para) => (
+            <p class="leading-relaxed text-muted-foreground">{para}</p>
+          ))
+        }
+      </div>
+      <div class="self-start border-t border-ink pt-6">
+        <p class="eyebrow text-muted-foreground">{h.rupiah.label}</p>
+        <p class="mt-3 leading-relaxed text-ink">{h.rupiah.body}</p>
+      </div>
+    </div>
+
+    <div class="mt-14 overflow-x-auto">
+      <table class="w-full min-w-[46rem] border-collapse text-left">
+        <thead>
+          <tr>
+            {
+              h.chart.summaryHeaders.map((label) => (
+                <th
+                  scope="col"
+                  class="border-b border-ink py-3 pr-6 font-mono text-[0.66rem] font-normal tracking-[0.14em] text-muted-foreground"
+                >
+                  {label}
+                </th>
+              ))
+            }
+          </tr>
+        </thead>
+        <tbody>
+          {
+            historySummary.map((row) => (
+              <tr>
+                {row.map((cell, i) => (
+                  <td
+                    class:list={[
+                      "border-b border-hairline py-3.5 pr-6 text-sm",
+                      i === 0
+                        ? "text-ink"
+                        : "font-mono text-muted-foreground tabular-nums",
+                    ]}
+                  >
+                    {cell}
+                  </td>
+                ))}
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <div class="mt-12 grid gap-8 lg:grid-cols-3 lg:gap-12">
+      {
+        [h.dividend, h.land, h.asOf].map((note) => (
+          <div class="border-t border-hairline pt-6">
+            <p class="eyebrow text-muted-foreground">{note.label}</p>
+            <p class="mt-3 leading-relaxed text-muted-foreground">
+              {note.body}
+            </p>
+          </div>
+        ))
+      }
+    </div>
+
+    <p class="mt-14 max-w-3xl leading-relaxed text-ink">{h.after}</p>
+  </div>
+</section>
+
+<!-- 03 the raw curves -->
 <section class={`bg-background py-24 sm:py-36 ${slab}`}>
   <div class={wrap}>
     <p class="eyebrow text-muted-foreground">{p.curve.label}</p>
@@ -241,7 +390,7 @@ const chipDark =
 
     <div class="mt-14">
       <Figure
-        index="05"
+        index="06"
         prefix={fig.prefix}
         title={p.curve.chart.title}
         unit={p.curve.chart.unit}
@@ -263,7 +412,7 @@ const chipDark =
 
     {
       /* The panel figure already prints each asset's multiple and its rate, so a
-        row of stat tiles underneath would be the same seven numbers twice. */
+        row of stat tiles underneath would be the same ten numbers twice. */
     }
     <p class="mt-12 max-w-3xl leading-relaxed text-muted-foreground">
       {p.curve.after}
@@ -271,7 +420,7 @@ const chipDark =
   </div>
 </section>
 
-<!-- 03 the survival haircut -->
+<!-- 04 the survival haircut -->
 <section class={`bg-paper py-24 sm:py-36 ${slab}`}>
   <div class={wrap}>
     <p class="eyebrow text-muted-foreground">{p.haircut.label}</p>
@@ -290,7 +439,7 @@ const chipDark =
 
     <div class="mt-14">
       <Figure
-        index="06"
+        index="07"
         prefix={fig.prefix}
         title={p.haircut.chart.title}
         unit={p.haircut.chart.unit}
@@ -319,7 +468,7 @@ const chipDark =
   </div>
 </section>
 
-<!-- 04 the worst year -->
+<!-- 05 the worst year -->
 <section class={`bg-background py-24 sm:py-36 ${slab}`}>
   <div class={wrap}>
     <p class="eyebrow text-muted-foreground">{p.drawdown.label}</p>
@@ -338,7 +487,7 @@ const chipDark =
 
     <div class="mt-14">
       <Figure
-        index="07"
+        index="08"
         prefix={fig.prefix}
         title={p.drawdown.chart.title}
         unit={p.drawdown.chart.unit}
@@ -362,7 +511,7 @@ const chipDark =
   </div>
 </section>
 
-<!-- 05 what you can steer -->
+<!-- 06 what you can steer -->
 <section class={`bg-paper py-24 sm:py-36 ${slab}`}>
   <div class={wrap}>
     <p class="eyebrow text-muted-foreground">{p.control.label}</p>
@@ -396,7 +545,7 @@ const chipDark =
           <span
             class="font-mono text-[0.68rem] tracking-[0.18em] text-muted-foreground"
           >
-            {fig.prefix} 08
+            {fig.prefix} 09
           </span>
           <span class="text-sm font-medium text-ink"
             >{p.control.chart.title}</span
@@ -428,7 +577,7 @@ const chipDark =
   </div>
 </section>
 
-<!-- 06 the answer -->
+<!-- 07 the answer -->
 <section class="ink-section py-24 sm:py-36">
   <div class={wrap}>
     <p class="eyebrow text-white/50">{p.answer.label}</p>
@@ -480,7 +629,7 @@ const chipDark =
   </div>
 </section>
 
-<!-- 07 assumptions -->
+<!-- 08 assumptions -->
 <section class={`bg-background py-24 sm:py-36 ${slab}`}>
   <div class={wrap}>
     <p class="eyebrow text-muted-foreground">{p.assumptions.label}</p>

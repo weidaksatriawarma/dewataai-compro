@@ -2,20 +2,26 @@
 /**
  * The qualitative half, as a scored grid rather than a chart.
  *
- * Seven measures across four assets is past the point where a chart helps: any
- * encoding that fits twenty-eight values in one plot is harder to read than the
+ * Seven measures across ten assets is well past the point where a chart helps:
+ * any encoding that fits seventy values in one plot is harder to read than the
  * table itself. So this is a table, with the score drawn as filled squares so a
  * column can be scanned down without reading every number.
  *
  * A real table element, not a grid of divs, because the row headers and column
  * headers are what make it navigable with a screen reader.
+ *
+ * The pips are painted from a scoped class per grey step rather than from an
+ * inline style. The site ships a real Content-Security-Policy, and a style
+ * attribute rendered on the server is not covered by the hashes Astro emits, so
+ * an inline background here is dropped by the browser and the whole figure
+ * turns into a grid of bare numbers.
  */
 import {
   ASSETS,
   CONTROL,
   CONTROL_ROWS,
   CONTROL_MAX,
-  strokeColor,
+  SERIES,
   type AssetKey,
   type ControlRow,
 } from "@/lib/horizon"
@@ -38,13 +44,13 @@ const { assets, rows, measureHeader } = Astro.props
      ancestor inside the scroll container it resolves against the figure, is
      never clipped, and drags the whole document 115px wide. */
 }
-<div class="relative min-w-[52rem]">
+<div class="relative min-w-[72rem]">
   <table class="w-full border-collapse text-left">
     <thead>
       <tr>
         <th
           scope="col"
-          class="w-[26%] border-b border-ink py-3 pr-6 font-mono text-[0.66rem] font-normal tracking-[0.14em] text-muted-foreground"
+          class="w-[20%] border-b border-ink py-3 pr-6 font-mono text-[0.66rem] font-normal tracking-[0.14em] text-muted-foreground"
         >
           {measureHeader}
         </th>
@@ -52,7 +58,7 @@ const { assets, rows, measureHeader } = Astro.props
           ASSETS.map((k) => (
             <th
               scope="col"
-              class="border-b border-ink py-3 pr-5 text-sm font-medium text-ink"
+              class="border-b border-ink py-3 pr-4 text-sm font-medium text-ink"
             >
               {assets[k]}
             </th>
@@ -76,16 +82,15 @@ const { assets, rows, measureHeader } = Astro.props
               </span>
             </th>
             {ASSETS.map((k) => (
-              <td class="border-b border-hairline py-4 pr-4 align-top">
+              <td class="border-b border-hairline py-4 pr-3 align-top">
                 <span class="flex items-center gap-1" aria-hidden="true">
                   {Array.from({ length: CONTROL_MAX }).map((_, i) => (
                     <span
-                      class="h-3.5 w-1.5"
-                      style={
-                        i < CONTROL[row][k]
-                          ? `background:${strokeColor(k)}`
-                          : "background:transparent;box-shadow:inset 0 0 0 1px var(--hairline)"
-                      }
+                      class:list={[
+                        "pip",
+                        `pip-${SERIES[k].step}`,
+                        i < CONTROL[row][k] && "is-on",
+                      ]}
                     />
                   ))}
                 </span>
@@ -103,3 +108,25 @@ const { assets, rows, measureHeader } = Astro.props
     </tbody>
   </table>
 </div>
+
+<style>
+  /* Three greys, one class each. A pip is an outline until it is filled, so an
+     empty score still occupies its slot and a row stays scannable. */
+  .pip {
+    height: 0.875rem;
+    width: 0.375rem;
+    box-shadow: inset 0 0 0 1px var(--hairline);
+  }
+  .pip.is-on {
+    box-shadow: none;
+  }
+  .pip-1.is-on {
+    background: var(--series-1);
+  }
+  .pip-2.is-on {
+    background: var(--series-2);
+  }
+  .pip-3.is-on {
+    background: var(--series-3);
+  }
+</style>

@@ -1,5 +1,5 @@
 /**
- * The forty-year chart: four assets indexed to 100, drawn on one axis.
+ * The forty-year chart: ten assets indexed to 100, drawn on one axis.
  *
  * Two decisions carry most of the weight here.
  *
@@ -8,8 +8,8 @@
  * invent a correlation that is not in the data. Indexing everything to 100 at
  * year zero puts them on one honest axis instead, and the log toggle is what
  * makes the small end readable. Linear is offered because the flattening it
- * causes is itself the argument: on a linear axis three of the four curves lie
- * on the floor, which is what compounding actually looks like.
+ * causes is itself the argument: on a linear axis most of the curves lie on
+ * the floor, which is what compounding actually looks like.
  *
  * IDENTITY IS NEVER THE GREY ALONE. The palette is monochrome, so each series
  * also carries its own dash pattern, its name at the end of its own line, and a
@@ -22,6 +22,9 @@ import { HugeiconsIcon } from "@hugeicons/react"
 import {
   AiBrain01Icon,
   Bitcoin01Icon,
+  Analytics01Icon,
+  GlobalIcon,
+  GoldIngotsIcon,
   CloudServerIcon,
   CafeIcon,
   Mining01Icon,
@@ -35,6 +38,7 @@ import {
   BASE_INDEX,
   HORIZON,
   SERIES,
+  BORDER_STYLE,
   DEFAULT_VISIBLE,
   strokeColor,
   dashArray,
@@ -71,13 +75,16 @@ const R = 136
 const T = 26
 const B = 54
 
-/* One glyph per asset. Three grey steps cannot carry seven identities on their
+/* One glyph per asset. Three grey steps cannot carry ten identities on their
    own, and the icon is the channel that survives everything else: it reads at a
    glance, it holds up in greyscale print, and it never asks the reader to tell
    one grey from the next. */
 const GLYPH: Record<AssetKey, typeof AiBrain01Icon> = {
   software: AiBrain01Icon,
   bitcoin: Bitcoin01Icon,
+  stocks: Analytics01Icon,
+  sp500: GlobalIcon,
+  gold: GoldIngotsIcon,
   datacenter: CloudServerIcon,
   cafe: CafeIcon,
   mining: Mining01Icon,
@@ -198,7 +205,7 @@ export default function HorizonChart({ lang, assets, labels }: Props) {
    * mouse move.
    *
    * The moving crosshair is a state update on every pointermove, and the first
-   * version of this component rebuilt all four 41-point paths inside the render
+   * version of this component rebuilt every 41-point path inside the render
    * body. Under a four-times CPU throttle that cost about 70ms per move and
    * turned a hover into a stall. None of it depends on the cursor, so it all
    * belongs behind one memo keyed on what actually changes the geometry.
@@ -244,20 +251,20 @@ export default function HorizonChart({ lang, assets, labels }: Props) {
 
     /*
      * End labels get pushed apart rather than overlapping. On a linear axis
-     * five of the seven endpoints land within a few pixels of each other at
-     * the bottom of the plot.
+     * most of the endpoints land within a few pixels of each other at the
+     * bottom of the plot.
      *
      * Two passes, not one. A single downward pass plus a global shift pushed
      * the whole stack up by however far the last label spilled, which shoved
      * the top label clean out of the viewBox: on the linear scale the steepest
      * asset lost its name entirely. Pushing down and then pushing back up from
      * the floor keeps every label inside the plot, and the stack only needs
-     * seven times sixteen pixels of the three hundred available.
+     * ten times fifteen pixels of the three hundred available.
      */
     const endLabels = shown
       .map((k) => ({ key: k, y: py(INDEX[k][span]) }))
       .sort((a, b) => a.y - b.y)
-    const MIN = 16
+    const MIN = 15
     const TOP = T + 6
     const FLOOR = H - B
     for (let i = 0; i < endLabels.length; i++) {
@@ -463,7 +470,7 @@ export default function HorizonChart({ lang, assets, labels }: Props) {
                         className="inline-block h-0 w-4 shrink-0 border-t-2"
                         style={{
                           borderColor: strokeColor(k),
-                          borderStyle: SERIES[k].stroke,
+                          borderStyle: BORDER_STYLE[SERIES[k].stroke],
                         }}
                       />
                       {assets[k]}

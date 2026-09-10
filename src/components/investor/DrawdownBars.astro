@@ -8,8 +8,13 @@
  * reader uncomfortable about the asset they were already sold on.
  *
  * Only the depth is drawn. The recovery time and the cause sit in the note
- * block below: four sentences of explanation laid across four SVG columns
+ * block below: ten sentences of explanation laid across ten SVG columns
  * collide at every width narrower than the drawing itself.
+ *
+ * The drawing widens with the number of assets rather than squeezing them. Ten
+ * columns inside the seven-column viewBox overlapped their own names, and the
+ * figure already scrolls sideways inside its own frame on a phone, so a wider
+ * viewBox costs nothing a reader can see.
  */
 import {
   ASSETS,
@@ -28,12 +33,12 @@ interface Props {
 
 const { assets, notes, labels } = Astro.props
 
-const W = 900
+const W = 1320
 const H = 296
 const TOP = 52
 const FLOOR = H - 34
 const COL = W / ASSETS.length
-const BAR = 62
+const BAR = 64
 
 const depth = (v: number) => TOP + (Math.abs(v) / 1) * (FLOOR - TOP)
 const GRID = [0, -0.25, -0.5, -0.75, -1]
@@ -111,7 +116,7 @@ const GRID = [0, -0.25, -0.5, -0.75, -1]
   </svg>
 
   <div
-    class="mt-7 grid gap-x-6 gap-y-5 border-t border-hairline pt-6 sm:grid-cols-2 lg:grid-cols-4"
+    class="mt-7 grid gap-x-6 gap-y-5 border-t border-hairline pt-6 sm:grid-cols-2 lg:grid-cols-5"
   >
     {
       ASSETS.map((k) => (
@@ -147,7 +152,7 @@ const GRID = [0, -0.25, -0.5, -0.75, -1]
   }
   .lab {
     fill: var(--ink);
-    font-size: 14.5px;
+    font-size: 15.5px;
     font-weight: 500;
   }
   .val {

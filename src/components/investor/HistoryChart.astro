@@ -1,0 +1,183 @@
+---
+/**
+ * The measured chart: three real price series, twenty years, in rupiah.
+ *
+ * This is the only figure on the investor pages drawn from observations rather
+ * than from assumptions, and three things keep that distinction visible.
+ *
+ * A DOT AT EVERY YEAR. The modelled chart draws a smooth line because a model
+ * is continuous. This one marks each of the twenty-one year-end closes it is
+ * actually built from, so the reader can see that the line between two dots is
+ * interpolation and nothing more.
+ *
+ * THE SAME IDENTITY AS THE MODEL. An asset keeps its grey step and its stroke
+ * style from `SERIES` here, so the gold line on this figure and the gold line
+ * four sections down are recognisably the same asset. It also means the two
+ * charts can be read against each other, which is the entire point of putting
+ * the measured one first.
+ *
+ * THE AXIS GOES BELOW 100. Converted to rupiah, the S&P 500 was worth less in
+ * 2008 than it was in 2005. Starting the scale at the base would have clipped
+ * that, and the years an asset spends underwater are the ones a reader needs
+ * to see before they believe the years it spends climbing.
+ */
+import {
+  HISTORY_KEYS,
+  HISTORY_INDEX,
+  HISTORY_YEARS,
+  HISTORY_START,
+  HISTORY_END,
+  BASE_INDEX,
+  historyMultiple,
+  historyCagr,
+  multiple,
+  percent,
+  strokeColor,
+  dashArray,
+  type AssetKey,
+  type HistoryKey,
+} from "@/lib/horizon"
+
+interface Props {
+  assets: Record<AssetKey, string>
+  labels: { xLabel: string; yLabel: string; perYear: string }
+  lang: "id" | "en"
+}
+
+const { assets, labels, lang } = Astro.props
+
+/* The right margin is sized by the widest end label, which is two lines: the
+   name, and under it the multiple and the annual rate. Both belong on the plot
+   rather than in a legend, because a reader comparing three growth rates needs
+   the number at the end of the line they are already looking at. */
+const W = 960
+const H = 380
+const L = 54
+const R = 212
+const T = 24
+const B = 48
+
+/* The domain is set by hand rather than from the data. Doubling ticks are the
+   reason: on a log axis they make equal spacing mean equal doubling, which is
+   the one thing a reader has to trust before comparing three growth rates by
+   eye. A computed domain would land the ticks on arbitrary numbers instead. */
+const LO = 70
+const HI = 1600
+const TICKS = [100, 200, 400, 800, 1600]
+
+const lo = Math.log10(LO)
+const span = Math.log10(HI) - lo
+const px = (year: number) =>
+  L + ((year - HISTORY_START) / (HISTORY_END - HISTORY_START)) * (W - L - R)
+const py = (v: number) => H - B - ((Math.log10(v) - lo) / span) * (H - T - B)
+
+const series = HISTORY_KEYS.map((key) => ({
+  key,
+  points: HISTORY_YEARS.map((year, i) => ({
+    year,
+    v: HISTORY_INDEX[key][i],
+    x: px(year),
+    y: py(HISTORY_INDEX[key][i]),
+  })),
+}))
+
+const path = (pts: { x: number; y: number }[]) =>
+  pts
+    .map((p, i) => `${i === 0 ? "M" : "L"}${p.x.toFixed(1)} ${p.y.toFixed(1)}`)
+    .join(" ")
+
+const XTICKS = [2005, 2010, 2015, 2020, 2025]
+
+const times = (k: HistoryKey) =>
+  `${multiple(historyMultiple(k) * BASE_INDEX, lang)}x`
+const rate = (k: HistoryKey) => `${percent(historyCagr(k), lang)}%`
+
+/* End labels never collide here, but the rule that keeps them apart on the
+   modelled chart is cheap enough to keep: the three endpoints are read at a
+   glance only while they stay on separate lines of type. */
+const ends = series
+  .map((s) => ({ key: s.key, y: s.points[s.points.length - 1].y }))
+  .sort((a, b) => a.y - b.y)
+const MIN = 34
+for (let i = 1; i < ends.length; i++) {
+  ends[i].y = Math.max(ends[i].y, ends[i - 1].y + MIN)
+}
+---
+
+<div>
+  <svg
+    viewBox={`0 0 ${W} ${H}`}
+    class="h-auto w-full"
+    role="img"
+    aria-label={HISTORY_KEYS.map(
+      (k) => `${assets[k]}: ${times(k)}, ${rate(k)} ${labels.perYear}`
+    ).join(". ")}
+  >
+    {
+      TICKS.map((t) => (
+        <g>
+          <line x1={L} y1={py(t)} x2={W - R} y2={py(t)} class="hz-grid" />
+          <text x={L - 10} y={py(t) + 4} text-anchor="end" class="hz-tick">
+            {t}
+          </text>
+        </g>
+      ))
+    }
+
+    {
+      /* The base line is the one comparison that matters most: everything above
+        it made money over the window and everything below it had not yet. */
+    }
+    <line
+      x1={L}
+      y1={py(BASE_INDEX)}
+      x2={W - R}
+      y2={py(BASE_INDEX)}
+      class="hz-axis-line"></line>
+
+    {
+      XTICKS.map((y) => (
+        <text x={px(y)} y={H - B + 22} text-anchor="middle" class="hz-tick">
+          {y}
+        </text>
+      ))
+    }
+    <line x1={L} y1={H - B} x2={W - R} y2={H - B} class="hz-axis-line"></line>
+
+    {
+      series.map((s) => (
+        <g>
+          <title>{`${assets[s.key]}: ${times(s.key)}`}</title>
+          <path
+            d={path(s.points)}
+            fill="none"
+            stroke={strokeColor(s.key)}
+            stroke-width="2.4"
+            stroke-dasharray={dashArray(s.key)}
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          {s.points.map((p) => (
+            <circle cx={p.x} cy={p.y} r="2.6" fill={strokeColor(s.key)} />
+          ))}
+        </g>
+      ))
+    }
+
+    {
+      ends.map(({ key, y }) => (
+        <g>
+          <text x={W - R + 12} y={y} class="hz-end">
+            {assets[key]}
+          </text>
+          <text x={W - R + 12} y={y + 16} class="hz-tick">
+            {times(key)} · {rate(key)} {labels.perYear}
+          </text>
+        </g>
+      ))
+    }
+
+    <text x={L} y={H - 6} class="hz-axis">{labels.xLabel}</text>
+    <text x={L - 10} y={T - 6} class="hz-axis">{labels.yLabel}</text>
+  </svg>
+</div>
