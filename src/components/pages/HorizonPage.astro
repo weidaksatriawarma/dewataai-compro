@@ -46,9 +46,9 @@ import {
   HISTORY_FX,
   HISTORY_SPAN,
   HISTORY_IN_RUPIAH,
+  HISTORY_INDEX,
   historyMultiple,
   historyCagr,
-  historyNativeCagr,
   weighted,
   cagr,
   multiple,
@@ -88,24 +88,36 @@ const times = (v: number) => `${multiple(v, lang)}x`
 const close = (k: (typeof HISTORY_KEYS)[number], v: number) =>
   HISTORY_IN_RUPIAH[k] ? nf2.format(v) : `US$${nf2.format(v)}`
 
-/* The measured table prints the closes rather than the rebased index: the
-   index is what the chart draws, the close is what a reader can verify against
-   a source that is not this page. */
+/* The rupiah figure's table prints the closes rather than the rebased index:
+   the index is what the chart draws, the close is what a reader can verify
+   against a source that is not this page. Every number in both panels is
+   derived from these twenty-one rows and the rate beside them, so the table
+   under the first figure is the source for the second one as well. */
 const historyRows = HISTORY_YEARS.map((year, i) => [
   String(year),
   ...HISTORY_KEYS.map((k) => close(k, HISTORY_CLOSE[k][i])),
   `Rp${nf.format(HISTORY_FX[i])}`,
 ])
 
+/* The dollar figure's table prints what it draws instead. Repeating the closes
+   under it would repeat two of the three columns verbatim, and the number a
+   reader wants from that panel is the rebased one they cannot do in their
+   head: the Indonesian index divided by a rate that moved every year. */
+const historyUsdRows = HISTORY_YEARS.map((year, i) => [
+  String(year),
+  ...HISTORY_KEYS.map((k) => nf.format(HISTORY_INDEX.usd[k][i])),
+])
+
+/* Both currencies in one row per asset, because the comparison the two figures
+   set up is only settled when the four numbers sit on the same line. */
 const historySummary = HISTORY_KEYS.map((k) => [
   A[k],
   close(k, HISTORY_CLOSE[k][0]),
   close(k, HISTORY_CLOSE[k][HISTORY_SPAN]),
-  times(historyMultiple(k) * BASE_INDEX),
-  `${percent(historyCagr(k), lang)}%`,
-  HISTORY_IN_RUPIAH[k]
-    ? h.chart.sameCurrency
-    : `${percent(historyNativeCagr(k), lang)}%`,
+  times(historyMultiple(k, "idr") * BASE_INDEX),
+  `${percent(historyCagr(k, "idr"), lang)}%`,
+  times(historyMultiple(k, "usd") * BASE_INDEX),
+  `${percent(historyCagr(k, "usd"), lang)}%`,
 ])
 
 /* Every table below is derived from the same constants the charts read, so a
@@ -285,7 +297,7 @@ const chipDark =
         index is what the chart shows, but the close is what a reader can look
         up somewhere that is not this website. */
     }
-    <div class="mt-14">
+    <div class="mt-14 space-y-10">
       <Figure
         index="05"
         prefix={fig.prefix}
@@ -297,7 +309,26 @@ const chipDark =
         headers={h.chart.tableHeaders}
         rows={historyRows}
       >
-        <HistoryChart assets={A} labels={h.chart} lang={lang} />
+        <HistoryChart assets={A} labels={h.chart} money="idr" lang={lang} />
+      </Figure>
+
+      {
+        /* The pair. Same component, same axis, same ticks, one currency apart,
+          stacked rather than side by side so both keep the full column width
+          and the eye travels straight down between two identical grids. */
+      }
+      <Figure
+        index="06"
+        prefix={fig.prefix}
+        title={h.chart.titleUsd}
+        unit={h.chart.unitUsd}
+        status={fig.dataStatus}
+        statusTitle={fig.dataStatusTitle}
+        tableLabel={fig.table}
+        headers={h.chart.usdTableHeaders}
+        rows={historyUsdRows}
+      >
+        <HistoryChart assets={A} labels={h.chart} money="usd" lang={lang} />
       </Figure>
     </div>
 
@@ -390,7 +421,7 @@ const chipDark =
 
     <div class="mt-14">
       <Figure
-        index="06"
+        index="07"
         prefix={fig.prefix}
         title={p.curve.chart.title}
         unit={p.curve.chart.unit}
@@ -439,7 +470,7 @@ const chipDark =
 
     <div class="mt-14">
       <Figure
-        index="07"
+        index="08"
         prefix={fig.prefix}
         title={p.haircut.chart.title}
         unit={p.haircut.chart.unit}
@@ -487,7 +518,7 @@ const chipDark =
 
     <div class="mt-14">
       <Figure
-        index="08"
+        index="09"
         prefix={fig.prefix}
         title={p.drawdown.chart.title}
         unit={p.drawdown.chart.unit}

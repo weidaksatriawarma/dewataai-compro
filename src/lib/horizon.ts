@@ -606,7 +606,7 @@ export function sourceFigure(id: SourceId, lang: Lang): string {
 /* ============================== the past =============================== */
 
 /**
- * Twenty years that actually happened: 2005 through 2025, in rupiah.
+ * Twenty years that actually happened: 2005 through 2025, in both currencies.
  *
  * Everything else on this page is a curve we built out of assumptions we wrote
  * ourselves. This block is the opposite, and it exists because a forty-year
@@ -617,12 +617,14 @@ export function sourceFigure(id: SourceId, lang: Lang): string {
  *
  * THREE RULES FOR THIS BLOCK.
  *
- * Rupiah, not dollars. The reader spends rupiah, so a foreign asset is
- * converted at each year's own rate. That is not a rounding detail: the rupiah
- * went from 9,806 to 16,709 over the window, and roughly a fifth of what the
- * two foreign lines gained is the currency falling rather than the asset
- * rising. The fall is printed on the page instead of being smuggled into the
- * lines.
+ * Both currencies, drawn twice, on one shared scale. The reader spends rupiah,
+ * so the rupiah panel comes first and every foreign close is converted at that
+ * year's own rate. But the rupiah fell from 9,806 to 16,709 to the dollar over
+ * the window, which is 2.7 percent a year of lift that the assets did nothing
+ * to earn, and a page that showed only the rupiah panel would be quietly
+ * banking that lift as performance. So the same three series are drawn again
+ * in dollars, on the same axis and the same ticks, and the gap between the two
+ * panels is the currency. Nothing else about the two figures differs.
  *
  * No dividends, on either stock line. The IDX Composite and the S&P 500 are
  * both price indices here, so both are understated by the same kind of amount
@@ -677,30 +679,43 @@ export const HISTORY_IN_RUPIAH: Record<HistoryKey, boolean> = {
   gold: false,
 }
 
-const rupiah = (k: HistoryKey, i: number) =>
-  HISTORY_CLOSE[k][i] * (HISTORY_IN_RUPIAH[k] ? 1 : HISTORY_FX[i])
+/** The two currencies the same twenty years are read in. */
+export const MONEY = ["idr", "usd"] as const
+export type Money = (typeof MONEY)[number]
 
-/** Each series in rupiah, rebased so year-end 2005 is 100. */
+/**
+ * One close, converted into one currency. Only one of the three series is
+ * quoted in rupiah, so each conversion is a single multiply or a single
+ * divide, and in its own currency a close passes through untouched.
+ */
+const converted = (k: HistoryKey, i: number, m: Money) =>
+  HISTORY_IN_RUPIAH[k] === (m === "idr")
+    ? HISTORY_CLOSE[k][i]
+    : m === "idr"
+      ? HISTORY_CLOSE[k][i] * HISTORY_FX[i]
+      : HISTORY_CLOSE[k][i] / HISTORY_FX[i]
+
+/** Each series in each currency, rebased so year-end 2005 is 100. */
 export const HISTORY_INDEX = Object.fromEntries(
-  HISTORY_KEYS.map((k) => [
-    k,
-    HISTORY_YEARS.map((_, i) => (rupiah(k, i) / rupiah(k, 0)) * BASE_INDEX),
+  MONEY.map((m) => [
+    m,
+    Object.fromEntries(
+      HISTORY_KEYS.map((k) => [
+        k,
+        HISTORY_YEARS.map(
+          (_, i) => (converted(k, i, m) / converted(k, 0, m)) * BASE_INDEX
+        ),
+      ])
+    ) as Record<HistoryKey, number[]>,
   ])
-) as Record<HistoryKey, number[]>
+) as Record<Money, Record<HistoryKey, number[]>>
 
-/** What one rupiah of it turned into over the window, in rupiah. */
-export const historyMultiple = (k: HistoryKey) =>
-  HISTORY_INDEX[k][HISTORY_SPAN] / BASE_INDEX
+/** What one unit of that currency put in turned into over the window. */
+export const historyMultiple = (k: HistoryKey, m: Money) =>
+  HISTORY_INDEX[m][k][HISTORY_SPAN] / BASE_INDEX
 
-export const historyCagr = (k: HistoryKey) =>
-  cagr(HISTORY_INDEX[k][HISTORY_SPAN], HISTORY_SPAN)
-
-/** The same, in the currency the asset is actually quoted in. */
-export const historyNativeMultiple = (k: HistoryKey) =>
-  HISTORY_CLOSE[k][HISTORY_SPAN] / HISTORY_CLOSE[k][0]
-
-export const historyNativeCagr = (k: HistoryKey) =>
-  Math.pow(historyNativeMultiple(k), 1 / HISTORY_SPAN) - 1
+export const historyCagr = (k: HistoryKey, m: Money) =>
+  cagr(HISTORY_INDEX[m][k][HISTORY_SPAN], HISTORY_SPAN)
 
 /** The currency itself, which is a third of the story on two of the lines. */
 export const HISTORY_FX_MULTIPLE = HISTORY_FX[HISTORY_SPAN] / HISTORY_FX[0]
@@ -737,7 +752,7 @@ const content = {
       title:
         "40 tahun: software AI vs tanah, villa, IHSG, S&P 500, emas, Bitcoin",
       description:
-        "Kenapa kami bangun software AI, bukan beli tanah, indeks saham, atau emas. Sepuluh cara naruh duit di Indonesia, 40 tahun ke depan, dipotong peluang gagal, dibuka sama 20 tahun data asli IHSG, S&P 500, dan emas dalam rupiah.",
+        "Kenapa kami bangun software AI, bukan beli tanah, indeks saham, atau emas. Sepuluh cara naruh duit di Indonesia, 40 tahun ke depan, dipotong peluang gagal, dibuka sama 20 tahun data asli IHSG, S&P 500, dan emas, dalam rupiah dan dalam dolar.",
     },
     figure: {
       prefix: "GBR.",
@@ -784,10 +799,12 @@ const content = {
     history: {
       label: "02 · Yang beneran kejadian",
       heading: "Sebelum ngeramal\nempat puluh tahun.",
-      sub: "Semua kurva lain di halaman ini model. Yang satu ini enggak. Ini harga tutup tahun beneran, 2005 sampai 2025, semuanya dihitung dalam rupiah, semuanya mulai dari seratus.",
+      sub: "Semua kurva lain di halaman ini model. Yang satu ini enggak. Ini harga tutup tahun beneran, 2005 sampai 2025, digambar dua kali: sekali dalam rupiah, sekali dalam dolar AS. Skalanya sama persis, jadi selisih dua panelnya itu murni kursnya.",
       chart: {
         title: "IHSG, S&P 500, dan emas, dua puluh tahun, dalam rupiah",
-        unit: "indeks, tutup tahun 2005 = 100",
+        titleUsd: "Tiga garis yang sama, dua puluh tahun, dalam dolar AS",
+        unit: "indeks, tutup tahun 2005 = 100, dihitung dalam rupiah",
+        unitUsd: "indeks, tutup tahun 2005 = 100, dihitung dalam dolar AS",
         xLabel: "Tahun",
         yLabel: "Indeks",
         perYear: "per tahun",
@@ -798,23 +815,25 @@ const content = {
           "Emas (US$)",
           "Kurs (Rp/US$)",
         ],
+        usdTableHeaders: ["Tahun", "IHSG", "S&P 500", "Emas"],
         summaryHeaders: [
           "Aset",
           "Tutup 2005",
           "Tutup 2025",
           "Kelipatan, rupiah",
           "Per tahun, rupiah",
-          "Per tahun, mata uang asal",
+          "Kelipatan, dolar",
+          "Per tahun, dolar",
         ],
-        sameCurrency: "sama",
       },
       lead: [
-        "Tiga aset ini bisa dibeli siapa aja dari HP, hari ini juga, tanpa izin dan tanpa karyawan. Dua puluh tahun terakhir IHSG jadi 7,4 kali. S&P 500 jadi 9,3 kali. Emas jadi 14,3 kali. Semuanya dihitung dalam rupiah, karena rupiah yang kamu belanjain.",
-        "Yang paling gampang dibeli malah ngasih angka paling gede. Itu bukan grafiknya yang salah. Itu emang hasilnya, dan halaman ini bakal jauh lebih enak ditulis kalau angkanya lain.",
+        "Tiga aset ini bisa dibeli siapa aja dari HP, hari ini juga, tanpa izin dan tanpa karyawan. Dua puluh tahun terakhir, dihitung dalam rupiah, IHSG jadi 7,4 kali. S&P 500 jadi 9,3 kali. Emas jadi 14,3 kali.",
+        "Dalam dolar AS, tiga-tiganya lebih kecil. IHSG jadi 4,4 kali, S&P 500 jadi 5,5 kali, emas jadi 8,4 kali. Angkanya gak ada yang beda datanya, cuma beda mata uang buat ngukurnya. Rupiah yang kamu belanjain, jadi panel rupiah yang duluan. Tapi panel dolarnya juga kami pasang, karena kalau cuma panel rupiah, pelemahan rupiah kebaca kayak prestasi asetnya.",
+        "Yang paling gampang dibeli malah ngasih angka paling gede, di dua-duanya. Itu bukan grafiknya yang salah. Itu emang hasilnya, dan halaman ini bakal jauh lebih enak ditulis kalau angkanya lain.",
       ],
       rupiah: {
-        label: "Sebagian dari itu bukan asetnya",
-        body: "Akhir 2005 satu dolar Rp9.806. Akhir 2025 Rp16.709. Rata-rata rupiah melemah 2,7 persen setahun, dua puluh tahun berturut-turut. Buat orang Indonesia yang megang aset dolar, dua koma tujuh persen itu numpang naik gratis tiap tahun, tanpa asetnya ngelakuin apa-apa. Buat yang cuma megang rupiah, angka yang sama jalan ke arah sebaliknya.",
+        label: "Selisih dua panel itu kursnya",
+        body: "Akhir 2005 satu dolar Rp9.806. Akhir 2025 Rp16.709. Rata-rata rupiah melemah 2,7 persen setahun, dua puluh tahun berturut-turut. Itu persis jarak antara dua grafik di atas: S&P 500 naik 8,9 persen setahun dalam dolar, tapi 11,8 persen dalam rupiah, dan 2,7 persennya bukan hasil kerja asetnya. Buat yang megang aset dolar, angka itu numpang naik tiap tahun. Buat yang cuma megang rupiah, angka yang sama jalan ke arah sebaliknya.",
       },
       dividend: {
         label: "Dua garis saham belum termasuk dividen",
@@ -1104,7 +1123,7 @@ const content = {
       title:
         "Forty years: AI software against land, villas, the IDX Composite, the S&P 500, gold, Bitcoin",
       description:
-        "Why we build AI software instead of buying land, a stock index, or gold. Ten ways to put money to work in Indonesia on one axis for forty years, each cut by its own odds of failure, opening with twenty measured years of the IDX Composite, the S&P 500 and gold in rupiah.",
+        "Why we build AI software instead of buying land, a stock index, or gold. Ten ways to put money to work in Indonesia on one axis for forty years, each cut by its own odds of failure, opening with twenty measured years of the IDX Composite, the S&P 500 and gold, in rupiah and in dollars.",
     },
     figure: {
       prefix: "FIG.",
@@ -1149,11 +1168,13 @@ const content = {
     history: {
       label: "02 · What actually happened",
       heading: "Twenty measured years\nbefore forty modelled ones.",
-      sub: "Every other curve on this page is a model. This one is not. These are real year-end closing prices from 2005 to 2025, converted to rupiah, all starting at one hundred.",
+      sub: "Every other curve on this page is a model. This one is not. These are real year-end closing prices from 2005 to 2025, drawn twice: once in rupiah and once in US dollars, on the same scale, so the gap between the two panels is the currency and nothing else.",
       chart: {
         title:
           "The IDX Composite, the S&P 500 and gold, twenty years, in rupiah",
-        unit: "index, year-end 2005 = 100",
+        titleUsd: "The same three lines, twenty years, in US dollars",
+        unit: "index, year-end 2005 = 100, measured in rupiah",
+        unitUsd: "index, year-end 2005 = 100, measured in US dollars",
         xLabel: "Year",
         yLabel: "Index",
         perYear: "a year",
@@ -1164,23 +1185,25 @@ const content = {
           "Gold (US$)",
           "Rate (Rp/US$)",
         ],
+        usdTableHeaders: ["Year", "IDX Composite", "S&P 500", "Gold"],
         summaryHeaders: [
           "Asset",
           "Close 2005",
           "Close 2025",
           "Multiple, rupiah",
           "A year, rupiah",
-          "A year, own currency",
+          "Multiple, dollars",
+          "A year, dollars",
         ],
-        sameCurrency: "same",
       },
       lead: [
-        "All three of these can be bought from a phone today, with no permit and no staff. Over the last twenty years the IDX Composite returned 7.4 times, the S&P 500 9.3 times and gold 14.3 times, each measured in the rupiah a reader here actually spends.",
-        "The easiest thing to buy produced the largest number. That is not a fault in the chart. It is the result, and this page would be considerably easier to write if it said something else.",
+        "All three of these can be bought from a phone today, with no permit and no staff. Over the last twenty years, measured in rupiah, the IDX Composite returned 7.4 times, the S&P 500 9.3 times and gold 14.3 times.",
+        "In dollars all three are smaller: 4.4 times, 5.5 times and 8.4 times. Not one figure in the data changed, only the currency it is measured in. The rupiah panel leads because rupiah is what a reader here spends, and the dollar panel sits beside it because a page showing only the first would be booking a falling currency as performance.",
+        "The easiest thing to buy produced the largest number, in both currencies. That is not a fault in the chart. It is the result, and this page would be considerably easier to write if it said something else.",
       ],
       rupiah: {
-        label: "Part of that is not the asset",
-        body: "A dollar cost Rp9,806 at the end of 2005 and Rp16,709 at the end of 2025. The rupiah lost an average of 2.7 percent a year for twenty consecutive years. For an Indonesian holding a dollar asset, that 2.7 percent is a free lift every year that the asset did nothing to earn. For anyone holding only rupiah, the same number runs the other way.",
+        label: "The gap between the panels is the currency",
+        body: "A dollar cost Rp9,806 at the end of 2005 and Rp16,709 at the end of 2025. The rupiah lost an average of 2.7 percent a year for twenty consecutive years. That is exactly the distance between the two figures above: the S&P 500 returned 8.9 percent a year in dollars and 11.8 percent in rupiah, and the 2.7 percent between them is not something the asset did. For an Indonesian holding a dollar asset it is a lift every year. For anyone holding only rupiah, the same number runs the other way.",
       },
       dividend: {
         label: "Neither stock line includes dividends",

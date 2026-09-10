@@ -1,6 +1,11 @@
 ---
 /**
- * The measured chart: three real price series, twenty years, in rupiah.
+ * The measured chart: three real price series, twenty years, in one currency.
+ *
+ * Drawn twice on the page, once per currency, and the pair only works because
+ * both panels share this component: same geometry, same domain, same ticks,
+ * same end-label rules. The two figures differ in their numbers and in nothing
+ * else, so the distance between them can be read as the currency alone.
  *
  * This is the only figure on the investor pages drawn from observations rather
  * than from assumptions, and three things keep that distinction visible.
@@ -16,10 +21,11 @@
  * charts can be read against each other, which is the entire point of putting
  * the measured one first.
  *
- * THE AXIS GOES BELOW 100. Converted to rupiah, the S&P 500 was worth less in
- * 2008 than it was in 2005. Starting the scale at the base would have clipped
- * that, and the years an asset spends underwater are the ones a reader needs
- * to see before they believe the years it spends climbing.
+ * THE AXIS GOES BELOW 100. In either currency the S&P 500 was worth less in
+ * 2008 than it was in 2005, and in dollars it was a quarter down. Starting the
+ * scale at the base would have clipped that, and the years an asset spends
+ * underwater are the ones a reader needs to see before they believe the years
+ * it spends climbing.
  */
 import {
   HISTORY_KEYS,
@@ -36,15 +42,25 @@ import {
   dashArray,
   type AssetKey,
   type HistoryKey,
+  type Money,
 } from "@/lib/horizon"
 
 interface Props {
   assets: Record<AssetKey, string>
-  labels: { xLabel: string; yLabel: string; perYear: string }
+  labels: {
+    xLabel: string
+    yLabel: string
+    perYear: string
+    unit: string
+    unitUsd: string
+  }
+  money: Money
   lang: "id" | "en"
 }
 
-const { assets, labels, lang } = Astro.props
+const { assets, labels, money, lang } = Astro.props
+
+const index = HISTORY_INDEX[money]
 
 /* The right margin is sized by the widest end label, which is two lines: the
    name, and under it the multiple and the annual rate. Both belong on the plot
@@ -57,11 +73,16 @@ const R = 212
 const T = 24
 const B = 48
 
-/* The domain is set by hand rather than from the data. Doubling ticks are the
-   reason: on a log axis they make equal spacing mean equal doubling, which is
-   the one thing a reader has to trust before comparing three growth rates by
-   eye. A computed domain would land the ticks on arbitrary numbers instead. */
-const LO = 70
+/* The domain is set by hand rather than from the data, and both currencies get
+   the same one. Doubling ticks are half the reason: on a log axis they make
+   equal spacing mean equal doubling, which is the one thing a reader has to
+   trust before comparing three growth rates by eye, and a computed domain
+   would land the ticks on arbitrary numbers instead. The shared axis is the
+   other half. The dollar panel tops out around 840 against the rupiah panel's
+   1,425, and that visible drop is the whole argument for drawing it. Rescaling
+   each panel to its own data would erase exactly the difference the pair
+   exists to show. */
+const LO = 65
 const HI = 1600
 const TICKS = [100, 200, 400, 800, 1600]
 
@@ -75,9 +96,9 @@ const series = HISTORY_KEYS.map((key) => ({
   key,
   points: HISTORY_YEARS.map((year, i) => ({
     year,
-    v: HISTORY_INDEX[key][i],
+    v: index[key][i],
     x: px(year),
-    y: py(HISTORY_INDEX[key][i]),
+    y: py(index[key][i]),
   })),
 }))
 
@@ -89,8 +110,8 @@ const path = (pts: { x: number; y: number }[]) =>
 const XTICKS = [2005, 2010, 2015, 2020, 2025]
 
 const times = (k: HistoryKey) =>
-  `${multiple(historyMultiple(k) * BASE_INDEX, lang)}x`
-const rate = (k: HistoryKey) => `${percent(historyCagr(k), lang)}%`
+  `${multiple(historyMultiple(k, money) * BASE_INDEX, lang)}x`
+const rate = (k: HistoryKey) => `${percent(historyCagr(k, money), lang)}%`
 
 /* End labels never collide here, but the rule that keeps them apart on the
    modelled chart is cheap enough to keep: the three endpoints are read at a
@@ -109,9 +130,12 @@ for (let i = 1; i < ends.length; i++) {
     viewBox={`0 0 ${W} ${H}`}
     class="h-auto w-full"
     role="img"
-    aria-label={HISTORY_KEYS.map(
-      (k) => `${assets[k]}: ${times(k)}, ${rate(k)} ${labels.perYear}`
-    ).join(". ")}
+    aria-label={[
+      money === "usd" ? labels.unitUsd : labels.unit,
+      ...HISTORY_KEYS.map(
+        (k) => `${assets[k]}: ${times(k)}, ${rate(k)} ${labels.perYear}`
+      ),
+    ].join(". ")}
   >
     {
       TICKS.map((t) => (
